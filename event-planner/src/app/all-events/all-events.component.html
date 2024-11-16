@@ -1,0 +1,27 @@
+<div class="all-events">
+  <h1>All Events</h1>
+
+  <div class="controls">
+    <input
+      type="text"
+      placeholder="Search events..."
+      [(ngModel)]="searchTerm"
+      (input)="filterEvents()" />
+
+    <select [(ngModel)]="sortOption" (change)="sortEvents()">
+      <option value="name">Sort by Name</option>
+      <option value="date">Sort by Date</option>
+    </select>
+  </div>
+
+  <!-- Lista događaja -->
+  <div class="event-grid">
+    <div class="event-card" *ngFor="let event of filteredEvents">
+      <img [src]="event.image" alt="Event Image" />
+      <h3>{{ event.title }}</h3>
+      <p>{{ event.description }}</p>
+      <p><strong>Date:</strong> {{ event.date | date }}</p>
+      <button class="details-btn">View Details</button>
+    </div>
+  </div>
+</div>
