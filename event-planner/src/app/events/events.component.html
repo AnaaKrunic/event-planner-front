@@ -1,0 +1,9 @@
+<section class="events">
+  <h2>Top 5 Events</h2>
+  <div class="event-grid">
+    <div class="event-card" *ngFor="let event of events">
+      <img [src]="event.image" alt="Event" />
+    </div>
+  </div>
+  <a class="view-all" routerLink="/all-events">View All Events (10)</a>
+</section>

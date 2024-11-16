@@ -1,0 +1,9 @@
+<section class="products">
+  <h2>Top 5 Products and Services</h2>
+  <div class="product-grid">
+    <div class="product-card" *ngFor="let product of products">
+      <img [src]="product.image" alt="Product">
+    </div>
+  </div>
+  <a href="#" class="view-all">View All Products (63)</a>
+</section>
