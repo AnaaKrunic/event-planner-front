@@ -1,14 +1,32 @@
 <div class="all-events">
   <h1>All Events</h1>
 
+  <!-- Kontrole za pretragu, filtriranje i sortiranje -->
   <div class="controls">
+    <!-- Polje za pretragu -->
     <input
       type="text"
+      class="search-input"
       placeholder="Search events..."
       [(ngModel)]="searchTerm"
-      (input)="filterEvents()" />
+      (input)="filterAndSortEvents()" />
 
-    <select [(ngModel)]="sortOption" (change)="sortEvents()">
+    <!-- Padajuća lista za filtriranje po kategorijama -->
+    <select class="filter-select" [(ngModel)]="filterCategory" (change)="filterAndSortEvents()">
+      <option value="all">All Categories</option>
+      <option value="Music">Music</option>
+      <option value="Art">Art</option>
+      <option value="Technology">Technology</option>
+      <option value="Fitness">Fitness</option>
+      <option value="Cooking">Cooking</option>
+      <option value="Books">Books</option>
+      <option value="Photography">Photography</option>
+      <option value="Dance">Dance</option>
+      <option value="Film">Film</option>
+    </select>
+
+    <!-- Padajuća lista za sortiranje -->
+    <select class="sort-select" [(ngModel)]="sortOption" (change)="filterAndSortEvents()">
       <option value="name">Sort by Name</option>
       <option value="date">Sort by Date</option>
     </select>
@@ -17,10 +35,10 @@
   <!-- Lista događaja -->
   <div class="event-grid">
     <div class="event-card" *ngFor="let event of filteredEvents">
-      <img [src]="event.image" alt="Event Image" />
+      <img [src]="event.image" alt="{{ event.title }} Image" />
       <h3>{{ event.title }}</h3>
       <p>{{ event.description }}</p>
-      <p><strong>Date:</strong> {{ event.date | date }}</p>
+      <p><strong>Date:</strong> {{ event.date | date: 'longDate' }}</p>
       <button class="details-btn">View Details</button>
     </div>
   </div>
