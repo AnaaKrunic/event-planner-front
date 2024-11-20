@@ -1,0 +1,117 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .container {
+    background-color: #fff;
+    padding: 40px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    text-align: center;
+  }
+  
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .form-group label {
+    width: 150px;
+    font-weight: bold;
+  }
+  
+  .form-group input {
+    flex: 1; 
+    padding: 10px;
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+  }
+
+  .form-group textarea {
+    flex: 1; 
+    padding: 10px;
+    font-size: 16px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px;
+  }
+  
+  .form label {
+    font-size: 14px;
+    color: #555;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .form input,
+  .form textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .form input:focus,
+  .form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    background-color: #fff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.2);
+  }
+  
+  .btn-primary {
+    background-color: #000000;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #333;
+  }
+  
+  .btn-secondary {
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .btn-secondary:hover {
+    background-color: #f0f0f0;
+  }
+  

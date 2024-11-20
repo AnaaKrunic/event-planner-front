@@ -3,6 +3,7 @@
   <div class="event-grid">
     <div class="event-card" *ngFor="let event of events">
       <img [src]="event.image" alt="Event" />
+      <button class="details-btn">View Details</button>
     </div>
   </div>
   <a class="view-all" routerLink="/all-events">View All Events (10)</a>
