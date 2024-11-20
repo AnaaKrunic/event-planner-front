@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app.routes';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { ServicesComponent } from './services/services.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
     AllEventsComponent,
     AllProductsAndServicesComponent,
     NavBarComponent
+    ServicesComponent
   ],
   imports: [
     BrowserModule,
