@@ -3,17 +3,14 @@
     <div>
         <div class="available">
             <label>Availability:</label>
-            <label class="price">Price Range:</label></div>
+            <label class="price">Price Range:</label>
+        </div>
     </div>
     <!-- Filters -->
     <div class="filters">
       <!-- Search -->
+      <input type="text" name="search" placeholder="Search.." [(ngModel)]="searchTerm"(input)="filterAndSearch()"/>
 
-      <input type="text" name="search" placeholder="Search.." [(ngModel)]="searchTerm"
-        (input)="filterAndSearch()"
-        />
-
-  
       <!-- Category Filter -->
       <select [(ngModel)]="selectedCategory" (change)="filterAndSearch()">
         <option value="">Category</option>
@@ -50,30 +47,29 @@
         </label>
       </div>
       
-  
-      <!-- Price Slider -->
-      <div class="price-slider">
-        <input
-          type="range"
-          [(ngModel)]="selectedMinPrice"
-          (input)="filterAndSearch()"
-          [min]="0"
-          [max]="15000"
-          step="100"
-        />
-        <input
-          type="range"
-          [(ngModel)]="selectedMaxPrice"
-          (input)="filterAndSearch()"
-          [min]="0"
-          [max]="15000"
-          step="100"
-        />
+        <!-- Price Slider -->
+        <div class="price-slider">
+            <input
+            type="range"
+            [(ngModel)]="selectedMinPrice"
+            (input)="filterAndSearch()"
+            [min]="0"
+            [max]="15000"
+            step="100"
+            />
+            <input
+            type="range"
+            [(ngModel)]="selectedMaxPrice"
+            (input)="filterAndSearch()"
+            [min]="0"
+            [max]="15000"
+            step="100"
+            />
+        </div>
     </div>
-</div>
-<div class ="priceRange">
-    <span>{{ selectedMinPrice }} - {{ selectedMaxPrice }} din.</span>
-</div>
+    <div class ="priceRange">
+        <span>{{ selectedMinPrice }} - {{ selectedMaxPrice }} din.</span>
+    </div>
   
     <!-- Services Grid -->
     <div class="services-grid">
@@ -88,17 +84,13 @@
   
     <!-- Pagination -->
     <div class="pagination">
-      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
-      <button
-        *ngFor="let page of totalPages"
-        [class.active]="page === currentPage"
-        (click)="changePage(page)"
-      >
+        <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+        <button *ngFor="let page of totalPages" [class.active]="page === currentPage" (click)="changePage(page)">
         {{ page }}
-      </button>
-      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages.length">
+        </button>
+        <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages.length">
         &gt;
-      </button>
+        </button>
     </div>
-  </div>
-  
+</div> 
+ 
