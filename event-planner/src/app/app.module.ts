@@ -8,10 +8,11 @@ import { AllProductsAndServicesComponent } from './all-products-and-services/all
 import { AppRoutingModule } from './app.routes';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ServicesComponent } from './services/services.component';
 import { AddServiceComponent } from './add-service/addService.component';
 import { EditServiceComponent } from './edit-service/editService.component';
-
+import { RegistrationComponent } from './registration/registration.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,9 @@ import { EditServiceComponent } from './edit-service/editService.component';
     AllProductsAndServicesComponent,
     ServicesComponent,
     AddServiceComponent,
-    EditServiceComponent
+    EditServiceComponent,
+    NavBarComponent,
+    RegistrationComponent
   ],
   imports: [
     BrowserModule,
