@@ -8,6 +8,8 @@ import { AllProductsAndServicesComponent } from './all-products-and-services/all
 import { AppRoutingModule } from './app.routes';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
+import { ServicesComponent } from './services/services.component';
+
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     ProductsComponent,
     HomeComponent,
     AllEventsComponent,
-    AllProductsAndServicesComponent
+    AllProductsAndServicesComponent,
+    ServicesComponent
   ],
   imports: [
     BrowserModule,
