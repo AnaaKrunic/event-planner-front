@@ -6,6 +6,7 @@ import { AllProductsAndServicesComponent } from './all-products-and-services/all
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { ServicesComponent } from './services/services.component';
+import { AddServiceComponent } from './add-service/addService.component';
 import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'registration', component: RegistrationComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'eo-registration', component: EORegistrationComponent },
-  { path: 'spp-registration', component: SPPRegistrationComponent }
+  { path: 'spp-registration', component: SPPRegistrationComponent },
+  { path: 'add-service', component: AddServiceComponent }
 ];
 
 @NgModule({
