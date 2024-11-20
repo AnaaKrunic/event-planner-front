@@ -26,6 +26,7 @@ export interface Service {
     styleUrls: ['./addService.component.css'],
   })
   export class AddServiceComponent {
+
     eventTypes = [
       { name: 'Birthday', selected: false },
       { name: 'Wedding', selected: false },
@@ -36,8 +37,8 @@ export interface Service {
     categories = ['All', 'Catering', 'Photography', 'Entertainment'];
     selectedCategory = '';
   
-    serviceName = '';
-    serviceDescription = '';
+    serviceName: string = '';
+    serviceDescription: string= '';
     price: number | null = null;
     discount: number | null = null;
   
@@ -48,7 +49,10 @@ export interface Service {
   
     isAvailable = false;
     isVisible = false;
-  
+    showCategoryPopup: boolean = false;
+    newCategoryName: string = '';
+    newCategoryDescription: string = '';
+
     toggleEventType(type: any): void {
       type.selected = !type.selected;
     }
@@ -58,10 +62,6 @@ export interface Service {
       if (imageUrl) {
         this.uploadedImages.push(imageUrl);
       }
-    }
-  
-    removeImage(index: number): void {
-      this.uploadedImages.splice(index, 1);
     }
   
     onCreate(): void {
@@ -83,5 +83,39 @@ export interface Service {
     onCancel(): void {
       console.log('Service creation canceled.');
     }
+
+    toggleCategoryPopup() {
+        this.showCategoryPopup = !this.showCategoryPopup;
+      }
+    
+      closeCategoryPopup() {
+        this.showCategoryPopup = false;
+      }
+    
+      addCategory() {
+        if (this.newCategoryName.trim()) {
+          this.categories.push(this.newCategoryName);
+          this.closeCategoryPopup();
+          this.newCategoryName = '';
+          this.newCategoryDescription = '';
+        }
+      }
+    
+      onFileSelect(event: any) {
+        const files = event.target.files;
+        if (files) {
+          for (const file of files) {
+            const reader = new FileReader();
+            reader.onload = (e: any) => {
+              this.uploadedImages.push(e.target.result);
+            };
+            reader.readAsDataURL(file);
+          }
+        }
+      }
+    
+      removeImage(index: number) {
+        this.uploadedImages.splice(index, 1);
+      }
   }
   

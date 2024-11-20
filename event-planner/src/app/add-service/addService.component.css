@@ -2,26 +2,26 @@
     width: 80%;
     margin: auto;
     font-family: Arial, sans-serif;
-}
-
-h1 {
+  }
+  
+  h1 {
     margin-bottom: 0;
     text-align: center;
-}
-
-.event-types {
+  }
+  
+  .event-types {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 10px;
-}
-
-.choose {
+  }
+  
+  .choose {
     margin-top: 20px;
     margin-bottom: 5px;
-}
-
-.event-card {
+  }
+  
+  .event-card {
     flex: 0 0 auto;
     display: flex;
     cursor: pointer;
@@ -39,14 +39,14 @@ h1 {
     border: 1px solid #ccc;
     text-align: center;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.event-card.selected {
+  }
+  
+  .event-card.selected {
     background-color: grey;
     color: black;
-}
-
-#serviceName, #serviceDescription, #reservationDue, #cancellationDue{
+  }
+  
+  #serviceName, #serviceDescription, #reservationDue, #cancellationDue {
     width: 100%;
     background-color: #fff;
     margin-top: 10px;
@@ -56,56 +56,48 @@ h1 {
     border-radius: 8px;
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-#serviceName {
-    width: 85%;
-    padding-bottom: 5px;
-    margin-top: 0;
-    margin-top: 5px;
-}
-
-#serviceDescription {
+  }
+  
+  #serviceDescription {
     height: 175px;
     resize: vertical;
     text-align: left;
-    width: 97%;
-}
-
-.form-container {
+  }
+  
+  .form-container {
     display: grid;
     grid-template-columns: 1fr 2fr; /* 1/3 for label, 2/3 for input */
     gap: 20px;
-}
-
-.form-row {
+  }
+  
+  .form-row {
     display: flex;
     flex-direction: column;
-}
-
-.form-row label {
+  }
+  
+  .form-row label {
     margin-bottom: 8px;
-}
-
-.form-row input, .form-row textarea {
+  }
+  
+  .form-row input, .form-row textarea {
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 100%;
-}
-
-.price-discount-container {
+  }
+  
+  .price-discount-container {
     display: flex;
     gap: 20px;
     width: 85%;
-}
-
-.price-discount-container input {
+  }
+  
+  .price-discount-container input {
     flex: 1;
-}
-
-#price, #discount {
+  }
+  
+  #price, #discount {
     width: 85%;
     background-color: #fff;
     margin-bottom: 15px;
@@ -113,37 +105,40 @@ h1 {
     font-weight: bold;
     border-radius: 8px;
     border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5)
-}
-.service-settings {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .service-settings {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.service-settings label {
+    margin-bottom: 20px;
+  }
+  
+  .service-settings label {
     font-weight: 600;
     margin-bottom: 5px;
     color: #555;
-}
-.duration-inputs {
+  }
+  
+  .duration-inputs {
     display: grid;
-    grid-template-columns: 1fr 10px 1fr 1fr 1fr; /* Flexibilan raspored sa separatorom između */
+    grid-template-columns: 1fr 10px 1fr 1fr 1fr;
     gap: 20px;
     align-items: center;
     margin-bottom: 20px;
-}
-
-.duration-group {
+  }
+  
+  .duration-group {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 150px;
-}
-
-.duration-group input {
+  }
+  
+  .duration-group input {
     padding: 12px;
     font-size: 16px;
     text-align: center;
@@ -153,36 +148,36 @@ h1 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: border-color 0.3s;
     width: 100%;
-}
-
-.duration-group input:focus {
+  }
+  
+  .duration-group input:focus {
     border-color: #4CAF50;
     outline: none;
-}
-
-.separator {
+  }
+  
+  .separator {
     font-size: 24px;
     color: #333;
     font-weight: bold;
     text-align: center;
     margin-top: 40px;
-}
-
-#hour {
-    margin-left:120px;
-}
-
-#hours, #minutes {
+  }
+  
+  #hour {
+    margin-left: 120px;
+  }
+  
+  #hours, #minutes {
     margin-top: 17px;
-}
-
-.total-duration {
+  }
+  
+  .total-duration {
     grid-column: span 2;
     display: flex;
     flex-direction: column;
-}
-
-.total-duration input {
+  }
+  
+  .total-duration input {
     padding: 12px;
     font-size: 16px;
     border-radius: 8px;
@@ -192,28 +187,324 @@ h1 {
     text-align: center;
     font-weight: bold;
     color: #00796b;
-}
-
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
+  }
+  
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
-}
-
-input[type="number"]:focus {
+  }
+  
+  input[type="number"]:focus {
     border-color: #4CAF50;
-}
-
-label[for="reservationDue"], label[for="cancellationDue"] {
+  }
+  
+  label[for="reservationDue"], label[for="cancellationDue"] {
     font-size: 14px;
-}
-
-#reservationDue, #cancellationDue{
+  }
+  
+  #reservationDue, #cancellationDue {
     width: 20%;
     margin-left: 30px;
     margin-right: 30px;
-}
-
-#due {
+  }
+  
+  #due {
     margin-left: 12.5%;
-}
+  }
+  
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+  
+  .popup-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .popup-buttons button:last-child {
+    background-color: black;
+    color: #fff;
+  }
+  
+  .popup-buttons button:first-child {
+    background-color: white;
+    color: black;
+  }
+  
+  #newCategory, #newDescription {
+    margin-bottom: 20px;
+    width: 98%;
+  }
+  
+  .form-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .dropdown-section,
+  .image-upload,
+  .toggles {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  select,
+  input[type="file"],
+  button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .image-previews {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .image-preview {
+    position: relative;
+  }
+  
+  .image-preview img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    object-fit: cover;
+  }
+  
+  .image-preview button {
+    position: absolute;
+    background-color: grey;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 12px;
+  }
+  
+  .image-upload h4 {
+    margin-bottom: 10px;
+  }
+  
+  .image-preview button:hover {
+    background-color: grey;
+  }
+  
+  .toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .toggle-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    border-radius: 50%;
+    background-color: white;
+    transition: 0.4s;
+  }
+  
+  h4 {
+    margin-top: 0;
+  }
+  
+  img {
+    width: 100%;
+  }
+
+  #description {
+    margin-left: 25px;
+    margin-right: 25px;
+  }
+
+  .toggles {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px; /* širina prekidača */
+    height: 25px; /* visina prekidača */
+  }
+  
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc; /* boja prekidača */
+    transition: 0.4s;
+    border-radius: 34px; /* za zaobljene ivice */
+  }
+  
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 19px;
+    width: 19px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white; /* boja dugmeta */
+    transition: 0.4s;
+    border-radius: 50%; /* za zaobljeni oblik dugmeta */
+  }
+  
+  input:checked + .slider {
+    background-color: black; /* boja kada je uključen */
+  }
+  
+  input:checked + .slider:before {
+    transform: translateX(24px); /* pomeranje dugmeta u desno */
+  }
+  
+  .switch input:focus + .slider {
+    box-shadow: 0 0 1px black; /* dodaj svetlucavi efekat kada je selektovan */
+  }
+  
+  .buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 150px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+  
+  .create-button {
+    background-color: #4CAF50; /* Green color */
+    color: white;
+  }
+  
+  .create-button:hover {
+    background-color: #45a049;
+  }
+  
+  .create-button:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  .cancel-button {
+    background-color: black; /* Red color */
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: black;
+  }
+  
+  .cancel-button:focus {
+    border-color: black;
+    outline: none;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+  }
+  
+  .add-category-button {
+    margin-top: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    width: auto;
+  }
+  
+  .add-category-button:hover {
+    background-color: grey;
+  }

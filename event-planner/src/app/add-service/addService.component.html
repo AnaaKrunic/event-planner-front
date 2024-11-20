@@ -27,7 +27,7 @@
               <input id="discount" type="number" [(ngModel)]="discount" />
             </div>
         
-            <div class="form-row">
+            <div class="form-row" id="description">
                 <label for="serviceDescription">Description of Service</label>
                 <textarea id="serviceDescription" placeholder="Description of Service" [(ngModel)]="serviceDescription"></textarea>
             </div>
@@ -66,43 +66,56 @@
         </div>
     </div>
     
-    
-    
-    
-    <label for="category">Choose Service Category</label>
-    <select id="category" [(ngModel)]="selectedCategory">
-      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-    </select>
-
-    <div class="image-upload">
-      <button (click)="addImage()">Add Image</button>
-      <div class="image-previews">
-        <div *ngFor="let image of uploadedImages; let i = index" class="image-preview">
-          <img [src]="image" alt="Uploaded Image" />
-          <button (click)="removeImage(i)">Remove</button>
+    <div class="form-section">
+        <div *ngIf="showCategoryPopup" class="popup">
+            <h3>Add New Category</h3>
+            <div id="newCategory"><input type="text" [(ngModel)]="newCategoryName" placeholder="Category Name" /></div>
+            <textarea [(ngModel)]="newCategoryDescription" id="newDescription" placeholder="Category Description"></textarea>
+            <div class="popup-buttons">
+              <button (click)="addCategory()">Add</button>
+              <button (click)="closeCategoryPopup()">Cancel</button>
+            </div>
+          </div>
+          
+        <div class="dropdown-section">
+          <label for="category">Choose Service Category</label>
+          <select id="category" [(ngModel)]="selectedCategory">
+            <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+          </select>
+          <button class="add-category-button" (click)="toggleCategoryPopup()">+ Add Category</button>
+        </div>
+      
+        <div class="image-upload">
+          <h4>Upload Images</h4>
+          <input type="file" (change)="onFileSelect($event)" multiple />
+          <div class="image-previews">
+            <div *ngFor="let image of uploadedImages; let i = index" class="image-preview">
+              <img [src]="image" alt="Uploaded Image" />
+              <button (click)="removeImage(i)">Remove</button>
+            </div>
+          </div>          
+        </div>
+      
+        <!-- Toggle prekidači -->
+        <div class="toggles">
+          <div class="toggle-item">
+            <span>Service Availability</span>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="isAvailable" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="toggle-item">
+            <span>Service Visibility</span>
+            <label class="switch">
+              <input type="checkbox" [(ngModel)]="isVisible" />
+              <span class="slider round"></span>
+            </label>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  
-    <!-- Toggles -->
-    <div class="toggles">
-      <div class="toggle-item">
-        <span>Service Availability</span>
-        <label class="switch">
-          <input type="checkbox" [(ngModel)]="isAvailable" />
-          <span class="slider"></span>
-        </label>
-      </div>
-      <div class="toggle-item">
-        <span>Service Visibility</span>
-        <label class="switch">
-          <input type="checkbox" [(ngModel)]="isVisible" />
-          <span class="slider"></span>
-        </label>
-      </div>
-    </div>
-  
+      
+      
     <!-- Buttons -->
     <div class="buttons">
       <button (click)="onCreate()">Create</button>
