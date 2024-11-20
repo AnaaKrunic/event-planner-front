@@ -22,7 +22,7 @@ import { RegistrationComponent } from './registration/registration.component';
     AllEventsComponent,
     AllProductsAndServicesComponent,
     ServicesComponent,
-    AddServiceComponent
+    AddServiceComponent,
     NavBarComponent,
     RegistrationComponent
   ],
