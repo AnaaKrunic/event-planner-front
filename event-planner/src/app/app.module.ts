@@ -10,6 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { ServicesComponent } from './services/services.component';
 import { AddServiceComponent } from './add-service/addService.component';
+import { EditServiceComponent } from './edit-service/editService.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { AddServiceComponent } from './add-service/addService.component';
     AllEventsComponent,
     AllProductsAndServicesComponent,
     ServicesComponent,
-    AddServiceComponent
+    AddServiceComponent,
+    EditServiceComponent
   ],
   imports: [
     BrowserModule,

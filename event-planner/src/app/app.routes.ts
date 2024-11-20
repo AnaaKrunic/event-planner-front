@@ -5,9 +5,10 @@ import { AllEventsComponent } from './all-events/all-events.component';
 import { AllProductsAndServicesComponent } from './all-products-and-services/all-products-and-services.component';
 import { ServicesComponent } from './services/services.component';
 import { AddServiceComponent } from './add-service/addService.component';
+import { EditServiceComponent } from './edit-service/editService.component';
 
 const routes: Routes = [
-  { path: '', component: AddServiceComponent },
+  { path: '', component: EditServiceComponent },
   { path: 'all-events', component: AllEventsComponent },
   { path: 'all-products-and-services', component: AllProductsAndServicesComponent },
 ];
