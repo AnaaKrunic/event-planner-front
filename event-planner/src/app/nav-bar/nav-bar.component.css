@@ -1,10 +1,13 @@
 .navbar {
+  position: fixed;
+  width: 100%;
   background-color: #f5f5f5;
   padding: 0 20px;
   height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  top: 0;
 }
 
 .navbar-logo img {
