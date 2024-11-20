@@ -1,0 +1,82 @@
+<div class="services-container">
+  <h1>MY SERVICES</h1>
+  <div>
+     <div class="available">
+        <label>Availability:</label>
+        <label class="price">Price Range:</label>
+     </div>
+  </div>
+  <div class="filters">
+     <input type="text" name="search" placeholder="Search.." [(ngModel)]="searchTerm"(input)="filterAndSearch()"/>
+     <select [(ngModel)]="selectedCategory" (change)="filterAndSearch()">
+     <option value="">Category</option>
+     <option value="Entertainment">Entertainment</option>
+     <option value="Catering">Catering</option>
+     <option value="Decoration">Decoration</option>
+     <option value="Photography">Photography</option>
+     </select>
+     <select [(ngModel)]="selectedEventType" (change)="filterAndSearch()">
+     <option value="">Event Type</option>
+     <option value="Birthday">Birthday</option>
+     <option value="Wedding">Wedding</option>
+     <option value="Engage">Engage</option>
+     <option value="Anniversary">Anniversary</option>
+     </select>
+     <div class="availability">
+        <label [ngClass]="{ 'active': selectedAvailable }">
+        <input
+        type="checkbox"
+        [(ngModel)]="selectedAvailable"
+        (change)="filterAndSearch()" />
+        Available
+        </label>
+        <label [ngClass]="{ 'active': selectedNotAvailable }">
+        <input
+        type="checkbox"
+        [(ngModel)]="selectedNotAvailable"
+        (change)="filterAndSearch()" />
+        Not Available
+        </label>
+     </div>
+     <div class="price-slider">
+        <input
+        type="range"
+        [(ngModel)]="selectedMinPrice"
+        (input)="filterAndSearch()"
+        [min]="0"
+        [max]="15000"
+        step="100"
+        />
+        <input
+        type="range"
+        [(ngModel)]="selectedMaxPrice"
+        (input)="filterAndSearch()"
+        [min]="0"
+        [max]="15000"
+        step="100"
+        />
+     </div>
+  </div>
+  <div class ="priceRange">
+     <span>{{ selectedMinPrice }} - {{ selectedMaxPrice }} din.</span>
+  </div>
+  <div class="services-grid">
+     <div class="service-card" *ngFor="let service of displayedServices" (click)="goToEditService()">
+     <img src="../../assets/images/service_band.png" alt="Service image" />
+     <h3>{{ service.name }}</h3>
+     <p>Price: {{ service.price }} din.</p>
+     <p>Category: {{ service.category }}</p>
+     <p>Event Type: {{ service.serviceEventType.join(', ') }}</p>
+  </div>
+</div>
+<button id="add" (click)="goToAddService()">+</button>
+<div class="pagination">
+  <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+  <button *ngFor="let page of totalPages" [class.active]="page === currentPage" (click)="changePage(page)">
+  {{ page }}
+  </button>
+  <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages.length">
+  &gt;
+  </button>
+</div>
+</div>
