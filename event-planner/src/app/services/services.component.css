@@ -1,0 +1,157 @@
+.services-container {
+    width: 90%;
+    margin: auto;
+    font-family: Arial, sans-serif;
+}
+  
+h1 {
+    text-align: left;
+    margin-bottom: 0;
+}
+  
+.filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+ input[type=text] {
+    width: 255px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    /* background-image: url('searchicon.png'); */
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+}
+
+.filters select,
+.filters .availability,
+.filters .price-slider {
+    display: flex;
+    gap: 10px;
+}
+
+.filters select {
+    font-size: 14px;
+    width: 255px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+
+}
+
+.availability label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: gray; 
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.availability label.active {
+    color: black; 
+}
+
+.available {
+    margin-left: 61%;
+}
+
+.price {
+    margin-left: 30%;
+}
+
+.price-slider {
+    width: 300px;
+}
+
+.priceRange {
+    margin-left: 87.75%;
+    padding-bottom: 20px;
+}
+
+.price-slider input {
+    width: 100%;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.service-card {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.service-card img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.service-card h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.service-card p {
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.pagination {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    right: 0.000%;
+    left: 0%;
+    width: 100%; 
+    background-color: rgb(232, 231, 231); 
+    text-align: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); 
+    z-index: 10; 
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top: 20px;
+    margin-right: 50px;
+}
+
+.pagination button {
+    padding: 5px 10px;
+    border: none;
+    background-color: grey;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background-color:black;
+}
+
+.pagination button[disabled] {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
