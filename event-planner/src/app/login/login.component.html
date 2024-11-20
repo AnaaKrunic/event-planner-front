@@ -9,7 +9,7 @@
 <body>
     <main>
         <div class="container">
-            <img src="assets/images/calendar.png" alt="Icon" class="main-icon">
+            <img src="assets/images/calendar.png" alt="Logo" class="main-icon">
             <h1>Welcome Back</h1>
             <form>
                 <label for="email">Email</label>
@@ -18,10 +18,10 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" placeholder="Enter your password">
                 
-                <a href="#" class="forgot-password">Forgot password?</a>
+                <a routerLink="/forgot-password" class="forgot-password">Forgot password?</a>
                 
                 <button type="submit" class="btn-primary">Sign in</button>
-                <button type="button" class="btn-secondary">Create new account</button>
+                <button type="button" class="btn-secondary" (click)="goToRegistration()">Create new account</button>
             </form>
         </div>
     </main>
