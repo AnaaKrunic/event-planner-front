@@ -8,6 +8,7 @@ import { AllProductsAndServicesComponent } from './all-products-and-services/all
 import { AppRoutingModule } from './app.routes';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     ProductsComponent,
     HomeComponent,
     AllEventsComponent,
-    AllProductsAndServicesComponent
+    AllProductsAndServicesComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
