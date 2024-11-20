@@ -8,9 +8,12 @@ import { AddServiceComponent } from './add-service/addService.component';
 import { EditServiceComponent } from './edit-service/editService.component';
 
 const routes: Routes = [
-  { path: '', component: EditServiceComponent },
+  { path: '', component: ServicesComponent },
   { path: 'all-events', component: AllEventsComponent },
   { path: 'all-products-and-services', component: AllProductsAndServicesComponent },
+  { path: 'edit-service', component: EditServiceComponent},
+  { path: 'add-service', component: AddServiceComponent},
+  { path: 'services', component: ServicesComponent},
 ];
 
 @NgModule({

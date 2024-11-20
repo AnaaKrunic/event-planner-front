@@ -73,15 +73,15 @@
   
     <!-- Services Grid -->
     <div class="services-grid">
-      <div class="service-card" *ngFor="let service of displayedServices">
+      <div class="service-card" *ngFor="let service of displayedServices" (click)="goToEditService()">
         <img src="../../assets/images/service_band.png" alt="Service image" />
         <h3>{{ service.name }}</h3>
         <p>Price: {{ service.price }} din.</p>
         <p>Category: {{ service.category }}</p>
         <p>Event Type: {{ service.serviceEventType.join(', ') }}</p>
-        <button class="details">View details</button>
       </div>
     </div>
+    <button id="add" (click)="goToAddService()">+</button>
   
     <!-- Pagination -->
     <div class="pagination">

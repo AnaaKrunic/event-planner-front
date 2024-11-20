@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 export interface Service {
   name: string;
@@ -26,6 +27,8 @@ export interface Service {
   styleUrl: './editService.component.css'
 })
 export class EditServiceComponent {
+
+  constructor(private router: Router) {}
 
   eventTypes = [
     { name: 'Birthday', selected: true },
@@ -59,27 +62,29 @@ export class EditServiceComponent {
   }
 
   onEdit(): void {
-    console.log('Service edited:', {
-      eventTypes: this.eventTypes.filter(type => type.selected).map(type => type.name),
-      serviceName: this.serviceName,
-      price: this.price,
-      discount: this.discount,
-      selectedCategory: this.selectedCategory,
-      uploadedImages: this.uploadedImages,
-      duration: this.duration,
-      reservationDue: this.reservationDue,
-      cancellationDue: this.cancellationDue,
-      isAvailable: this.isAvailable,
-      isVisible: this.isVisible,
-    });
+    // console.log('Service edited:', {
+    //   eventTypes: this.eventTypes.filter(type => type.selected).map(type => type.name),
+    //   serviceName: this.serviceName,
+    //   price: this.price,
+    //   discount: this.discount,
+    //   selectedCategory: this.selectedCategory,
+    //   uploadedImages: this.uploadedImages,
+    //   duration: this.duration,
+    //   reservationDue: this.reservationDue,
+    //   cancellationDue: this.cancellationDue,
+    //   isAvailable: this.isAvailable,
+    //   isVisible: this.isVisible,
+    // });
+    this.router.navigate(['/services']);    
+
   }
 
   onCancel(): void {
-    console.log('Service edit canceled.');
+    this.router.navigate(['/services']);
   }
 
   onDelete() {
-    console.log('Service deleted.');
+    this.router.navigate(['/services']);
   }
   
     onFileSelect(event: any) {

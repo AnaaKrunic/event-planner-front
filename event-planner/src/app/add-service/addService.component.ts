@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+
+import { Router } from '@angular/router';
 
 export interface Service {
     name: string;
@@ -26,6 +28,8 @@ export interface Service {
     styleUrls: ['./addService.component.css'],
   })
   export class AddServiceComponent {
+
+    constructor(private router: Router) {}
 
     eventTypes = [
       { name: 'Birthday', selected: false },
@@ -65,23 +69,25 @@ export interface Service {
     }
   
     onCreate(): void {
-      console.log('Service created:', {
-        eventTypes: this.eventTypes.filter(type => type.selected).map(type => type.name),
-        serviceName: this.serviceName,
-        price: this.price,
-        discount: this.discount,
-        selectedCategory: this.selectedCategory,
-        uploadedImages: this.uploadedImages,
-        duration: this.duration,
-        reservationDue: this.reservationDue,
-        cancellationDue: this.cancellationDue,
-        isAvailable: this.isAvailable,
-        isVisible: this.isVisible,
-      });
+      // console.log('Service created:', {
+      //   eventTypes: this.eventTypes.filter(type => type.selected).map(type => type.name),
+      //   serviceName: this.serviceName,
+      //   price: this.price,
+      //   discount: this.discount,
+      //   selectedCategory: this.selectedCategory,
+      //   uploadedImages: this.uploadedImages,
+      //   duration: this.duration,
+      //   reservationDue: this.reservationDue,
+      //   cancellationDue: this.cancellationDue,
+      //   isAvailable: this.isAvailable,
+      //   isVisible: this.isVisible,
+      // });
+      this.router.navigate(['/services']);    
+
     }
   
     onCancel(): void {
-      console.log('Service creation canceled.');
+      this.router.navigate(['/services']);    
     }
 
     toggleCategoryPopup() {
