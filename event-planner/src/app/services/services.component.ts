@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 export interface Service {
   name: string;
@@ -15,6 +16,9 @@ export interface Service {
 })
 
 export class ServicesComponent implements OnInit {
+
+  constructor(private router: Router) {}
+
   selectedCategory: string = '';
   selectedEventType: string = '';
   currentPage: number = 1;
@@ -171,5 +175,13 @@ export class ServicesComponent implements OnInit {
 
   toggleAvailability(): void {
     this.filterAndSearch(); 
-  }  
+  } 
+  
+  goToEditService() {
+    this.router.navigate(['/edit-service']);
+  }
+
+  goToAddService() {
+    this.router.navigate(['/add-service']);    
+  }
 }

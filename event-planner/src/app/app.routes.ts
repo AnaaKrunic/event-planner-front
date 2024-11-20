@@ -9,7 +9,7 @@ import { ServicesComponent } from './services/services.component';
 import { AddServiceComponent } from './add-service/addService.component';
 import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
-
+import { EditServiceComponent } from './edit-service/editService.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -20,7 +20,10 @@ const routes: Routes = [
   { path: 'services', component: ServicesComponent },
   { path: 'eo-registration', component: EORegistrationComponent },
   { path: 'spp-registration', component: SPPRegistrationComponent },
-  { path: 'add-service', component: AddServiceComponent }
+  { path: 'add-service', component: AddServiceComponent },
+  { path: 'services', component: ServicesComponent},
+  { path: 'edit-service', component: EditServiceComponent}
+     
 ];
 
 @NgModule({
