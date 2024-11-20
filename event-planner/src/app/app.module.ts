@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app.routes';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
 import { ServicesComponent } from './services/services.component';
+import { AddServiceComponent } from './add-service/addService.component';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { ServicesComponent } from './services/services.component';
     HomeComponent,
     AllEventsComponent,
     AllProductsAndServicesComponent,
-    ServicesComponent
+    ServicesComponent,
+    AddServiceComponent
   ],
   imports: [
     BrowserModule,

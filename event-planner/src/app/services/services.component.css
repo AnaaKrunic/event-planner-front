@@ -126,7 +126,7 @@ h1 {
     right: 0.000%;
     left: 0%;
     width: 100%; 
-    background-color: rgb(232, 231, 231); 
+    background-color: transparent; 
     text-align: center;
     padding: 10px 0;
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); 
@@ -154,4 +154,13 @@ h1 {
 .pagination button[disabled] {
     background-color: #ccc;
     cursor: not-allowed;
+}
+
+.details {
+    padding: 5px 10px;
+    border: none;
+    background-color: #d7d7d7;
+    color: black;
+    border-radius: 4px;
+    cursor: pointer;
 }
