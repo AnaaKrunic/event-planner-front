@@ -15,7 +15,7 @@ h1 {
     align-items: center;
 }
 
- input[type=text] {
+input[type=text] {
     width: 255px;
     box-sizing: border-box;
     border: 2px solid #ccc;

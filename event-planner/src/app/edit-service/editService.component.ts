@@ -50,10 +50,6 @@ export class EditServiceComponent {
   isAvailable = true;
   isVisible = false;
 
-  toggleEventType(type: any): void {
-    type.selected = !type.selected;
-  }
-
   addImage(): void {
     const imageUrl = prompt('Enter image URL:'); // Mock image upload
     if (imageUrl) {
@@ -87,20 +83,20 @@ export class EditServiceComponent {
     this.router.navigate(['/services']);
   }
   
-    onFileSelect(event: any) {
-      const files = event.target.files;
-      if (files) {
-        for (const file of files) {
-          const reader = new FileReader();
-          reader.onload = (e: any) => {
-            this.uploadedImages.push(e.target.result);
-          };
-          reader.readAsDataURL(file);
-        }
+  onFileSelect(event: any) {
+    const files = event.target.files;
+    if (files) {
+      for (const file of files) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.uploadedImages.push(e.target.result);
+        };
+        reader.readAsDataURL(file);
       }
     }
-  
-    removeImage(index: number) {
-      this.uploadedImages.splice(index, 1);
-    }
+  }
+
+  removeImage(index: number) {
+    this.uploadedImages.splice(index, 1);
+  }
 }
