@@ -1,21 +1,29 @@
-<div class="create-account-container">
-    <div class="icon-container">
-      <img src="assets/images/calendar.png" alt="Create Account Icon" />
-    </div>
-    <h2>Create Your Account</h2>
-    <form class="account-form">
-      <div class="form-group">
-        <label for="role">Choose role</label>
-        <select id="role" class="form-control">
-          <option value="" disabled selected>Choose role</option>
-          <option value="event-organizer">Event Organizer</option>
-          <option value="service-provider">Services and Products Provider</option>
-        </select>
-      </div>
-      <div class="button-group">
-        <button type="button" class="btn-primary">Next</button>
-        <button type="button" class="btn-secondary">Back</button>
-      </div>
-    </form>
-  </div>
-  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+<body>
+    <main>
+        <div class="create-account-container">
+            <img src="assets/images/calendar.png" alt="Logo" class="main-icon">
+            <h2>Create Your Account</h2>
+            <form class="account-form">
+                <div class="form-group">
+                  <label for="role">Choose role</label>
+                  <select id="role" [(ngModel)]="selectedRole" class="form-control" name="role">
+                    <option value="event-organizer">Event Organizer</option>
+                    <option value="service-provider">Services and Products Provider</option>
+                  </select>
+                </div>
+                <div class="button-group">
+                  <button type="button" class="btn-primary" (click)="navigateToRole()">Next</button>
+                  <button type="button" class="btn-secondary">Back</button>
+                </div>
+              </form>
+          </div>
+    </main>
+</body>
+</html>

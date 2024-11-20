@@ -1,3 +1,37 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+header {
+    background-color: #fff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+main {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.create-account-container {
+    background-color: #fff;
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.main-icon {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
 .create-account-container {
     display: flex;
     flex-direction: column;
@@ -40,35 +74,35 @@
       }
     }
   
-    .button-group {
-      display: flex;
-      justify-content: space-between;
-  
-      .btn-primary {
+    .btn-primary {
         background-color: #000;
         color: #fff;
         padding: 10px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-  
-        &:hover {
-          background-color: #333;
-        }
-      }
-  
-      .btn-secondary {
-        background-color: #f5f5f5;
-        color: #333;
+        width: 100%;
+        font-size: 16px;
+    }
+    
+    .btn-primary:hover {
+        background-color: #333;
+    }
+    
+    .btn-secondary {
+        background-color: #fff;
+        color: #000;
         padding: 10px 20px;
         border: 1px solid #ccc;
         border-radius: 5px;
         cursor: pointer;
-  
-        &:hover {
-          background-color: #e5e5e5;
-        }
-      }
+        width: 100%;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #f0f0f0;
     }
   }
   

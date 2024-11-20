@@ -27,18 +27,6 @@ nav ul li a {
     font-weight: bold;
 }
 
-.profile {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.profile img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-}
-
 main {
     text-align: center;
     padding: 50px 20px;
