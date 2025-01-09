@@ -1,16 +1,19 @@
-<div class="products-and-services">
-  <h1>Products and Services</h1>
+<div class="all-products-and-services">
+  <h1>All Products and Services</h1>
 
-  <!-- Controls -->
+  <!-- Controls for search, filtering, and sorting -->
   <div class="controls">
+    <!-- Search input -->
     <input
       type="text"
-      placeholder="Search..."
+      class="search-input"
+      placeholder="Search products and services..."
       [(ngModel)]="searchTerm"
-      (input)="filterAndSearch()"
+    (input)="filterAndSearch()"
     />
 
-    <select [(ngModel)]="selectedCategory" (change)="filterAndSearch()">
+    <!-- Filter by category -->
+    <select class="filter-select" [(ngModel)]="selectedCategory" (change)="filterAndSearch()">
       <option value="">All Categories</option>
       <option value="Entertainment">Entertainment</option>
       <option value="Catering">Catering</option>
@@ -18,32 +21,38 @@
       <option value="Photography">Photography</option>
     </select>
 
-    <select [(ngModel)]="selectedCity" (change)="filterAndSearch()">
+    <!-- Filter by city -->
+    <select class="filter-select" [(ngModel)]="selectedCity" (change)="filterAndSearch()">
       <option value="">All Cities</option>
       <option value="New York">New York</option>
       <option value="Los Angeles">Los Angeles</option>
       <option value="Chicago">Chicago</option>
       <option value="Paris">Paris</option>
-      <option value="Berlin">Berlin</option>
-      <option value="Amsterdam">Amsterdam</option>
     </select>
 
-    <select [(ngModel)]="sortOption" (change)="filterAndSearch()">
+    <!-- Sort option -->
+    <select class="sort-select" [(ngModel)]="sortOption" (change)="filterAndSearch()">
       <option value="name">Sort by Name</option>
       <option value="price">Sort by Price</option>
     </select>
   </div>
 
-  <!-- Products and Services List -->
-  <div class="products-grid">
-    <div class="product-card" *ngFor="let product of filteredProductsAndServices">
-      <img [src]="product.image" alt="Product Image" />
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.description }}</p>
-      <p><strong>Category:</strong> {{ product.category }}</p>
-      <p><strong>City:</strong> {{ product.city }}</p>
-      <p><strong>Price:</strong> ${{ product.price }}</p>
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="loader">Loading products and services...</div>
+
+  <!-- Display products and services -->
+  <div class="product-grid" *ngIf="!isLoading && filteredProductsAndServices.length > 0">
+    <div class="product-card" *ngFor="let item of filteredProductsAndServices">
+      <img [src]="item.image" alt="{{ item.name }} Image" />
+      <h3>{{ item.name }}</h3>
+      <p>{{ item.description }}</p>
+      <p><strong>Price:</strong> ${{ item.price }}</p>
       <button class="details-btn">View Details</button>
     </div>
+  </div>
+
+  <!-- No products available message -->
+  <div *ngIf="!isLoading && filteredProductsAndServices.length === 0" class="no-products">
+    No products or services available.
   </div>
 </div>

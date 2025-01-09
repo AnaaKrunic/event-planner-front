@@ -37,7 +37,6 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
   background-color: #E6E8E6;
-
 }
 
 .event-card img {
@@ -73,4 +72,19 @@
 .event-card .details-btn:hover {
   background-color: #858181;
 }
+
+.loader {
+  font-size: 18px;
+  color: #007bff;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.no-events {
+  font-size: 18px;
+  color: #777;
+  text-align: center;
+  margin-top: 20px;
+}
+
 
