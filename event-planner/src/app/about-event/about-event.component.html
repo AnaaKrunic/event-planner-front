@@ -1,0 +1,20 @@
+<div class="event-container">
+  <div class="event-header">
+    <h1>{{ eventName }}</h1>
+    <p class="event-date">Date: {{ eventDate }}</p>
+  </div>
+
+  <div class="event-description">
+    <h2>About Event</h2>
+    <p>{{ eventDescription }}</p>
+  </div>
+
+  <div class="event-details">
+    <p><strong>Location:</strong> {{ eventLocation }}</p>
+    <p><strong>Max. participants:</strong> {{ maxParticipants }}</p>
+  </div>
+
+  <div class="event-map">
+    <img [src]="mapUrl" alt="Event Location">
+  </div>
+</div>

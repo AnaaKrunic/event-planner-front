@@ -13,6 +13,10 @@ import { ServicesComponent } from './services/services.component';
 import { AddServiceComponent } from './add-service/addService.component';
 import { EditServiceComponent } from './edit-service/editService.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { HttpClientModule } from '@angular/common/http';
+import { NotificationsComponent } from './notifications/notifications.component';
+import {AuthService} from './authservice.service';
+
 
 @NgModule({
   declarations: [
@@ -26,12 +30,15 @@ import { RegistrationComponent } from './registration/registration.component';
     AddServiceComponent,
     EditServiceComponent,
     NavBarComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

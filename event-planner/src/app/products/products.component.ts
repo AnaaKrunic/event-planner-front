@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
+  standalone: false,
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent {
