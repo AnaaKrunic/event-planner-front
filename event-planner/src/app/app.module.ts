@@ -15,7 +15,6 @@ import { EditServiceComponent } from './edit-service/editService.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificationsComponent } from './notifications/notifications.component';
-import {AuthService} from './authservice.service';
 
 
 @NgModule({
