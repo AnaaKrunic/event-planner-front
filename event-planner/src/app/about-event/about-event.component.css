@@ -1,0 +1,50 @@
+.event-container {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-header h1 {
+  font-size: 2em;
+}
+
+.event-date {
+  font-size: 1em;
+  color: gray;
+}
+
+.event-description {
+  margin-top: 20px;
+}
+
+.event-description h2 {
+  font-size: 1.5em;
+  color: #333;
+}
+
+.event-description p {
+  font-size: 1em;
+  line-height: 1.6;
+  color: #555;
+}
+
+.event-details {
+  margin-top: 20px;
+  font-size: 1em;
+}
+
+.event-map {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.event-map img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+}

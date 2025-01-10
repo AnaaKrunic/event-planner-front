@@ -11,7 +11,7 @@ import { SPPRegistrationComponent } from './spp-registration/spp-registration.co
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 import { EditServiceComponent } from './edit-service/editService.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'all-events', component: AllEventsComponent },
   { path: 'all-products-and-services', component: AllProductsAndServicesComponent },
@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'add-service', component: AddServiceComponent },
   { path: 'services', component: ServicesComponent},
   { path: 'edit-service', component: EditServiceComponent}
-     
+
 ];
 
 @NgModule({

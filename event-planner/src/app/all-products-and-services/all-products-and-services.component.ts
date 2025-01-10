@@ -1,46 +1,80 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-all-products-and-services',
   templateUrl: './all-products-and-services.component.html',
   styleUrls: ['./all-products-and-services.component.css'],
 })
-export class AllProductsAndServicesComponent {
-  productsAndServices = [
-    { image: 'assets/images/product.jpg', name: 'Live Band', description: 'Professional music band for your events.', category: 'Entertainment', city: 'New York', price: 1000 },
-    { image: 'assets/images/product.jpg', name: 'Wedding Cake', description: 'Custom-made wedding cakes.', category: 'Catering', city: 'Los Angeles', price: 500 },
-    { image: 'assets/images/product.jpg', name: 'Event Flags', description: 'Custom flags for your events.', category: 'Decoration', city: 'Chicago', price: 200 },
-    { image: 'assets/images/product.jpg', name: 'Event Decoration', description: 'Elegant decorations for any event.', category: 'Decoration', city: 'Paris', price: 700 },
-    { image: 'assets/images/product.jpg', name: 'Photography Service', description: 'Professional photography for events.', category: 'Photography', city: 'Berlin', price: 800 },
-    { image: 'assets/images/product.jpg', name: 'DJ Service', description: 'Top DJ to make your event unforgettable.', category: 'Entertainment', city: 'Amsterdam', price: 1200 },
-  ];
+export class AllProductsAndServicesComponent implements OnInit {
+  productsAndServices: any[] = [];
+  filteredProductsAndServices: any[] = [];
+  isLoading: boolean = true;
 
   searchTerm: string = '';
   selectedCategory: string = '';
   selectedCity: string = '';
   sortOption: string = 'name';
-  filteredProductsAndServices = [...this.productsAndServices];
 
-  filterAndSearch() {
-    this.filteredProductsAndServices = this.productsAndServices
-      .filter((item) =>
-        item.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      )
-      .filter((item) =>
-        this.selectedCategory ? item.category === this.selectedCategory : true
-      )
-      .filter((item) =>
-        this.selectedCity ? item.city === this.selectedCity : true
-      );
+  constructor(private http: HttpClient) {}
 
-    this.sortProductsAndServices();
+  ngOnInit(): void {
+    this.fetchAllProductsAndServices();  // Fetch all products and services when component loads
   }
 
-  sortProductsAndServices() {
-    if (this.sortOption === 'name') {
-      this.filteredProductsAndServices.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (this.sortOption === 'price') {
-      this.filteredProductsAndServices.sort((a, b) => a.price - b.price);
+  // Fetch all products and services from the backend
+  fetchAllProductsAndServices(): void {
+    this.isLoading = true;
+
+    this.http.get<any[]>('/api/solutions').subscribe(
+      (data) => {
+        this.productsAndServices = data;
+        this.filteredProductsAndServices = [...this.productsAndServices]; // Initialize filtered list
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching products and services:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Fetch filtered and sorted products and services from the backend
+  fetchFilteredAndSortedProductsAndServices(): void {
+    this.isLoading = true;
+
+    let params = new HttpParams();
+    if (this.searchTerm) {
+      params = params.set('name', this.searchTerm); // Set search term if available
     }
+    if (this.selectedCategory) {
+      params = params.set('category', this.selectedCategory); // Set selected category
+    }
+    if (this.selectedCity) {
+      params = params.set('city', this.selectedCity); // Set selected city
+    }
+
+    // Set sorting parameter
+    if (this.sortOption) {
+      params = params.set('sortOption', this.sortOption);
+    }
+
+    // Make the HTTP request to filter and sort products and services
+    this.http.get<any[]>('/api/solutions/filter', { params }).subscribe(
+      (data) => {
+        this.productsAndServices = data;
+        this.filteredProductsAndServices = [...this.productsAndServices]; // Update filtered list
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching filtered and sorted products:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // This function will be triggered for search, filtering, and sorting
+  filterAndSearch(): void {
+    this.fetchFilteredAndSortedProductsAndServices(); // Call API for updated data
   }
 }

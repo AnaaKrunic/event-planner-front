@@ -1,0 +1,7 @@
+<div *ngIf="isLoading">Loading notifications...</div>
+<div *ngIf="!isLoading && notifications.length === 0">No notifications available.</div>
+<ul *ngIf="!isLoading && notifications.length > 0">
+  <li *ngFor="let notification of notifications">
+    {{ notification.message }} ({{ notification.time | date:'short' }})
+  </li>
+</ul>

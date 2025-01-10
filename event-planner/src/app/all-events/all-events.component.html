@@ -1,7 +1,6 @@
 <div class="all-events">
   <h1>All Events</h1>
 
-  <!-- Kontrole za pretragu, filtriranje i sortiranje -->
   <div class="controls">
     <!-- Polje za pretragu -->
     <input
@@ -9,10 +8,11 @@
       class="search-input"
       placeholder="Search events..."
       [(ngModel)]="searchTerm"
-      (input)="filterAndSortEvents()" />
+    (input)="onSearchTermChange()"
+    />
 
-    <!-- Padajuća lista za filtriranje po kategorijama -->
-    <select class="filter-select" [(ngModel)]="filterCategory" (change)="filterAndSortEvents()">
+    <!-- Filter za kategoriju -->
+    <select class="filter-select" [(ngModel)]="filterCategory" (change)="fetchFilteredAndSortedEvents()">
       <option value="all">All Categories</option>
       <option value="Music">Music</option>
       <option value="Art">Art</option>
@@ -25,21 +25,32 @@
       <option value="Film">Film</option>
     </select>
 
-    <!-- Padajuća lista za sortiranje -->
-    <select class="sort-select" [(ngModel)]="sortOption" (change)="filterAndSortEvents()">
+    <!-- Sortiranje po imenu ili datumu -->
+    <select class="sort-select" [(ngModel)]="sortOption" (change)="fetchFilteredAndSortedEvents()">
       <option value="name">Sort by Name</option>
       <option value="date">Sort by Date</option>
     </select>
   </div>
 
-  <!-- Lista događaja -->
-  <div class="event-grid">
+  <!-- Prikaz loadera dok se podaci učitavaju -->
+  <div *ngIf="isLoading" class="loader">
+    Loading events...
+  </div>
+
+  <!-- Prikaz svih događaja -->
+  <div class="event-grid" *ngIf="!isLoading && filteredEvents.length > 0">
     <div class="event-card" *ngFor="let event of filteredEvents">
-      <img [src]="event.image" alt="{{ event.title }} Image" />
-      <h3>{{ event.title }}</h3>
+      <img [src]="event.imageUrl || 'assets/images/default-event.jpg'" alt="{{ event.name }} Image" />
+      <h3>{{ event.name }}</h3>
       <p>{{ event.description }}</p>
-      <p><strong>Date:</strong> {{ event.date | date: 'longDate' }}</p>
+      <p><strong>Date:</strong> {{ event.startDate | date: 'longDate' }}</p>
       <button class="details-btn">View Details</button>
     </div>
   </div>
+
+  <!-- Poruka kada nema događaja -->
+  <div *ngIf="!isLoading && filteredEvents.length === 0" class="no-events">
+    No events available.
+  </div>
+
 </div>

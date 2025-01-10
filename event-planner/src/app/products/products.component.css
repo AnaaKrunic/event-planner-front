@@ -1,37 +1,45 @@
-.products {
+.solutions {
   padding: 20px;
   text-align: center;
 }
 
-.products h2 {
+.solutions h2 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
+  color: #333; /* Dodana boja za tekst */
 }
 
-.product-grid {
+.solution-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   justify-content: center;
 }
 
-.product-card {
-  background: #f9f9f9;
-  border: 1px solid #e0e0e0;
+.solution-card {
+  background: #ffffff; /* Promenjena pozadina za bolji kontrast */
+  border: 1px solid #dcdcdc; /* Lagano smanjen kontrast ivice */
   border-radius: 8px;
-  padding: 10px;
+  padding: 15px; /* Povećan padding za prozračniji dizajn */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: auto;
   text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s; /* Dodata animacija */
 }
 
-.product-card img {
-  max-width: 100%;
-  max-height: 150px;
+.solution-card:hover {
+  transform: scale(1.05); /* Povećava kartu pri hoveru */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Dodata senka za hover efekat */
+}
+
+.solution-card img {
+  width: 100%; /* Garantuje da slika zauzima celu širinu */
+  max-height: 150px; /* Maksimalna visina slike */
+  object-fit: cover; /* Prilagođava sliku za bolji prikaz */
   border-radius: 4px;
   margin-bottom: 10px;
 }
@@ -42,15 +50,17 @@
   font-size: 14px;
   font-weight: bold;
   text-decoration: none;
-  color: #000000;
+  color: #007bff; /* Plava boja za link */
+  transition: color 0.2s; /* Dodata tranzicija za hover */
 }
 
 .view-all:hover {
   text-decoration: underline;
+  color: #0056b3; /* Tamnija plava pri hoveru */
 }
 
 .details-btn {
-  background-color: #000000;
+  background-color: #007bff; /* Plava boja dugmeta */
   color: white;
   border: none;
   padding: 10px 15px;
@@ -58,8 +68,9 @@
   cursor: pointer;
   font-size: 14px;
   margin-top: 10px;
+  transition: background-color 0.2s; /* Dodata tranzicija za hover */
 }
 
 .details-btn:hover {
-  background-color: #504c4c;
+  background-color: #0056b3; /* Tamnija plava pri hoveru */
 }
