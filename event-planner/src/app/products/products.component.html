@@ -10,7 +10,7 @@
       <img [src]="solution.imageUrl || 'assets/images/default-solution.jpg'" alt="Solution Image" class="solution-image" />
       <h3 class="solution-title">{{ solution.name }}</h3>
       <p class="solution-description">{{ solution.description }}</p>
-      <button class="details-btn">View Details</button>
+      <button class="details-btn" [routerLink]="['/solution', solution.id]">View Details</button>
     </div>
   </div>
 

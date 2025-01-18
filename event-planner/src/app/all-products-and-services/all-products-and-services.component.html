@@ -47,7 +47,7 @@
       <h3>{{ item.name }}</h3>
       <p>{{ item.description }}</p>
       <p><strong>Price:</strong> ${{ item.price }}</p>
-      <button class="details-btn">View Details</button>
+      <button class="details-btn" [routerLink]="['/solution', item.id]">View Details</button>
     </div>
   </div>
 

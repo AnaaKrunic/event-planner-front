@@ -8,11 +8,11 @@
       class="search-input"
       placeholder="Search events..."
       [(ngModel)]="searchTerm"
-    (input)="onSearchTermChange()"
+      (input)="onSearchTermChange()"
     />
 
     <!-- Filter za kategoriju -->
-    <select class="filter-select" [(ngModel)]="filterCategory" (change)="fetchFilteredAndSortedEvents()">
+    <select class="filter-select" [(ngModel)]="filterCategory" (change)="onFilterOrSortChange()">
       <option value="all">All Categories</option>
       <option value="Music">Music</option>
       <option value="Art">Art</option>
@@ -26,7 +26,7 @@
     </select>
 
     <!-- Sortiranje po imenu ili datumu -->
-    <select class="sort-select" [(ngModel)]="sortOption" (change)="fetchFilteredAndSortedEvents()">
+    <select class="sort-select" [(ngModel)]="sortOption" (change)="onFilterOrSortChange()">
       <option value="name">Sort by Name</option>
       <option value="date">Sort by Date</option>
     </select>
@@ -44,7 +44,7 @@
       <h3>{{ event.name }}</h3>
       <p>{{ event.description }}</p>
       <p><strong>Date:</strong> {{ event.startDate | date: 'longDate' }}</p>
-      <button class="details-btn">View Details</button>
+      <button class="details-btn" [routerLink]="['/event', event.id]">View Details</button>
     </div>
   </div>
 
@@ -53,4 +53,32 @@
     No events available.
   </div>
 
+  <!-- Navigacija za paginaciju -->
+  <div class="pagination" *ngIf="!isLoading && totalPages > 1">
+    <button
+      class="pagination-btn"
+      [disabled]="currentPage === 0"
+      (click)="goToPage(currentPage - 1)"
+    >
+      Previous
+    </button>
+
+    <span *ngFor="let page of [].constructor(totalPages); let i = index">
+      <button
+        class="pagination-btn"
+        [class.active]="i === currentPage"
+        (click)="goToPage(i)"
+      >
+        {{ i + 1 }}
+      </button>
+    </span>
+
+    <button
+      class="pagination-btn"
+      [disabled]="currentPage === totalPages - 1"
+      (click)="goToPage(currentPage + 1)"
+    >
+      Next
+    </button>
+  </div>
 </div>

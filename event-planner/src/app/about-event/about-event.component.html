@@ -1,20 +1,25 @@
 <div class="event-container">
   <div class="event-header">
-    <h1>{{ eventName }}</h1>
-    <p class="event-date">Date: {{ eventDate }}</p>
+    <!-- Event Name -->
+    <h1>{{ event.name }}</h1>
+    <!-- Event Date -->
+    <p class="event-date">Date: {{ event.startDate | date:'longDate' }}</p>
   </div>
 
   <div class="event-description">
     <h2>About Event</h2>
-    <p>{{ eventDescription }}</p>
+    <!-- Event Description -->
+    <p>{{ event.description }}</p>
   </div>
 
   <div class="event-details">
-    <p><strong>Location:</strong> {{ eventLocation }}</p>
-    <p><strong>Max. participants:</strong> {{ maxParticipants }}</p>
+    <!-- Event Location and Max Participants -->
+    <p><strong>Location:</strong> {{ event.location.name }}</p>
+    <p><strong>Max. participants:</strong> {{ event.participants }}</p>
   </div>
 
   <div class="event-map">
-    <img [src]="mapUrl" alt="Event Location">
+    <!-- Event Map Image (assuming event has a map URL) -->
+    <img *ngIf="event.mapUrl" [src]="event.mapUrl" alt="Event Location">
   </div>
 </div>

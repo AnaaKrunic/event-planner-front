@@ -1,0 +1,19 @@
+<div class="invite-section">
+  <h3>Invite Participants</h3>
+  <input
+    type="email"
+    placeholder="Enter email address"
+    [(ngModel)]="emailInput"
+    (keyup.enter)="addEmail()"
+  />
+  <button (click)="addEmail()">Add Email</button>
+
+  <ul>
+    <li *ngFor="let email of emailList; let i = index">
+      {{ email }}
+      <button (click)="removeEmail(i)">Remove</button>
+    </li>
+  </ul>
+
+  <button (click)="sendInvitations()">Send Invitations</button>
+</div>

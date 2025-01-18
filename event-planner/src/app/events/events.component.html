@@ -10,7 +10,7 @@
       <img [src]="event.image || 'assets/images/default-event.jpg'" alt="Event Image" class="event-image" />
       <h3 class="event-title">{{ event.name }}</h3>
       <p class="event-description">{{ event.description }}</p>
-      <button class="details-btn">View Details</button>
+      <button class="details-btn" [routerLink]="['/event', event.id]">View Details</button>
     </div>
   </div>
 

@@ -15,6 +15,8 @@ import { EditServiceComponent } from './edit-service/editService.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificationsComponent } from './notifications/notifications.component';
+import {AboutEventComponent} from './about-event/about-event.component';
+import {EventInvitationComponent} from './event-invitation/event-invitation.component';
 
 
 @NgModule({
@@ -30,7 +32,9 @@ import { NotificationsComponent } from './notifications/notifications.component'
     EditServiceComponent,
     NavBarComponent,
     RegistrationComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    AboutEventComponent,
+    EventInvitationComponent
   ],
   imports: [
     BrowserModule,
