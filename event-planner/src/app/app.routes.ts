@@ -12,6 +12,7 @@ import { EORegistrationComponent } from './eo-registration/eo-registration.compo
 import { EditServiceComponent } from './edit-service/editService.component';
 import {AboutEventComponent} from './about-event/about-event.component';
 import {AboutSolutionComponent} from './about-solution/about-solution.component';
+import {EventInvitationComponent} from './event-invitation/event-invitation.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -27,7 +28,7 @@ export const routes: Routes = [
   { path: 'edit-service', component: EditServiceComponent},
   { path: 'event/:id', component: AboutEventComponent },
   { path: 'solution/:id', component: AboutSolutionComponent },
-
+  { path: 'event-invitation', component: EventInvitationComponent },
 ];
 
 @NgModule({

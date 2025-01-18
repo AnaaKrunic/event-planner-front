@@ -9,10 +9,10 @@ import { HttpClient } from '@angular/common/http';
 export class EventInvitationComponent {
   emailInput: string = '';
   emailList: string[] = [];
+  eventId: number = 1; // Dinamički postavljen ID događaja
 
   constructor(private http: HttpClient) {}
 
-  // Dodavanje e-maila u listu
   addEmail() {
     if (this.emailInput && this.validateEmail(this.emailInput)) {
       this.emailList.push(this.emailInput.trim());
@@ -32,18 +32,22 @@ export class EventInvitationComponent {
   }
 
   sendInvitations() {
-    const eventId = 1; // ID događaja, treba da se poveže sa backend-om
+    if (this.emailList.length === 0) {
+      alert('Please add at least one email address');
+      return;
+    }
+
     const payload = {
-      eventId: eventId,
+      eventId: this.eventId,
       emailList: this.emailList
     };
 
     this.http.post('/api/invitations/send', payload).subscribe(
-      response => {
+      () => {
         alert('Invitations sent successfully!');
         this.emailList = []; // Resetuje listu nakon uspešnog slanja
       },
-      error => {
+      (error) => {
         alert('Failed to send invitations');
         console.error(error);
       }
