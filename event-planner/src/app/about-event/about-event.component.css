@@ -1,21 +1,29 @@
 .event-container {
   font-family: Arial, sans-serif;
   margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .event-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 15px;
 }
 
 .event-header h1 {
   font-size: 2em;
+  color: #333;
+  margin: 0;
 }
 
 .event-date {
-  font-size: 1em;
-  color: gray;
+  font-size: 1.1em;
+  color: #777;
+  margin: 0;
 }
 
 .event-description {
@@ -25,17 +33,23 @@
 .event-description h2 {
   font-size: 1.5em;
   color: #333;
+  margin-bottom: 10px;
 }
 
 .event-description p {
-  font-size: 1em;
+  font-size: 1.1em;
   line-height: 1.6;
   color: #555;
 }
 
 .event-details {
   margin-top: 20px;
-  font-size: 1em;
+  font-size: 1.1em;
+  color: #333;
+}
+
+.event-details p {
+  margin: 5px 0;
 }
 
 .event-map {
@@ -47,4 +61,38 @@
   width: 100%;
   max-width: 500px;
   height: auto;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+/* Responsivnost */
+@media (max-width: 768px) {
+  .event-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .event-header h1 {
+    font-size: 1.8em;
+  }
+
+  .event-date {
+    font-size: 1em;
+  }
+
+  .event-description h2 {
+    font-size: 1.4em;
+  }
+
+  .event-description p {
+    font-size: 1em;
+  }
+
+  .event-details {
+    font-size: 1em;
+  }
+
+  .event-map img {
+    max-width: 100%;
+  }
 }

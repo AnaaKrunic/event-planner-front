@@ -7,73 +7,103 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   styleUrls: ['./all-events.component.css'],
 })
 export class AllEventsComponent implements OnInit {
-  events: any[] = [];
-  filteredEvents: any[] = [];
-  isLoading: boolean = true;
+  events: any[] = []; // Lista događaja
+  filteredEvents: any[] = []; // Filtrirani događaji
+  isLoading: boolean = true; // Stanje učitavanja
 
+  // Pretraga, filtriranje i sortiranje
   searchTerm: string = '';
   sortOption: string = 'name';
   filterCategory: string = 'all';
 
+  // Paginacija
+  currentPage: number = 0; // Trenutna stranica
+  pageSize: number = 10; // Broj stavki po stranici
+  totalPages: number = 0; // Ukupan broj stranica
+  totalEvents: number = 0; // Ukupan broj događaja
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.fetchAllEvents();  // Fetch all events when component loads
+    this.fetchAllEvents(); // Učitavanje događaja pri inicijalizaciji
   }
 
-  // Fetch all events from the backend
+  // Metoda za dohvat svih događaja
   fetchAllEvents(): void {
     this.isLoading = true;
 
     this.http.get<any[]>('/api/events').subscribe(
       (data) => {
-        this.events = data;
-        this.filteredEvents = [...this.events]; // Initialize filtered events with all events
+        console.log('Fetched events:', data);
+        this.events = Array.isArray(data) ? data : []; // Osigurajte da `this.events` bude niz
+        this.filteredEvents = [...this.events]; // Kopiranje podataka u `filteredEvents`
         this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching events:', error);
+        this.events = []; // Postavite na prazan niz u slučaju greške
+        this.filteredEvents = [];
         this.isLoading = false;
       }
     );
   }
 
-  // Fetch filtered and sorted events from the backend based on search and filter parameters
-  fetchFilteredAndSortedEvents(): void {
+  // Search events
+  fetchSearchResults(page: number = 0): void {
     this.isLoading = true;
 
-    let params = new HttpParams();
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', this.pageSize.toString())
+      .set('sort', this.sortOption);
+
     if (this.searchTerm) {
       params = params.set('name', this.searchTerm);
     }
-    if (this.filterCategory && this.filterCategory !== 'all') {
-      params = params.set('eventTypeName', this.filterCategory);
-    }
-    if (this.sortOption) {
-      params = params.set('sortOption', this.sortOption);
-    }
 
-    // Make the HTTP request to fetch filtered and sorted events
-    this.http.get<any[]>('/api/events/filter', { params }).subscribe(
-      (data) => {
-        this.events = data;
-        this.filteredEvents = [...this.events]; // Update filtered events
+
+    console.log('Search params:', params.toString()); // Log za proveru
+
+    this.http.get<any>('/api/events/search', { params }).subscribe(
+      (response) => {
+        console.log('Search results:', response); // Log za proveru odgovora
+        this.events = response.content || [];
+        this.filteredEvents = [...this.events];
+        this.totalPages = response.totalPages;
+        this.totalEvents = response.totalElements;
+        this.currentPage = response.number;
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching search results:', error);
         this.isLoading = false;
       }
     );
   }
 
-  // Trigger the fetch of filtered and sorted events when input changes
-  onSearchTermChange(): void {
-    this.fetchFilteredAndSortedEvents();
+  // Navigacija na određenu stranicu
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.currentPage = page;
+      this.fetchSearchResults(page);
+    }
   }
 
-  // Trigger the fetch of filtered and sorted events when category or sort option changes
+  // Trigger za pretragu pri promeni unosa
+  onSearchTermChange(): void {
+    if (this.searchTerm.trim() === '') {
+      // Ako je polje za pretragu prazno, ponovo učitajte sve događaje
+      this.fetchAllEvents();
+    } else {
+      // Inače izvršite pretragu
+      this.currentPage = 0; // Resetuje na prvu stranicu
+      this.fetchSearchResults();
+    }
+  }
+
+  // Trigger za filtriranje ili sortiranje
   onFilterOrSortChange(): void {
-    this.fetchFilteredAndSortedEvents();
+    this.currentPage = 0; // Resetuje na prvu stranicu
+    this.fetchSearchResults();
   }
 }
