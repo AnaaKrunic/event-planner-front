@@ -61,9 +61,6 @@ export class AllEventsComponent implements OnInit {
       params = params.set('name', this.searchTerm);
     }
 
-    if (this.filterCategory && this.filterCategory !== 'all') {
-      params = params.set('eventTypeName', this.filterCategory);
-    }
 
     console.log('Search params:', params.toString()); // Log za proveru
 
