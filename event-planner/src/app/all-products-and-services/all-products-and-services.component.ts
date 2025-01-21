@@ -7,74 +7,122 @@ import { HttpClient, HttpParams } from '@angular/common/http';
   styleUrls: ['./all-products-and-services.component.css'],
 })
 export class AllProductsAndServicesComponent implements OnInit {
-  productsAndServices: any[] = [];
-  filteredProductsAndServices: any[] = [];
+  solutions: any[] = [];
+  filteredSolutions: any[] = [];
   isLoading: boolean = true;
 
   searchTerm: string = '';
   selectedCategory: string = '';
   selectedCity: string = '';
   sortOption: string = 'name';
+  pageSize: number = 10; // Adjust as needed
+  currentPage: number = 0;
+  totalPages: number = 0;
+  totalSolutions: number = 0;
+  categories: string[] = [];
+
 
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.fetchAllProductsAndServices();  // Fetch all products and services when component loads
+    this.fetchAllSolutions(); // Fetch all solutions when the component loads
+    this.fetchCategories();
   }
 
-  // Fetch all products and services from the backend
-  fetchAllProductsAndServices(): void {
+  fetchCategories(): void {
+    this.http.get<string[]>('/api/categories').subscribe(
+      (data) => {
+        this.categories = data; // Spremite kategorije za filtriranje
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    );
+  }
+
+  // Fetch all solutions from the backend
+  fetchAllSolutions(): void {
     this.isLoading = true;
 
     this.http.get<any[]>('/api/solutions').subscribe(
       (data) => {
-        this.productsAndServices = data;
-        this.filteredProductsAndServices = [...this.productsAndServices]; // Initialize filtered list
+        this.solutions = data;
+        this.filteredSolutions = [...this.solutions]; // Initialize filtered list
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching products and services:', error);
+        console.error('Error fetching solutions:', error);
         this.isLoading = false;
       }
     );
   }
 
-  // Fetch filtered and sorted products and services from the backend
-  fetchFilteredAndSortedProductsAndServices(): void {
+  // Fetch search results with pagination, sorting, and filtering
+  fetchSearchResults(page: number = 0): void {
     this.isLoading = true;
 
-    let params = new HttpParams();
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', this.pageSize.toString())
+      .set('sort', this.sortOption);
+
+    // Add search term if provided
     if (this.searchTerm) {
-      params = params.set('name', this.searchTerm); // Set search term if available
+      params = params.set('name', this.searchTerm);
     }
+
+    // Add category filter if selected
     if (this.selectedCategory) {
-      params = params.set('category', this.selectedCategory); // Set selected category
+      params = params.set('category', this.selectedCategory);
     }
+
+    // Add city filter if selected
     if (this.selectedCity) {
-      params = params.set('city', this.selectedCity); // Set selected city
+      params = params.set('city', this.selectedCity);
     }
 
-    // Set sorting parameter
-    if (this.sortOption) {
-      params = params.set('sortOption', this.sortOption);
-    }
+    console.log('Search params:', params.toString()); // Log for debugging
 
-    // Make the HTTP request to filter and sort products and services
-    this.http.get<any[]>('/api/solutions/filter', { params }).subscribe(
-      (data) => {
-        this.productsAndServices = data;
-        this.filteredProductsAndServices = [...this.productsAndServices]; // Update filtered list
+    this.http.get<any>('/api/solutions/search', { params }).subscribe(
+      (response) => {
+        console.log('Search results:', response); // Log for debugging
+        this.solutions = response.content || [];
+        this.filteredSolutions = [...this.solutions];
+        this.totalPages = response.totalPages;
+        this.totalSolutions = response.totalElements;
+        this.currentPage = response.number;
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching filtered and sorted products:', error);
+        console.error('Error fetching search results:', error);
         this.isLoading = false;
       }
     );
   }
 
-  // This function will be triggered for search, filtering, and sorting
-  filterAndSearch(): void {
-    this.fetchFilteredAndSortedProductsAndServices(); // Call API for updated data
+  // Navigate to a specific page
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.currentPage = page;
+      this.fetchSearchResults(page);
+    }
+  }
+
+  // Trigger for search when input changes
+  onSearchTermChange(): void {
+    if (this.searchTerm.trim() === '') {
+      // If search input is empty, reload all solutions
+      this.fetchAllSolutions();
+    } else {
+      // Otherwise, perform the search
+      this.currentPage = 0; // Reset to first page
+      this.fetchSearchResults();
+    }
+  }
+
+  // Trigger for sorting and filtering change
+  onFilterOrSortChange(): void {
+    this.currentPage = 0; // Reset to first page when filter or sort changes
+    this.fetchSearchResults();
   }
 }

@@ -17,6 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NotificationsComponent } from './notifications/notifications.component';
 import {AboutEventComponent} from './about-event/about-event.component';
 import {EventInvitationComponent} from './event-invitation/event-invitation.component';
+import {BookServiceComponent} from './book-service/book-service.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {EventInvitationComponent} from './event-invitation/event-invitation.comp
     RegistrationComponent,
     NotificationsComponent,
     AboutEventComponent,
-    EventInvitationComponent
+    EventInvitationComponent,
+    BookServiceComponent
   ],
   imports: [
     BrowserModule,
