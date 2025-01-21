@@ -14,7 +14,9 @@ export class AllEventsComponent implements OnInit {
   // Pretraga, filtriranje i sortiranje
   searchTerm: string = '';
   sortOption: string = 'name';
-  filterCategory: string = 'all';
+  filterEventTypes: string = 'all';
+  eventTypes: string[] = [];
+
 
   // Paginacija
   currentPage: number = 0; // Trenutna stranica
@@ -26,8 +28,19 @@ export class AllEventsComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllEvents(); // Učitavanje događaja pri inicijalizaciji
+    this.fetchEventTypes();
   }
 
+  fetchEventTypes(): void {
+    this.http.get<string[]>('/api/event-types').subscribe(
+      (data) => {
+        this.eventTypes = data; // Spremite kategorije za filtriranje
+      },
+      (error) => {
+        console.error('Error fetching event types:', error);
+      }
+    );
+  }
   // Metoda za dohvat svih događaja
   fetchAllEvents(): void {
     this.isLoading = true;
@@ -101,9 +114,39 @@ export class AllEventsComponent implements OnInit {
     }
   }
 
+  filterEvents(page: number = 0): void {
+    this.isLoading = true;
+
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', this.pageSize.toString())
+      .set('sort', this.sortOption);
+
+
+
+
+    console.log('Filter params:', params.toString());
+
+    this.http.get<any>('/api/events/filter', { params }).subscribe(
+      (response) => {
+        console.log('Filter results:', response);
+        this.events = response.content || [];
+        this.filteredEvents = [...this.events];
+        this.totalPages = response.totalPages;
+        this.totalEvents = response.totalElements;
+        this.currentPage = response.number;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching filter results:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
   // Trigger za filtriranje ili sortiranje
   onFilterOrSortChange(): void {
-    this.currentPage = 0; // Resetuje na prvu stranicu
-    this.fetchSearchResults();
+    this.currentPage = 0; // Resetujte na prvu stranicu
+    this.filterEvents(); // Pozovite filtriranje
   }
 }

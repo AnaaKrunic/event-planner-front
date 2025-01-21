@@ -9,20 +9,17 @@
       class="search-input"
       placeholder="Search products and services..."
       [(ngModel)]="searchTerm"
-    (input)="filterAndSearch()"
+      (input)="onSearchTermChange()"
     />
 
     <!-- Filter by category -->
-    <select class="filter-select" [(ngModel)]="selectedCategory" (change)="filterAndSearch()">
-      <option value="">All Categories</option>
-      <option value="Entertainment">Entertainment</option>
-      <option value="Catering">Catering</option>
-      <option value="Decoration">Decoration</option>
-      <option value="Photography">Photography</option>
+    <select class="filter-select" [(ngModel)]="filteredSolutions" (change)="onFilterOrSortChange()">
+      <option value="all">All Categories</option>
+      <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
     </select>
 
     <!-- Filter by city -->
-    <select class="filter-select" [(ngModel)]="selectedCity" (change)="filterAndSearch()">
+    <select class="filter-select" [(ngModel)]="selectedCity" (change)="onFilterOrSortChange()">
       <option value="">All Cities</option>
       <option value="New York">New York</option>
       <option value="Los Angeles">Los Angeles</option>
@@ -31,7 +28,7 @@
     </select>
 
     <!-- Sort option -->
-    <select class="sort-select" [(ngModel)]="sortOption" (change)="filterAndSearch()">
+    <select class="sort-select" [(ngModel)]="sortOption" (change)="onFilterOrSortChange()">
       <option value="name">Sort by Name</option>
       <option value="price">Sort by Price</option>
     </select>
@@ -41,9 +38,9 @@
   <div *ngIf="isLoading" class="loader">Loading products and services...</div>
 
   <!-- Display products and services -->
-  <div class="product-grid" *ngIf="!isLoading && filteredProductsAndServices.length > 0">
-    <div class="product-card" *ngFor="let item of filteredProductsAndServices">
-      <img [src]="item.image" alt="{{ item.name }} Image" />
+  <div class="product-grid" *ngIf="!isLoading && filteredSolutions.length > 0">
+    <div class="product-card" *ngFor="let item of filteredSolutions">
+      <img [src]="item.image" alt="{{ item.name }} Image" class="product-image" />
       <h3>{{ item.name }}</h3>
       <p>{{ item.description }}</p>
       <p><strong>Price:</strong> ${{ item.price }}</p>
@@ -52,7 +49,13 @@
   </div>
 
   <!-- No products available message -->
-  <div *ngIf="!isLoading && filteredProductsAndServices.length === 0" class="no-products">
+  <div *ngIf="!isLoading && filteredSolutions.length === 0" class="no-products">
     No products or services available.
+  </div>
+
+  <!-- Pagination controls (if applicable) -->
+  <div *ngIf="!isLoading && totalPages > 1" class="pagination-controls">
+    <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 0">Previous</button>
+    <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages - 1">Next</button>
   </div>
 </div>

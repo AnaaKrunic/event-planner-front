@@ -1,0 +1,19 @@
+<div class="reservation-form">
+  <h2>Book a Service</h2>
+
+  <form (ngSubmit)="onSubmit()" #reservationForm="ngForm">
+    <label for="startDate">Start Date</label>
+    <input type="date" id="startDate" name="startDate" [(ngModel)]="reservation.startDate" required min="{{ minDate }}" />
+
+    <label for="startTime">Start Time</label>
+    <input type="time" id="startTime" name="startTime" [(ngModel)]="reservation.startTime" required />
+
+    <label for="endDate">End Date (auto-calculated)</label>
+    <input type="date" id="endDate" name="endDate" [(ngModel)]="reservation.endDate" disabled />
+
+    <label for="endTime">End Time (auto-calculated)</label>
+    <input type="time" id="endTime" name="endTime" [(ngModel)]="reservation.endTime" disabled />
+
+    <button type="submit" [disabled]="!reservationForm.valid">Confirm Reservation</button>
+  </form>
+</div>

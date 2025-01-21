@@ -1,0 +1,118 @@
+/* Osnovni stilovi za formu */
+.reservation-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.reservation-form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.reservation-form label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 8px;
+  color: #555;
+}
+
+.reservation-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.reservation-form input:disabled {
+  background-color: #e0e0e0;
+}
+
+.reservation-form button {
+  width: 100%;
+  padding: 12px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.reservation-form button:hover {
+  background-color: #45a049;
+}
+
+.reservation-form button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Stil za polja koja nisu validna */
+input.ng-invalid {
+  border-color: red;
+}
+
+input.ng-valid {
+  border-color: green;
+}
+
+/* Error message */
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: -15px;
+  margin-bottom: 10px;
+}
+
+.success-message {
+  color: green;
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Kalendar */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: #4caf50;
+}
+
+/* Stilizacija za generalne poruke (ako želite da obavestite korisnika o grešci) */
+.alert {
+  padding: 10px;
+  color: #fff;
+  background-color: #f44336;
+  border-radius: 5px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+/* Stil za loading ikonu */
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.loader::before {
+  content: '';
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

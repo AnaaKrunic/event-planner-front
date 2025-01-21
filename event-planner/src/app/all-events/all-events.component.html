@@ -11,18 +11,10 @@
       (input)="onSearchTermChange()"
     />
 
-    <!-- Filter za kategoriju -->
-    <select class="filter-select" [(ngModel)]="filterCategory" (change)="onFilterOrSortChange()">
-      <option value="all">All Categories</option>
-      <option value="Music">Music</option>
-      <option value="Art">Art</option>
-      <option value="Technology">Technology</option>
-      <option value="Fitness">Fitness</option>
-      <option value="Cooking">Cooking</option>
-      <option value="Books">Books</option>
-      <option value="Photography">Photography</option>
-      <option value="Dance">Dance</option>
-      <option value="Film">Film</option>
+    <!-- Filter by category -->
+    <select class="filter-select" [(ngModel)]="events" (change)="onFilterOrSortChange()">
+      <option value="all">All Event Types</option>
+      <option *ngFor="let eventType of eventTypes" [value]="eventType">{{ eventType }}</option>
     </select>
 
     <!-- Sortiranje po imenu ili datumu -->
