@@ -18,6 +18,12 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import {AboutEventComponent} from './about-event/about-event.component';
 import {EventInvitationComponent} from './event-invitation/event-invitation.component';
 import {BookServiceComponent} from './book-service/book-service.component';
+import { AuthInterceptor } from './auth.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ProfileComponent } from './profile/profile.component';
+import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
+import { EORegistrationComponent } from './eo-registration/eo-registration.component';
+import { LoginComponent } from './login/login.component';
 
 
 @NgModule({
@@ -36,7 +42,11 @@ import {BookServiceComponent} from './book-service/book-service.component';
     NotificationsComponent,
     AboutEventComponent,
     EventInvitationComponent,
-    BookServiceComponent
+    BookServiceComponent,
+    ProfileComponent,
+    SPPRegistrationComponent,
+    EORegistrationComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +55,9 @@ import {BookServiceComponent} from './book-service/book-service.component';
     HttpClientModule
 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

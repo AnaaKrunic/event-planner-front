@@ -14,7 +14,7 @@ export class NotificationService {
       brokerURL: 'ws://localhost:8080/ws',
       webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
       reconnectDelay: 5000,
-      debug: (str) => console.log(str),
+      debug: (str: string) => console.log(str),
     });
   }
 
