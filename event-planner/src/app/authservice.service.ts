@@ -1,25 +1,28 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser: { id: string; name: string; token: string } | null = null;
+  private currentUserSubject = new BehaviorSubject<{ id: string; name: string; token: string } | null>(null);
+  currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor() {}
+  constructor() {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      this.currentUserSubject.next(JSON.parse(savedUser));
+    }
+  }
 
   // Postavljanje trenutnog korisnika (npr. nakon prijave)
   setCurrentUser(user: { id: string; name: string; token: string }): void {
-    this.currentUser = user;
     localStorage.setItem('currentUser', JSON.stringify(user)); // Čuvanje u localStorage
+    this.currentUserSubject.next(user);
   }
 
   getCurrentUser(): { id: string; name: string; token: string } | null {
-    if (!this.currentUser) {
-      const savedUser = localStorage.getItem('currentUser');
-      this.currentUser = savedUser ? JSON.parse(savedUser) : null;
-    }
-    return this.currentUser;
+    return this.currentUserSubject.value;
   }
 
   getUserId(): string | null {
@@ -31,7 +34,7 @@ export class AuthService {
   }
 
   clearUser(): void {
-    this.currentUser = null;
     localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
   }
 }

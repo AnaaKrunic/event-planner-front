@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { LoginRequestDTO } from '../models/login-request.dto';
 import { LoginResponseDTO } from '../models/login-response.dto';
+import { AuthService } from '../authservice.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,11 @@ export class LoginComponent {
   email = '';
   password = '';
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   login() {
     const requestData: LoginRequestDTO = {
@@ -25,10 +30,11 @@ export class LoginComponent {
     this.http.post<LoginResponseDTO>('http://localhost:8080/api/auth/login', requestData)
       .subscribe({
         next: (response) => {
-          localStorage.setItem('token', response.token);
-          localStorage.setItem('userId', response.userId.toString());
-          localStorage.setItem('email', response.email);
-          localStorage.setItem('role', response.role);
+          this.authService.setCurrentUser({
+            id: response.userId.toString(),
+            name: response.email,
+            token: response.token
+          });
 
           this.router.navigate(['/']);
         },
