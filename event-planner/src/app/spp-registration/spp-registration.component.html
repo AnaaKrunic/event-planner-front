@@ -11,36 +11,36 @@
             <div class="form">                 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" placeholder="Enter your email address" />
+                    <input type="email" id="email" [(ngModel)]="formData.email" placeholder="Enter your email address" name="email"/>
                 </div>
                 <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" id="name" placeholder="Enter your company name" />
+                    <input type="text" id="name" [(ngModel)]="formData.name" placeholder="Enter your company name" name="name" />
                 </div>
                 <div class="form-group"> 
                     <label for="about">About your company</label>
-                    <textarea id="about" placeholder="About your company..."></textarea>
+                    <textarea id="about" [(ngModel)]="formData.description" placeholder="About your company..." name="description"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="address">Address</label>
-                    <input type="text" id="address" placeholder="Enter your address" />
+                    <input type="text" id="address" [(ngModel)]="formData.address" placeholder="Enter your address" name="address" />
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone number</label>
-                    <input type="tel" id="phone" placeholder="Enter your phone number" />
+                    <input type="tel" id="phone" [(ngModel)]="formData.phoneNumber" placeholder="Enter your phone number" name="phoneNumber" />
                 </div>
                 <div class="form-group">
                     <label for="image-upload">Upload Images</label>
-                    <input type="file" id="image-upload" accept="image/*" multiple>
+                    <input type="file" (change)="onFileChange($event)" accept="image/*" multiple>
                 </div> 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" />
+                    <input type="password" id="password" [(ngModel)]="formData.password" placeholder="Enter your password" name="password" />
                 </div>
           
                 <div class="form-group">
                     <label for="confirm-password">Confirm password</label>
-                    <input type="password" id="confirm-password" placeholder="Confirm your password" />
+                    <input type="password" id="confirm-password" [(ngModel)]="formData.confirmPassword" placeholder="Confirm your password" name="confirmPassword" />
                 </div>
           
               <button class="btn-primary" (click)="sendActivationEmail()">Finish</button>
