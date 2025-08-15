@@ -15,6 +15,7 @@ import {AboutSolutionComponent} from './about-solution/about-solution.component'
 import {EventInvitationComponent} from './event-invitation/event-invitation.component';
 import {BookServiceComponent} from './book-service/book-service.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -32,7 +33,8 @@ export const routes: Routes = [
   { path: 'solution/:id', component: AboutSolutionComponent },
   { path: 'event-invitation', component: EventInvitationComponent },
   { path: 'book-service', component: BookServiceComponent },
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile', component: ProfileComponent },
+  { path: 'change-password', component: ChangePasswordComponent }
 ];
 
 @NgModule({

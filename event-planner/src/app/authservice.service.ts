@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +10,7 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<{ id: string; name: string; token: string } | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor() {
+  constructor(private http: HttpClient) {
     const savedUser = localStorage.getItem('currentUser');
     if (savedUser) {
       this.currentUserSubject.next(JSON.parse(savedUser));
@@ -36,5 +38,21 @@ export class AuthService {
   clearUser(): void {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
+  }
+
+  changePassword(oldPassword: string, newPassword: string) {
+    const token = this.getToken();
+    if (!token) {
+      throw new Error('User not logged in');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post(`${environment.apiUrl}/change-password`, {
+      oldPassword,
+      newPassword
+    }, { headers });
   }
 }

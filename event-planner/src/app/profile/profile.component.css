@@ -1,0 +1,81 @@
+.profile-layout {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.profile-left, .profile-center, .profile-right {
+  flex: 1;
+}
+
+.profile-left p {
+  background-color: #e9eef3;
+  padding: 8px;
+  border-radius: 5px;
+  margin: 8px 0;
+}
+
+.profile-left input[readonly] {
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  width: 100%;
+}
+
+.profile-left input {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.link-btn {
+  display: block;
+  margin-top: 10px;
+  color: #007bff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.profile-center img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.profile-right {
+  text-align: center;
+}
+
+.profile-right .calendar {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #e5e5e5;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ccc;
+}
+
+@media (max-width: 900px) {
+  .profile-layout {
+    flex-direction: column;
+  }
+}

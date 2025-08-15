@@ -1,6 +1,69 @@
-<h2>Moj profil</h2>
-<div *ngIf="user">
-  <p><strong>Ime:</strong> {{ user.name }}</p>
-  <p><strong>Prezime:</strong> {{ user.lastName }}</p>
-  <p><strong>Email:</strong> {{ user.email }}</p>
+<div class="profile-layout" *ngIf="user">
+
+  <div class="profile-left">
+    <h2>My Profile</h2>
+
+    <p>
+      <strong>Email:</strong>
+      <input type="email" [value]="user.email" readonly>
+    </p>
+
+    <ng-container *ngIf="user.role === 'EVENT_ORGANIZER'">
+      <p>
+        <strong>First name:</strong>
+        <input type="text" [(ngModel)]="user.name" [readonly]="!isEditing">
+      </p>
+      <p>
+        <strong>Last name:</strong>
+        <input type="text" [(ngModel)]="user.lastName" [readonly]="!isEditing">
+      </p>
+    </ng-container>
+
+    <ng-container *ngIf="user.role === 'SERVICE_PROVIDER'">
+      <p>
+        <strong>Company name:</strong>
+        <input type="text" [(ngModel)]="user.name" [readonly]="!isEditing">
+      </p>
+      <p>
+        <strong>Description:</strong>
+        <textarea [(ngModel)]="user.description" [readonly]="!isEditing"></textarea>
+      </p>
+    </ng-container>
+
+    <p>
+      <strong>Address:</strong>
+      <input type="text" [(ngModel)]="user.address" [readonly]="!isEditing">
+    </p>
+    <p>
+      <strong>Phone number:</strong>
+      <input type="text" [(ngModel)]="user.phoneNumber" [readonly]="!isEditing">
+    </p>
+
+    <a class="link-btn" (click)="toggleEdit()">
+      {{ isEditing ? 'Save changes' : 'Edit profile' }}
+    </a>
+    <a class="link-btn" routerLink="/change-password">Change password</a>
+  </div>
+
+  <div class="profile-center">
+    <ng-container *ngIf="user.imageURLs?.length">
+      <div *ngIf="user.role === 'EVENT_ORGANIZER'">
+        <img [src]="user.imageURLs[0]" alt="Profile picture">
+      </div>
+      <div *ngIf="user.role === 'SERVICE_PROVIDER'">
+        <div *ngFor="let url of user.imageURLs">
+          <img [src]="url" alt="Photo">
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div class="profile-right">
+    <div class="calendar">
+      <p><strong>Your upcoming events</strong></p>
+      <p>[Kalendar ovde]</p>
+    </div>
+    <button (click)="deactivateProfile()">Deactivate profile</button>
+  </div>
+
 </div>

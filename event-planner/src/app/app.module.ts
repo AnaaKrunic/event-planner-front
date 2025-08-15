@@ -24,6 +24,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 import { LoginComponent } from './login/login.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { LoginComponent } from './login/login.component';
     ProfileComponent,
     SPPRegistrationComponent,
     EORegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
