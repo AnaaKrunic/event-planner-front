@@ -38,9 +38,13 @@
 .link-btn {
   display: block;
   margin-top: 10px;
-  color: #007bff;
+  color: #373737d8;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.link-btn:hover {
+  color: #000000;
 }
 
 .profile-center img {
@@ -78,4 +82,34 @@ button:hover {
   .profile-layout {
     flex-direction: column;
   }
+}
+
+#prev, #next {
+   display: inline-block;
+}
+
+#prev {
+  width: 150px;
+  height: 40px;
+
+}
+
+#next {
+  width: 150px;
+  height: 40px;
+}
+
+button {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.add-photo {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  position: absolute;
 }

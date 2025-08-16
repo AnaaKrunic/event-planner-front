@@ -46,16 +46,38 @@
   </div>
 
   <div class="profile-center">
-    <ng-container *ngIf="user.imageURLs?.length">
-      <div *ngIf="user.role === 'EVENT_ORGANIZER'">
-        <img [src]="user.imageURLs[0]" alt="Profile picture">
+    <!-- EO -->
+    <div *ngIf="user.role === 'EVENT_ORGANIZER'">
+      <img [src]="user.imageURLs[0] || '/assets/images/default-profile.png'" class="profile-img">
+      <div *ngIf="isEditing">
+        <input type="file" (change)="onEOFileSelected($event)">
+        <button *ngIf="user.imageURLs[0] && !user.imageURLs[0].includes('default-profile.png')"
+                (click)="removeEOImage()">Remove</button>
       </div>
-      <div *ngIf="user.role === 'SERVICE_PROVIDER'">
-        <div *ngFor="let url of user.imageURLs">
-          <img [src]="url" alt="Photo">
-        </div>
+    </div>
+
+    <!-- SPP -->
+    <div *ngIf="user.role === 'SERVICE_PROVIDER'" class="image-carousel">
+
+      <img 
+        [src]="user.imageURLs.length ? user.imageURLs[currentIndex] : '/assets/images/default-profile.png'" 
+        class="profile-img"
+      >
+
+      <div class="carousel-controls" *ngIf="user.imageURLs.length > 1">
+        <button id="prev" (click)="prevImage()">‹</button>
+        <button id="next" (click)="nextImage()">›</button>
       </div>
-    </ng-container>
+
+      <div *ngIf="isEditing && user.imageURLs.length > 0" class="carousel-actions">
+        <button (click)="removeSPPImage(currentIndex)">Remove this photo</button>
+      </div>
+
+      <div *ngIf="isEditing" class="add-photo">
+        <input type="file" multiple (change)="onSPPFilesSelected($event)">
+      </div>
+
+    </div>
   </div>
 
   <div class="profile-right">
