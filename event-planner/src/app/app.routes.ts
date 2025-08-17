@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { EventType, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AllEventsComponent } from './all-events/all-events.component';
 import { AllProductsAndServicesComponent } from './all-products-and-services/all-products-and-services.component';
@@ -15,6 +15,7 @@ import {AboutSolutionComponent} from './about-solution/about-solution.component'
 import {EventInvitationComponent} from './event-invitation/event-invitation.component';
 import {BookServiceComponent} from './book-service/book-service.component';
 import { ProfileComponent } from './profile/profile.component';
+import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -32,7 +33,8 @@ export const routes: Routes = [
   { path: 'solution/:id', component: AboutSolutionComponent },
   { path: 'event-invitation', component: EventInvitationComponent },
   { path: 'book-service', component: BookServiceComponent },
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile', component: ProfileComponent },
+  { path: 'admin/event-types', component: EventTypeManagementComponent }
 ];
 
 @NgModule({
