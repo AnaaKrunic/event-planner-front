@@ -1,0 +1,42 @@
+<div class="event-type-management">
+  <h2>Manage Event Types</h2>
+
+  <!-- add new -->
+  <div class="form-section">
+    <h3 (click)="showAddForm = !showAddForm" class="toggle-add">
+        + Add Event Type
+    </h3>
+
+    <div class="add-form" *ngIf="showAddForm">
+        <input [(ngModel)]="newEventType.name" placeholder="Name" />
+        <input [(ngModel)]="newEventType.description" placeholder="Description" />
+        <input [(ngModel)]="newEventType.suggestedCategories" placeholder="Categories IDs (comma separated)" />
+        <button (click)="addEventType()">Add</button>
+    </div>
+  </div>
+
+
+  <!-- list all -->
+  <div class="list-section">
+    <h3>Existing Event Types</h3>
+    <div *ngFor="let et of eventTypes" class="event-type-item">
+      <div *ngIf="editingEventType?.id !== et.id">
+        <strong>{{ et.name }}</strong> - {{ et.description }}
+        <br />
+        Categories: {{ et.suggestedCategories }}
+        <br />
+        Status: {{ et.active ? 'Active' : 'Inactive' }}
+        <button (click)="startEditing(et)">Edit</button>
+        <button (click)="toggleActive(et)">{{ et.active ? 'Deactivate' : 'Activate' }}</button>
+      </div>
+
+      <!-- edit mode -->
+      <div *ngIf="editingEventType?.id === et.id">
+        <input [(ngModel)]="editingEventType.description" placeholder="Description" />
+        <input [(ngModel)]="editingEventType.suggestedCategories" placeholder="Categories IDs (comma separated)" />
+        <button (click)="saveEdit()">Save</button>
+        <button (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

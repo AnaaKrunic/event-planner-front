@@ -40,7 +40,7 @@ export class LoginComponent {
         },
         error: (err) => {
           console.error('Login error:', err);
-          alert(err.error || 'Invalid credentials');
+          alert(err.error?.message || 'Invalid credentials');
         }
       });
   }

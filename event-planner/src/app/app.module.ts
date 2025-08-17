@@ -24,7 +24,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 import { LoginComponent } from './login/login.component';
-
+import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,8 @@ import { LoginComponent } from './login/login.component';
     ProfileComponent,
     SPPRegistrationComponent,
     EORegistrationComponent,
-    LoginComponent
+    LoginComponent,
+    EventTypeManagementComponent
   ],
   imports: [
     BrowserModule,
