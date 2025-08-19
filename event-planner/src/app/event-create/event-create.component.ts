@@ -3,6 +3,7 @@ import * as L from 'leaflet';
 import { EventService } from '../event.service';
 import { Router } from '@angular/router';
 import { EventTypeService } from '../event-type.service';
+import { LocationService } from '../location.service';
 
 @Component({
   selector: 'app-create-event',
@@ -31,7 +32,13 @@ export class EventCreateComponent implements OnInit {
   private map!: L.Map;
   private marker!: L.Marker;
 
-  constructor(private eventService: EventService, private eventTypeService: EventTypeService, private router: Router) {}
+  constructor(
+  private eventService: EventService,
+  private eventTypeService: EventTypeService,
+  private locationService: LocationService,
+  private router: Router
+) {}
+
 
   ngOnInit(): void {
     this.eventTypeService.getAll().subscribe(data => {
@@ -66,6 +73,18 @@ export class EventCreateComponent implements OnInit {
   }
 
   onSubmit() {
+    if (!this.event.location) {
+      console.error('No location selected!');
+      return;
+    }
+
+    const locationPayload = {
+      name: this.event.name,
+      address: this.event.address || '',
+      latitude: this.event.location.lat,
+      longitude: this.event.location.lng
+    };
+    
     const startDateTime = this.event.date ? this.event.date + 'T00:00:00' : null;
     const mappedAgenda = this.agenda.map((a) => {
       return {
@@ -78,28 +97,32 @@ export class EventCreateComponent implements OnInit {
       };
     });
 
-    const payload = {
-      eventTypeId: this.event.eventTypeId,
-      categoryId: this.event.categoryId,
-      name: this.event.name,
-      description: this.event.description,
-      participants: this.event.participants,
-      isPublic: this.event.isPublic,
-      startDate: startDateTime,
-      endDate: startDateTime,
-      locationId: this.event.locationId,
-      agenda: mappedAgenda
-    };
+    this.locationService.createLocation(locationPayload).subscribe({
+      next: (createdLocation) => {
+        const payload = {
+          name: this.event.name,
+          description: this.event.description,
+          participants: this.event.maxParticipants || 0,
+          isPublic: this.event.isPublic,            
+          startDate: startDateTime,
+          endDate: startDateTime,
+          locationId: createdLocation.id,
+          eventTypeId: this.event.eventTypeId === 'all' ? null : this.event.eventTypeId,
+          agenda: mappedAgenda
+        };
 
-    this.eventService.create(payload).subscribe({
-      next: (res) => {
-        console.log('Event successfully created:', res);
-        this.router.navigate(['/events']); // preusmeravam na listu dogadjaja
+        this.eventService.create(payload).subscribe({
+          next: (res) => {
+            console.log('Event successfully created:', res);
+            this.router.navigate(['/all-events']); // preusmeravam na listu dogadjaja
+          },
+          error: (err) => {
+            console.error('Error with creating event', err);
+          }
+        });
       },
-      error: (err) => {
-        console.error('Error with creating event', err);
-      }
-    });
+      error: (err) => console.error('Error creating location', err)
+    }); 
   }
 
   private initMap() {
@@ -122,6 +145,14 @@ export class EventCreateComponent implements OnInit {
         this.map.removeLayer(this.marker);
       }
       this.marker = L.marker([lat, lng], { icon: redPinIcon }).addTo(this.map);
+
+      this.locationService.getAddress(lat, lng).subscribe({
+        next: (res) => {
+          this.event.address = res.display_name;
+          console.log('Address: ', this.event.address)
+        },
+        error: (err) => console.error('Error fetching address', err)
+      })
     });
   }
 }

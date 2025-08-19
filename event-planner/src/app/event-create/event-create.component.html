@@ -15,13 +15,11 @@
     </div>
 
     <!-- kategorije -->
-    <div>
-      <label for="category">Suggested Categories:</label>
-      <select id="category" [(ngModel)]="event.category" name="category">
-        <option *ngFor="let category of suggestedCategories" [value]="category">
-          {{ category }}
-        </option>
-      </select>
+    <div *ngIf="suggestedCategories.length > 0">
+      <label>Suggested Categories:</label>
+      <ul>
+        <li *ngFor="let category of suggestedCategories">{{ category.name }}</li>
+      </ul>
     </div>
 
     <!-- name -->
