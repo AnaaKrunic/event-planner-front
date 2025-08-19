@@ -1,0 +1,98 @@
+<div class="container">
+  <h2>Add Event</h2>
+
+  <form (ngSubmit)="onSubmit()" #eventForm="ngForm">
+
+    <!-- event type -->
+    <div>
+      <label for="eventType">Event Type:</label>
+      <select id="eventType" [(ngModel)]="event.eventTypeId" name="eventType" (change)="onEventTypeChange($event)">
+        <option value="all">All</option>
+        <option *ngFor="let type of eventTypes" [value]="type.id">
+          {{ type.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- kategorije -->
+    <div>
+      <label for="category">Suggested Categories:</label>
+      <select id="category" [(ngModel)]="event.category" name="category">
+        <option *ngFor="let category of suggestedCategories" [value]="category">
+          {{ category }}
+        </option>
+      </select>
+    </div>
+
+    <!-- name -->
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" [(ngModel)]="event.name" name="name" required />
+    </div>
+
+    <!-- description -->
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" [(ngModel)]="event.description" name="description"></textarea>
+    </div>
+
+    <!-- 5. max ucesnika -->
+    <div>
+      <label for="maxParticipants">Max. participants number:</label>
+      <input type="number" id="maxParticipants" [(ngModel)]="event.maxParticipants" name="maxParticipants" />
+    </div>
+
+    <!-- public/private -->
+    <div>
+      <label>Privacy:</label>
+      <button type="button" (click)="togglePrivacy()">
+        {{ event.isPublic ? 'Public' : 'Private' }}
+      </button>
+    </div>
+
+    <!-- leaflet lokacija -->
+    <div>
+      <label>Location:</label>
+      <div id="map" style="height: 300px; width: 100%;"></div>
+    </div>
+
+    <!-- date -->
+    <div>
+      <label for="date">Event date:</label>
+      <input type="date" id="date" [(ngModel)]="event.date" name="date" required />
+    </div>
+
+    <hr />
+
+    <!-- AGENDA -->
+    <h3>Event Agenda</h3>
+
+    <div *ngFor="let activity of agenda; let i = index">
+      <h4>Activity {{ i + 1 }}</h4>
+
+      <label>Name:</label>
+      <input type="text" [(ngModel)]="activity.name" name="activityName{{i}}" />
+
+      <label>Description:</label>
+      <textarea id="description" [(ngModel)]="activity.description" name="activityDesc{{i}}"></textarea>
+
+      <label>From:</label>
+      <input type="time" [(ngModel)]="activity.startTime" name="activityStart{{i}}" />
+
+      <label>To:</label>
+      <input type="time" [(ngModel)]="activity.endTime" name="activityEnd{{i}}" />
+
+      <label>Location:</label>
+      <input type="text" [(ngModel)]="activity.location" name="activityLoc{{i}}" />
+
+      <button type="button" (click)="removeActivity(i)">Remove activity</button>
+    </div>
+
+    <button type="button" (click)="addActivity()">+ Add activity</button>
+
+    <hr />
+
+    <!-- Submit -->
+    <button type="submit">Create Event</button>
+  </form>
+</div>

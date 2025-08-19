@@ -4,7 +4,7 @@ import { AppComponent } from './app.component';
 import { EventsComponent } from './events/events.component';
 import { ProductsComponent } from './products/products.component';
 import { AllEventsComponent } from './all-events/all-events.component';
-import { AllProductsAndServicesComponent } from './all-products-and-services/all-products-and-services.component'; // Import komponenta
+import { AllProductsAndServicesComponent } from './all-products-and-services/all-products-and-services.component';
 import { AppRoutingModule } from './app.routes';
 import { HomeComponent } from './home/home.component';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +25,8 @@ import { SPPRegistrationComponent } from './spp-registration/spp-registration.co
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 import { LoginComponent } from './login/login.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
+import { EventCreateComponent } from './event-create/event-create.component';
+
 
 @NgModule({
   declarations: [
@@ -47,14 +49,14 @@ import { EventTypeManagementComponent } from './event-type-management/event-type
     SPPRegistrationComponent,
     EORegistrationComponent,
     LoginComponent,
-    EventTypeManagementComponent
+    EventTypeManagementComponent,
+    EventCreateComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule
-
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

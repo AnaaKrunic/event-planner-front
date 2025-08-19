@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EventTypeService } from '../event-type.service';
+import { CategoryService } from '../category.service';
+import { AuthService } from '../authservice.service';
 
 @Component({
   selector: 'app-event-type-management',
@@ -8,15 +10,23 @@ import { EventTypeService } from '../event-type.service';
 })
 export class EventTypeManagementComponent implements OnInit {
   eventTypes: any[] = [];
-  newEventType = { name: '', description: '', suggestedCategories: '' };
+  categories: any[] = [];
+
+  newEventType = { name: '', description: '', selectedCategoryIds: [] as number[] };
+
   editingEventType: any = null;
-
-  constructor(private eventTypeService: EventTypeService) {}
-
   showAddForm: boolean = false;
+
+  userRole: string | null = null;
+
+  constructor(private authService: AuthService, private eventTypeService: EventTypeService, private categoryService: CategoryService) {}
 
   ngOnInit(): void {
     this.loadEventTypes();
+    this.loadCategories();
+
+    const currentUser = this.authService.getCurrentUser();
+    this.userRole = currentUser?.role || null;
   }
 
   loadEventTypes(): void {
@@ -25,36 +35,66 @@ export class EventTypeManagementComponent implements OnInit {
     });
   }
 
+  loadCategories(): void {
+    this.categoryService.getAll().subscribe(data => {
+      this.categories = data;
+    });
+  }
+
+  onCategoryChange(categoryId: number, event: any, mode: 'new' | 'edit'): void {
+    const checked = event.target.checked;
+
+    if (mode === 'new') {
+      if (checked) {
+        this.newEventType.selectedCategoryIds.push(categoryId);
+      } else {
+        this.newEventType.selectedCategoryIds =
+          this.newEventType.selectedCategoryIds.filter(id => id !== categoryId);
+      }
+    }
+
+    if (mode === 'edit') {
+      if (checked) {
+        this.editingEventType.selectedCategoryIds.push(categoryId);
+      } else {
+        this.editingEventType.selectedCategoryIds =
+          this.editingEventType.selectedCategoryIds.filter((id: number) => id !== categoryId);
+      }
+    }
+  }
+
   addEventType(): void {
+    const selectedCategories = this.newEventType.selectedCategoryIds.map(
+      id => this.categories.find(c => c.id === id)
+    );
+
     const payload = {
       name: this.newEventType.name,
       description: this.newEventType.description,
-      suggestedCategories: this.newEventType.suggestedCategories
-        ? this.newEventType.suggestedCategories.split(',')
-            .map((id: string) => Number(id.trim()))
-        : []
+      suggestedCategories: selectedCategories
     };
 
     this.eventTypeService.create(payload).subscribe(() => {
-      this.newEventType = { name: '', description: '', suggestedCategories: '' };
+      this.newEventType = { name: '', description: '', selectedCategoryIds: [] };
       this.loadEventTypes();
     });
   }
 
   startEditing(eventType: any): void {
     this.editingEventType = { 
-      ...eventType, 
-      suggestedCategories: (eventType.suggestedCategories || []).join(", ") 
+      ...eventType,
+      selectedCategoryIds: eventType.suggestedCategories?.map((c: any) => c.id) || []
     };
   }
 
   saveEdit(): void {
+    const selectedCategories = this.editingEventType.selectedCategoryIds.map(
+      (id: number) => this.categories.find(c => c.id === id)
+    );
+
     const payload = {
       ...this.editingEventType,
-      suggestedCategories: this.editingEventType.suggestedCategories
-        ? this.editingEventType.suggestedCategories.split(',')
-            .map((id: string) => Number(id.trim()))
-        : []
+      suggestedCategories: selectedCategories
     };
 
     this.eventTypeService.update(this.editingEventType.id, payload).subscribe(() => {

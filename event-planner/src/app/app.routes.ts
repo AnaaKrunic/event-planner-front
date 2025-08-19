@@ -16,6 +16,7 @@ import {EventInvitationComponent} from './event-invitation/event-invitation.comp
 import {BookServiceComponent} from './book-service/book-service.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
+import { EventCreateComponent } from './event-create/event-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -34,7 +35,8 @@ export const routes: Routes = [
   { path: 'event-invitation', component: EventInvitationComponent },
   { path: 'book-service', component: BookServiceComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'admin/event-types', component: EventTypeManagementComponent }
+  { path: 'event-types', component: EventTypeManagementComponent },
+  { path: 'events/create', component: EventCreateComponent }
 ];
 
 @NgModule({
