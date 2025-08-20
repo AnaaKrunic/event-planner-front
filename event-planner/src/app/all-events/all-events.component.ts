@@ -16,7 +16,7 @@ export class AllEventsComponent implements OnInit {
   searchTerm: string = '';
   sortOption: string = 'name';
   filterEventTypes: string = 'all';
-  eventTypes: string[] = [];
+  eventTypes: any[] = [];
 
 
   // Paginacija

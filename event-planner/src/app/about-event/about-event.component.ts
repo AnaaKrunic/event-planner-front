@@ -1,8 +1,8 @@
-//student 1 implementira tacku 2.6 - detalji o dogadjaju
-
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { EventDTO } from '../models/event.dto';
+import * as L from 'leaflet';
 //import { WebSocketService } from './web-socket.service'; // Komentarisano, ako ne koristite WebSocket
 
 @Component({
@@ -11,10 +11,13 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./about-event.component.css']
 })
 export class AboutEventComponent implements OnInit {
-  event: any;
+  event!: EventDTO;
   isLoading: boolean = true;
   message: string = '';
   messages: string[] = [];
+
+  private map!: L.Map;
+  private marker!: L.Marker;
 
   constructor(
     private route: ActivatedRoute,
@@ -37,16 +40,41 @@ export class AboutEventComponent implements OnInit {
 
   fetchEventDetails(eventId: string): void {
     this.isLoading = true;
-    this.http.get<any>(`/api/events/${eventId}`).subscribe(
-      (data) => {
+    this.http.get<EventDTO>(`/api/events/${eventId}`).subscribe({
+      next: (data) => {
         this.event = data;
         this.isLoading = false;
+
+        if (this.event.location) {
+          setTimeout(() => {
+            this.initMap(this.event.location.latitude, this.event.location.longitude);
+          }, 0);
+        }
       },
-      (error) => {
-        console.error('Error fetching event details:', error);
+      error: (err) => {
+        console.error('Error fetching event details:', err);
         this.isLoading = false;
       }
-    );
+    });
+  }
+
+  private initMap(lat: number, lng: number): void {
+    if (this.map) {
+      this.map.remove();
+    }
+
+    this.map = L.map('map').setView([lat, lng], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(this.map);
+
+    const redPinIcon = L.icon({
+      iconUrl: 'assets/images/location-pin.png',
+      iconSize: [35, 40]
+    });
+
+    this.marker = L.marker([lat, lng], { icon: redPinIcon }).addTo(this.map);
   }
 
   // Komentarisano, ako ne koristite WebSocket
