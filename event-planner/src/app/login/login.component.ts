@@ -33,7 +33,8 @@ export class LoginComponent {
           this.authService.setCurrentUser({
             id: response.userId.toString(),
             name: response.email,
-            token: response.token
+            token: response.token,
+            role: response.role
           });
 
           this.router.navigate(['/']);

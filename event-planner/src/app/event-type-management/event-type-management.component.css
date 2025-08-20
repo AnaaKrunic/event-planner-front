@@ -17,7 +17,7 @@
 
 .form-section {
   margin-bottom: 30px;
-  padding: 15px;
+  padding: 10px;
   border: 1px solid #ddd;
   border-radius: 10px;
   background: #f9f9f9;
@@ -27,9 +27,18 @@
   margin-bottom: 15px;
   font-size: 1.2rem;
   color: #444;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s;
 }
 
-.form-section input {
+.form-section h3:hover {
+  color: #357ab8;
+}
+
+.form-section input,
+.add-form input,
+.event-type-item input {
   display: block;
   width: 100%;
   margin-bottom: 12px;
@@ -37,9 +46,11 @@
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
-.form-section button {
+.form-section button,
+.add-form button {
   padding: 10px 18px;
   background-color: #4a90e2;
   border: none;
@@ -48,10 +59,20 @@
   font-size: 0.95rem;
   cursor: pointer;
   transition: background-color 0.2s;
+  margin-top: 5px;
 }
 
-.form-section button:hover {
+.form-section button:hover,
+.add-form button:hover {
   background-color: #357ab8;
+}
+
+.list-section {
+  margin-bottom: 30px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #f9f9f9;
 }
 
 .list-section h3 {
@@ -99,59 +120,12 @@
 }
 
 .event-type-item button:nth-of-type(2):hover {
-  background-color: #004b64;
-}
-
-.event-type-item input {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-  padding: 8px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-}
-
-.toggle-add {
-  margin: 0;
-  font-size: 1rem;
-  color: #4a90e2;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.2s;
-}
-
-.toggle-add:hover {
-  color: #357ab8;
+  background-color: #00394b;
 }
 
 .add-form {
   margin-top: 15px;
   animation: expand 0.3s ease-out;
-}
-
-.add-form input {
-  display: block;
-  width: 100%;
-  margin-bottom: 12px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 0.95rem;
-}
-
-.add-form button {
-  padding: 10px 18px;
-  background-color: #4a90e2;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.add-form button:hover {
-  background-color: #357ab8;
 }
 
 @keyframes expand {

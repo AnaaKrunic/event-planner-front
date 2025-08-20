@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { AuthService } from '../authservice.service';
 
 @Component({
   selector: 'app-all-events',
@@ -15,7 +16,7 @@ export class AllEventsComponent implements OnInit {
   searchTerm: string = '';
   sortOption: string = 'name';
   filterEventTypes: string = 'all';
-  eventTypes: string[] = [];
+  eventTypes: any[] = [];
 
 
   // Paginacija
@@ -24,11 +25,16 @@ export class AllEventsComponent implements OnInit {
   totalPages: number = 0; // Ukupan broj stranica
   totalEvents: number = 0; // Ukupan broj događaja
 
-  constructor(private http: HttpClient) {}
+  userRole: string | null = null;
+
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.fetchAllEvents(); // Učitavanje događaja pri inicijalizaciji
     this.fetchEventTypes();
+
+    const currentUser = this.authService.getCurrentUser();
+    this.userRole = currentUser?.role || null;
   }
 
   fetchEventTypes(): void {

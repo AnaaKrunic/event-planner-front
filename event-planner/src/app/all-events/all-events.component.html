@@ -14,7 +14,7 @@
     <!-- Filter by category -->
     <select class="filter-select" [(ngModel)]="events" (change)="onFilterOrSortChange()">
       <option value="all">All Event Types</option>
-      <option *ngFor="let eventType of eventTypes" [value]="eventType">{{ eventType }}</option>
+      <option *ngFor="let eventType of eventTypes" [value]="eventType.id">{{ eventType.name }}</option>
     </select>
 
     <!-- Sortiranje po imenu ili datumu -->
@@ -22,6 +22,10 @@
       <option value="name">Sort by Name</option>
       <option value="date">Sort by Date</option>
     </select>
+
+    <div *ngIf="userRole === 'EventOrganizer'" class="add-event-btn"> 
+      <button [routerLink]="['/events/create']">Add Event</button> 
+    </div>
   </div>
 
   <!-- Prikaz loadera dok se podaci učitavaju -->
