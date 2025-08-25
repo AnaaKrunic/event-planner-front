@@ -4,6 +4,7 @@ import { EventService } from '../event.service';
 import { Router } from '@angular/router';
 import { EventTypeService } from '../event-type.service';
 import { LocationService } from '../location.service';
+import { AuthService } from '../authservice.service';
 
 @Component({
   selector: 'app-create-event',
@@ -17,7 +18,6 @@ export class EventCreateComponent implements OnInit {
 
   event: any = {
     eventTypeId: null,
-    categoryId: null,
     name: '',
     description: '',
     maxParticipants: null,
@@ -36,7 +36,8 @@ export class EventCreateComponent implements OnInit {
   private eventService: EventService,
   private eventTypeService: EventTypeService,
   private locationService: LocationService,
-  private router: Router
+  private router: Router,
+  private authService: AuthService
 ) {}
 
 
@@ -78,6 +79,9 @@ export class EventCreateComponent implements OnInit {
       return;
     }
 
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+
     const locationPayload = {
       name: this.event.name,
       address: this.event.address || '',
@@ -108,7 +112,8 @@ export class EventCreateComponent implements OnInit {
           endDate: startDateTime,
           locationId: createdLocation.id,
           eventTypeId: this.event.eventTypeId === 'all' ? null : this.event.eventTypeId,
-          agenda: mappedAgenda
+          agenda: mappedAgenda,
+          organizerId: currentUser.id
         };
 
         this.eventService.create(payload).subscribe({

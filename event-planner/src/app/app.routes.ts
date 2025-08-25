@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { EventType, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AllEventsComponent } from './all-events/all-events.component';
 import { AllProductsAndServicesComponent } from './all-products-and-services/all-products-and-services.component';
@@ -36,7 +36,8 @@ export const routes: Routes = [
   { path: 'book-service', component: BookServiceComponent },
   { path: 'profile', component: ProfileComponent },
   { path: 'event-types', component: EventTypeManagementComponent },
-  { path: 'events/create', component: EventCreateComponent }
+  { path: 'events/create', component: EventCreateComponent },
+  { path: 'my-events', component: AllEventsComponent }
 ];
 
 @NgModule({
