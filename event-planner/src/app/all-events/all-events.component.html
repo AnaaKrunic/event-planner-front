@@ -1,5 +1,6 @@
 <div class="all-events">
-  <h1>All Events</h1>
+  <h1 *ngIf="mode === 'all'">All Events</h1>
+  <h1 *ngIf="mode === 'my'">My Events</h1>
 
   <div class="controls">
     <!-- Polje za pretragu -->

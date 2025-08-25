@@ -43,7 +43,7 @@
         <br />
         Status: {{ et.active ? 'Active' : 'Inactive' }}
 
-        <button *ngIf="userRole === 'Admin'" (click)="startEditing(et)">Edit</button>
+        <button *ngIf="userRole === 'Admin' || userRole === 'SPProvider'" (click)="startEditing(et)">Edit</button>
         <button *ngIf="userRole === 'Admin'" (click)="toggleActive(et)">{{ et.active ? 'Deactivate' : 'Activate' }}</button>
       </div>
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AuthService } from '../authservice.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-all-events',
@@ -26,15 +27,29 @@ export class AllEventsComponent implements OnInit {
   totalEvents: number = 0; // Ukupan broj događaja
 
   userRole: string | null = null;
+  mode: 'all' | 'my' = 'all';
 
-  constructor(private authService: AuthService, private http: HttpClient) {}
+  constructor(private authService: AuthService, private http: HttpClient, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.fetchAllEvents(); // Učitavanje događaja pri inicijalizaciji
-    this.fetchEventTypes();
-
     const currentUser = this.authService.getCurrentUser();
     this.userRole = currentUser?.role || null;
+
+    this.route.url.subscribe((segments) => {
+      const path = segments.map(s => s.path).join('/');
+      this.mode = path === 'my-events' ? 'my' : 'all';
+      this.loadEvents();
+    });
+
+    this.fetchEventTypes();
+  }
+
+  loadEvents(): void {
+    if (this.mode === 'my') {
+      this.fetchMyEvents();
+    } else {
+      this.fetchAllEvents();
+    }
   }
 
   fetchEventTypes(): void {
@@ -50,18 +65,34 @@ export class AllEventsComponent implements OnInit {
   // Metoda za dohvat svih događaja
   fetchAllEvents(): void {
     this.isLoading = true;
-
     this.http.get<any[]>('/api/events').subscribe(
       (data) => {
-        console.log('Fetched events:', data);
-        this.events = Array.isArray(data) ? data : []; // Osigurajte da `this.events` bude niz
-        this.filteredEvents = [...this.events]; // Kopiranje podataka u `filteredEvents`
+        this.events = Array.isArray(data) ? data : [];
+        this.filteredEvents = [...this.events];
         this.isLoading = false;
       },
       (error) => {
         console.error('Error fetching events:', error);
-        this.events = []; // Postavite na prazan niz u slučaju greške
+        this.events = [];
         this.filteredEvents = [];
+        this.isLoading = false;
+      }
+    );
+  }
+
+  fetchMyEvents(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+
+    this.isLoading = true;
+    this.http.get<any[]>(`/api/events/my-events?organizerId=${currentUser.id}`).subscribe(
+      (data) => {
+        this.events = Array.isArray(data) ? data : [];
+        this.filteredEvents = [...this.events];
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching my events:', error);
         this.isLoading = false;
       }
     );
