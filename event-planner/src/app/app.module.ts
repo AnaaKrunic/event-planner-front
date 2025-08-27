@@ -15,9 +15,9 @@ import { EditServiceComponent } from './edit-service/editService.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificationsComponent } from './notifications/notifications.component';
-import {AboutEventComponent} from './about-event/about-event.component';
-import {EventInvitationComponent} from './event-invitation/event-invitation.component';
-import {BookServiceComponent} from './book-service/book-service.component';
+import { AboutEventComponent} from './about-event/about-event.component';
+import { EventInvitationComponent} from './event-invitation/event-invitation.component';
+import { BookServiceComponent} from './book-service/book-service.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
@@ -26,6 +26,9 @@ import { EORegistrationComponent } from './eo-registration/eo-registration.compo
 import { LoginComponent } from './login/login.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
+import { ACategoryComponent } from './a-category/a-category.component'; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 @NgModule({
@@ -50,13 +53,15 @@ import { EventCreateComponent } from './event-create/event-create.component';
     EORegistrationComponent,
     LoginComponent,
     EventTypeManagementComponent,
-    EventCreateComponent
+    EventCreateComponent,
+    ACategoryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
