@@ -1,0 +1,95 @@
+<div class="container">
+  <h2>Add Product</h2>
+
+  <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+
+    <!-- name -->
+    <div>
+      <label for="name">Name:</label>
+      <input type="text" id="name" [(ngModel)]="product.name" name="name" required />
+    </div>
+
+    <!-- description -->
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" [(ngModel)]="product.description" name="description"></textarea>
+    </div>
+
+    <!-- price -->
+    <div>
+      <label for="price">Price (RSD):</label>
+      <input type="number" id="price" [(ngModel)]="product.price" name="price" required />
+    </div>
+
+    <!-- discount -->
+    <div>
+      <label for="discount">Discount (%):</label>
+      <input type="number" id="discount" [(ngModel)]="product.discount" name="discount" min="0" max="100" />
+    </div>
+
+    <!-- availability -->
+    <div>
+      <label>Availability:</label>
+      <button type="button" (click)="toggleAvailability()">
+        {{ product.available ? 'Available' : 'Not available' }}
+      </button>
+    </div>
+
+    <!-- visibility -->
+    <div>
+      <label>Visibility:</label>
+      <button type="button" (click)="toggleVisibility()">
+        {{ product.visible ? 'Visible' : 'Hidden' }}
+      </button>
+    </div>
+
+    <!-- category -->
+    <div>
+      <label for="category">Category:</label>
+      <select id="category" [(ngModel)]="product.categoryId" name="category">
+        <option [ngValue]="null">-- Select category --</option>
+        <option *ngFor="let c of categories" [ngValue]="c.id">{{ c.name }}</option>
+      </select>
+    </div>
+
+    <!-- new category -->
+    <div>
+      <label for="newCategory">New Category (if not exists):</label>
+      <input type="text" id="newCategory" [(ngModel)]="product.newCategoryName" name="newCategory" />
+      <small *ngIf="product.newCategoryName">This will be pending until admin approval.</small>
+    </div>
+
+    <!-- event types -->
+    <div>
+      <label>Event Types:</label>
+      <div *ngFor="let type of eventTypes">
+        <input
+            type="checkbox"
+            [value]="type.id"
+            [(ngModel)]="selectedEventTypes[type.id]"
+            name="eventType{{ type.id }}"
+            (change)="updateEventTypes()"
+        />
+        {{ type.name }}
+      </div>
+    </div>
+
+    <!-- images -->
+    <div>
+      <label for="files">Images:</label>
+      <input type="file" id="files" (change)="onFileSelected($event)" multiple />
+
+      <ul>
+        <li *ngFor="let file of files; let i = index">
+          {{ file.name }}
+          <button type="button" (click)="removeFile(i)">Remove</button>
+        </li>
+      </ul>
+    </div>
+
+    <hr />
+
+    <!-- submit -->
+    <button type="submit">Create Product</button>
+  </form>
+</div>

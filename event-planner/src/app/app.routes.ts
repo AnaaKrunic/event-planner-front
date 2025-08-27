@@ -17,6 +17,9 @@ import {BookServiceComponent} from './book-service/book-service.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
+import { AllProductsComponent } from './all-products/all-products.component';
+import { AboutProductComponent } from './about-product/about-product.component';
+import { ProductCreateComponent } from './product-create/product-create.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,7 +40,11 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'event-types', component: EventTypeManagementComponent },
   { path: 'events/create', component: EventCreateComponent },
-  { path: 'my-events', component: AllEventsComponent }
+  { path: 'my-events', component: AllEventsComponent },
+  { path: 'all-products', component: AllProductsComponent },
+  { path: 'my-products', component: AllProductsComponent },
+  { path: 'product/:id', component: AboutProductComponent},
+  { path: 'products/create', component: ProductCreateComponent}
 ];
 
 @NgModule({

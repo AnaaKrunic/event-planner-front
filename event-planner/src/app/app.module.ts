@@ -26,7 +26,9 @@ import { EORegistrationComponent } from './eo-registration/eo-registration.compo
 import { LoginComponent } from './login/login.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
-
+import { AllProductsComponent } from './all-products/all-products.component';
+import { AboutProductComponent } from './about-product/about-product.component';
+import { ProductCreateComponent } from './product-create/product-create.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,10 @@ import { EventCreateComponent } from './event-create/event-create.component';
     EORegistrationComponent,
     LoginComponent,
     EventTypeManagementComponent,
-    EventCreateComponent
+    EventCreateComponent,
+    AllProductsComponent,
+    AboutProductComponent,
+    ProductCreateComponent
   ],
   imports: [
     BrowserModule,

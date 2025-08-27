@@ -1,0 +1,77 @@
+<div class="all-products">
+  <h1 *ngIf="mode === 'all'">All Products</h1>
+  <h1 *ngIf="mode === 'my'">My Products</h1>
+
+  <div class="controls">
+    <!-- Search -->
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Search products..."
+      [(ngModel)]="searchTerm"
+      (input)="onSearchTermChange()"
+    />
+
+    <!-- Filter by category -->
+    <select class="filter-select" [(ngModel)]="filterCategory" (change)="onFilterOrSortChange()">
+      <option value="all">All Categories</option>
+      <option *ngFor="let category of categories" [value]="category.id">
+        {{ category.name }}
+      </option>
+    </select>
+
+    <!-- Filter by availability -->
+    <select class="filter-select" [(ngModel)]="filterAvailability" (change)="onFilterOrSortChange()">
+      <option value="all">All</option>
+      <option value="true">Available</option>
+      <option value="false">Unavailable</option>
+    </select>
+
+    <!-- Sort -->
+    <select class="sort-select" [(ngModel)]="sortOption" (change)="onFilterOrSortChange()">
+      <option value="name">Sort by Name</option>
+      <option value="price">Sort by Price</option>
+    </select>
+
+    <!-- Button to add new product -->
+    <div *ngIf="userRole === 'SPProvider'" class="add-product-btn">
+      <button [routerLink]="['/products/create']">Add Product</button>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="loader">Loading products...</div>
+
+  <!-- Products grid -->
+  <div class="product-grid" *ngIf="!isLoading && filteredProducts.length > 0">
+    <div class="product-card" *ngFor="let product of filteredProducts">
+      <img [src]="product.imageURLs?.[0] || 'assets/images/default-product.jpg'" alt="{{ product.name }} Image" />
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.description }}</p>
+      <p><strong>Price:</strong> {{ product.price }} RSD</p>
+      <button class="details-btn" [routerLink]="['/product', product.id]">View Details</button>
+    </div>
+  </div>
+
+  <!-- Empty message -->
+  <div *ngIf="!isLoading && filteredProducts.length === 0" class="no-products">
+    No products available.
+  </div>
+
+  <!-- Pagination -->
+  <div class="pagination" *ngIf="!isLoading && totalPages > 1">
+    <button class="pagination-btn" [disabled]="currentPage === 0" (click)="goToPage(currentPage - 1)">
+      Previous
+    </button>
+
+    <span *ngFor="let page of [].constructor(totalPages); let i = index">
+      <button class="pagination-btn" [class.active]="i === currentPage" (click)="goToPage(i)">
+        {{ i + 1 }}
+      </button>
+    </span>
+
+    <button class="pagination-btn" [disabled]="currentPage === totalPages - 1" (click)="goToPage(currentPage + 1)">
+      Next
+    </button>
+  </div>
+</div>
