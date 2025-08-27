@@ -10,13 +10,14 @@ import { AddServiceComponent } from './add-service/addService.component';
 import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 import { EditServiceComponent } from './edit-service/editService.component';
-import {AboutEventComponent} from './about-event/about-event.component';
-import {AboutSolutionComponent} from './about-solution/about-solution.component';
-import {EventInvitationComponent} from './event-invitation/event-invitation.component';
-import {BookServiceComponent} from './book-service/book-service.component';
+import { AboutEventComponent} from './about-event/about-event.component';
+import { AboutSolutionComponent} from './about-solution/about-solution.component';
+import { EventInvitationComponent} from './event-invitation/event-invitation.component';
+import { BookServiceComponent} from './book-service/book-service.component';
 import { ProfileComponent } from './profile/profile.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
+import { ACategoryComponent } from './a-category/a-category.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -37,7 +38,8 @@ export const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'event-types', component: EventTypeManagementComponent },
   { path: 'events/create', component: EventCreateComponent },
-  { path: 'my-events', component: AllEventsComponent }
+  { path: 'my-events', component: AllEventsComponent },
+  { path: 'a-category', component: ACategoryComponent }
 ];
 
 @NgModule({
