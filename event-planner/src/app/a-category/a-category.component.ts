@@ -41,10 +41,23 @@ export class ACategoryComponent implements OnInit {
 
   addCategory(): void {
     this.categoryService
-      .create(this.newCategory).subscribe(() => {
-        this.newCategory = { name: '', description: '', isApprovedByAdmin: true };
-        this.showAddForm = false;
-        this.loadCategories();
+      .create(this.newCategory).subscribe({
+        next: () => {
+            this.loadCategories();
+        },
+        error: (err) => {
+          if (err.status === 400 && err.error) {
+          const messages = Object.values(err.error).join(', ');
+          this.snackBar.open("Validation failed: " + messages, undefined, {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+            panelClass: ['popup-toast']
+          });
+        } else {
+          this.snackBar.open("Unexpected error occurred", undefined, { duration: 5000, horizontalPosition: 'center', verticalPosition: 'top' });
+        }
+      }
     });
   }
 
@@ -77,10 +90,9 @@ export class ACategoryComponent implements OnInit {
     this.categoryService.delete(id).subscribe({
       next: () => {
         this.loadCategories();
-        this.snackBar.open("Category successfully deleted", undefined, { duration: 3000 });
       },
       error: () => {
-        this.snackBar.open("Unable to delete category as it is linked to other data", undefined, { duration: 5000 });
+        this.snackBar.open("Unable to delete category as it is linked to other data", undefined, { duration: 5000, horizontalPosition: 'center', verticalPosition: 'bottom' });
       }
     });
   }
