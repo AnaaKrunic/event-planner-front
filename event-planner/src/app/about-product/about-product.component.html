@@ -1,6 +1,6 @@
 <div class="product-container">
   <div class="product-header">
-    <h1>{{ product.name }}</h1>
+    <h1>{{ product?.name }}</h1>
     <p class="product-price">Price: {{ product.price }} RSD</p>
     <p *ngIf="product.discount > 0" class="product-discount">
       Discount: {{ product.discount }} %

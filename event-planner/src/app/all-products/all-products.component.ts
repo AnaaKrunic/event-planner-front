@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../authservice.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-all-products',
@@ -94,20 +95,26 @@ export class AllProductsComponent implements OnInit {
 
   // Search
   onSearchTermChange(): void {
-    if (this.searchTerm.trim() === '') {
+    const searchValue = this.searchTerm.trim();
+
+    if (searchValue === '') {
       this.fetchAllProducts();
-    } else {
-      let params = new HttpParams().set('name', this.searchTerm);
-      this.http.get<any>('/api/products/search', { params }).subscribe({
-        next: (resp) => {
-          this.products = resp || [];
-          this.filteredProducts = [...this.products];
-          this.totalPages = resp.totalPages;
-          this.currentPage = resp.number;
-        },
-        error: (err) => console.error('Error searching products:', err),
-      });
+      return;
     }
+
+    let params = new HttpParams().set('name', searchValue);
+
+    this.http.get<any[]>('/api/products/search', { params }).subscribe({
+      next: (resp) => {
+        this.products = resp || [];
+        this.filteredProducts = [...this.products];
+      },
+      error: (err) => {
+        console.error('Error searching products:', err);
+        this.products = [];
+        this.filteredProducts = [];
+      },
+    });
   }
 
   // Filtering + sorting

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-about-product',
@@ -24,8 +25,18 @@ export class AboutProductComponent implements OnInit {
   }
 
   fetchProductDetails(id: string): void {
-    this.http.get<any>(`/api/products/${id}`).subscribe({
+    this.http.get<any>(`${environment.apiUrl}/products/${id}`).subscribe({
       next: (data) => {
+        const BASE_URL = environment.apiUrl;
+        if (data.imageURLs && Array.isArray(data.imageURLs)) {
+          data.imageURLs = data.imageURLs.map((url: string) => {
+            if (!url.startsWith('http')) {
+              return `${BASE_URL}${url}`;
+            }
+            return url;
+          });
+        }
+
         this.product = data;
         this.isLoading = false;
       },

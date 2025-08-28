@@ -50,7 +50,9 @@
         class="delete-btn"
         (click)="deleteProduct(product.id)">✕</button>
 
-      <img [src]="product.imageURLs?.[0] || '../assets/images/default_product.png'" alt="{{ product.name }} Image" />
+      <img [src]="product.imageURLs?.[0] 
+                    ? 'http://localhost:8080/api' + product.imageURLs[0] 
+                    : '../assets/images/default_product.png'" alt="{{ product.name }} Image" />
       <h3>{{ product.name }}</h3>
       <p>{{ product.description }}</p>
       <p><strong>Price:</strong> {{ product.price }} RSD</p>
