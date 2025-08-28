@@ -3,3 +3,13 @@
 * {
   font-family: 'Arial', sans-serif; 
 }
+
+.mat-mdc-snack-bar-container.popup-toast {
+  position: fixed !important;
+  bottom: 20px !important;   
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 10000 !important; 
+  background-color: whitesmoke;
+}
+
