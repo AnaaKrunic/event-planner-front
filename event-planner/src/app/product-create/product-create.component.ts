@@ -24,8 +24,10 @@ export class ProductCreateComponent implements OnInit {
     visible: true,
     categoryId: null,
     newCategoryName: '',
+    newCategoryDescription: '',
     eventTypeIds: []
   };
+
 
   files: File[] = [];
 
@@ -73,6 +75,33 @@ export class ProductCreateComponent implements OnInit {
     const currentUser = this.authService.getCurrentUser();
     if (!currentUser) return;
 
+    // ako se kreira nova kategorija
+    if (this.product.newCategoryName && this.product.newCategoryDescription) {
+      const newCategory = {
+        name: this.product.newCategoryName,
+        description: this.product.newCategoryDescription,
+        isApprovedByAdmin: false
+      };
+
+      this.categoryService.create(newCategory).subscribe({
+        next: (createdCategory) => {
+          console.log("New category created:", createdCategory);
+
+          this.product.visible = false;
+
+          this.createProductRequest(currentUser.id, createdCategory.id);
+        },
+        error: (err) => {
+          console.error("Error creating category", err);
+        }
+      });
+
+    } else {
+      this.createProductRequest(currentUser.id, this.product.categoryId);
+    }
+  }
+
+  private createProductRequest(providerId: string, categoryId: number | null) {
     const dto = {
       name: this.product.name,
       description: this.product.description,
@@ -80,10 +109,9 @@ export class ProductCreateComponent implements OnInit {
       discount: this.product.discount,
       visible: this.product.visible,
       available: this.product.available,
-      providerId: currentUser.id,
-      categoryId: this.product.categoryId, // NULL za novu kategoriju POPRAVI
-      eventTypes: this.product.eventTypeIds,
-      newCategoryName: this.product.newCategoryName // ako backend podržava kreiranje pending kategorije
+      providerId: providerId,
+      categoryId: categoryId,
+      eventTypes: this.product.eventTypeIds
     };
 
     const formData = new FormData();

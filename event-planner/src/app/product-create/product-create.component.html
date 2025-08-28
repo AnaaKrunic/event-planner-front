@@ -36,7 +36,7 @@
     </div>
 
     <!-- visibility -->
-    <div>
+    <div *ngIf="!product.newCategoryName">
       <label>Visibility:</label>
       <button type="button" (click)="toggleVisibility()">
         {{ product.visible ? 'Visible' : 'Hidden' }}
@@ -56,7 +56,12 @@
     <div>
       <label for="newCategory">New Category (if not exists):</label>
       <input type="text" id="newCategory" [(ngModel)]="product.newCategoryName" name="newCategory" />
-      <small *ngIf="product.newCategoryName">This will be pending until admin approval.</small>
+    </div>
+
+    <div *ngIf="product.newCategoryName">
+      <label for="newCategoryDescription">New Category Description:</label>
+      <textarea id="newCategoryDescription" [(ngModel)]="product.newCategoryDescription" name="newCategoryDescription"></textarea>
+      <small>This category will be pending until admin approval. Your product will be hidden until then.</small>
     </div>
 
     <!-- event types -->

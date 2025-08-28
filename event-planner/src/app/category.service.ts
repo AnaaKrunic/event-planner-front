@@ -13,4 +13,8 @@ export class CategoryService {
   getAll(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
+
+  create(dto: any): Observable<any> {
+    return this.http.post<any>(this.apiUrl, dto);
+  }
 }

@@ -79,7 +79,7 @@ export class AllProductsComponent implements OnInit {
     if (!currentUser) return;
 
     this.isLoading = true;
-    this.http.get<any[]>(`/api/products/my?ownerId=${currentUser.id}`).subscribe({
+    this.http.get<any[]>(`/api/products/my-products?providerId=${currentUser.id}`).subscribe({
       next: (data) => {
         this.products = data || [];
         this.filteredProducts = [...this.products];
@@ -138,5 +138,21 @@ export class AllProductsComponent implements OnInit {
       this.currentPage = page;
       this.onFilterOrSortChange();
     }
+  }
+
+  deleteProduct(productId: number): void {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+
+    this.http.delete(`/api/products/${productId}`).subscribe({
+      next: () => {
+        // alert('Product deleted successfully!');
+        this.products = this.products.filter(p => p.id !== productId);
+        this.filteredProducts = this.filteredProducts.filter(p => p.id !== productId);
+      },
+      error: (err) => {
+        console.error('Error deleting product:', err);
+        alert('Failed to delete product. Please try again.');
+      }
+    });
   }
 }
