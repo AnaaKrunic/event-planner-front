@@ -29,6 +29,8 @@ import { EventCreateComponent } from './event-create/event-create.component';
 import { AllProductsComponent } from './all-products/all-products.component';
 import { AboutProductComponent } from './about-product/about-product.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -55,13 +57,15 @@ import { ProductCreateComponent } from './product-create/product-create.componen
     EventCreateComponent,
     AllProductsComponent,
     AboutProductComponent,
-    ProductCreateComponent
+    ProductCreateComponent,
+    EditProductComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

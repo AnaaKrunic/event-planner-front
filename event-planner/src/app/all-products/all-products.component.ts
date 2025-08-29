@@ -21,6 +21,11 @@ export class AllProductsComponent implements OnInit {
   filterAvailability = 'all';
   categories: any[] = [];
 
+  eventTypes: any[] = [];
+  filterEventType = 'all';
+  filterMinPrice: number | null = null;
+  filterMaxPrice: number | null = null;
+
   // Pagination
   currentPage = 0;
   pageSize = 10;
@@ -43,6 +48,7 @@ export class AllProductsComponent implements OnInit {
     });
 
     this.fetchCategories();
+    this.fetchEventTypes();
   }
 
   loadProducts(): void {
@@ -57,6 +63,13 @@ export class AllProductsComponent implements OnInit {
     this.http.get<any[]>('/api/categories').subscribe({
       next: (data) => (this.categories = data),
       error: (err) => console.error('Error fetching categories:', err),
+    });
+  }
+
+  fetchEventTypes(): void {
+    this.http.get<any[]>('/api/event-types').subscribe({
+      next: (data) => (this.eventTypes = data),
+      error: (err) => console.error('Error fetching event types:', err),
     });
   }
 
@@ -117,25 +130,42 @@ export class AllProductsComponent implements OnInit {
     });
   }
 
-  // Filtering + sorting
-  onFilterOrSortChange(): void {
-    let params = new HttpParams().set('sort', this.sortOption);
+  // Filtering
+  onFilterChange(): void {
+    let params = new HttpParams();
 
     if (this.filterCategory !== 'all') {
       params = params.set('categoryId', this.filterCategory);
     }
-    if (this.filterAvailability !== 'all') {
-      params = params.set('available', this.filterAvailability);
+
+    if (this.filterEventType !== 'all') {
+      params = params.set('eventTypeId', this.filterEventType);
     }
 
-    this.http.get<any>('/api/products/filter', { params }).subscribe({
+    if (this.filterAvailability !== 'all') {
+      params = params.set('isAvailable', this.filterAvailability);
+    }
+
+    if (this.filterMinPrice !== null) {
+      params = params.set('minPrice', this.filterMinPrice.toString());
+    }
+
+    if (this.filterMaxPrice !== null) {
+      params = params.set('maxPrice', this.filterMaxPrice.toString());
+    }
+
+    this.isLoading = true;
+
+    this.http.get<any[]>('/api/products/filter', { params }).subscribe({
       next: (resp) => {
         this.products = resp || [];
         this.filteredProducts = [...this.products];
-        this.totalPages = resp.totalPages;
-        this.currentPage = resp.number;
+        this.isLoading = false;
       },
-      error: (err) => console.error('Error filtering products:', err),
+      error: (err) => {
+        console.error('Error filtering products:', err);
+        this.isLoading = false;
+      },
     });
   }
 
@@ -143,7 +173,7 @@ export class AllProductsComponent implements OnInit {
   goToPage(page: number): void {
     if (page >= 0 && page < this.totalPages) {
       this.currentPage = page;
-      this.onFilterOrSortChange();
+      this.onFilterChange();
     }
   }
 

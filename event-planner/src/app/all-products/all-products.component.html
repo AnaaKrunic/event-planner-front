@@ -13,7 +13,7 @@
     />
 
     <!-- Filter by category -->
-    <select class="filter-select" [(ngModel)]="filterCategory" (change)="onFilterOrSortChange()">
+    <select class="filter-select" [(ngModel)]="filterCategory" (change)="onFilterChange()">
       <option value="all">All Categories</option>
       <option *ngFor="let category of categories" [value]="category.id">
         {{ category.name }}
@@ -21,17 +21,35 @@
     </select>
 
     <!-- Filter by availability -->
-    <select class="filter-select" [(ngModel)]="filterAvailability" (change)="onFilterOrSortChange()">
+    <select class="filter-select" [(ngModel)]="filterAvailability" (change)="onFilterChange()">
       <option value="all">All</option>
       <option value="true">Available</option>
       <option value="false">Unavailable</option>
     </select>
 
-    <!-- Sort -->
-    <select class="sort-select" [(ngModel)]="sortOption" (change)="onFilterOrSortChange()">
-      <option value="name">Sort by Name</option>
-      <option value="price">Sort by Price</option>
+    <!-- Filter by event type -->
+    <select class="filter-select" [(ngModel)]="filterEventType" (change)="onFilterChange()">
+      <option value="all">All Event Types</option>
+      <option *ngFor="let type of eventTypes" [value]="type.id">
+        {{ type.name }}
+      </option>
     </select>
+
+    <!-- Price range -->
+    <input
+      type="number"
+      class="price-input"
+      placeholder="Min price"
+      [(ngModel)]="filterMinPrice"
+      (input)="onFilterChange()"
+    />
+    <input
+      type="number"
+      class="price-input"
+      placeholder="Max price"
+      [(ngModel)]="filterMaxPrice"
+      (input)="onFilterChange()"
+    />
 
     <!-- Button to add new product -->
     <div *ngIf="userRole === 'SPProvider'" class="add-product-btn">
@@ -57,6 +75,12 @@
       <p>{{ product.description }}</p>
       <p><strong>Price:</strong> {{ product.price }} RSD</p>
       <button class="details-btn" [routerLink]="['/product', product.id]">View Details</button>
+      <button
+        *ngIf="mode === 'my'"
+        class="edit-btn"
+        [routerLink]="['/products/edit', product.id]">
+        Edit Product
+      </button>
     </div>
   </div>
 

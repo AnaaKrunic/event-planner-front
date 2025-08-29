@@ -20,6 +20,7 @@ import { EventCreateComponent } from './event-create/event-create.component';
 import { AllProductsComponent } from './all-products/all-products.component';
 import { AboutProductComponent } from './about-product/about-product.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -44,7 +45,8 @@ export const routes: Routes = [
   { path: 'all-products', component: AllProductsComponent },
   { path: 'my-products', component: AllProductsComponent },
   { path: 'product/:id', component: AboutProductComponent},
-  { path: 'products/create', component: ProductCreateComponent}
+  { path: 'products/create', component: ProductCreateComponent},
+  { path: 'products/edit/:id', component: EditProductComponent }
 ];
 
 @NgModule({
