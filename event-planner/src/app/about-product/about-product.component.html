@@ -1,0 +1,25 @@
+<div class="product-container">
+  <div class="product-header">
+    <h1>{{ product?.name }}</h1>
+    <p class="product-price">Price: {{ product.price }} RSD</p>
+    <p *ngIf="product.discount > 0" class="product-discount">
+      Discount: {{ product.discount }} %
+    </p>
+  </div>
+
+  <div class="product-description">
+    <h2>About Product</h2>
+    <p>{{ product.description }}</p>
+  </div>
+
+  <div class="product-details">
+    <p><strong>Available:</strong> {{ product.available ? 'Yes' : 'No' }}</p>
+    <p><strong>Category:</strong> {{ product.category?.name || 'Pending approval' }}</p>
+    <p><strong>Event types:</strong> {{ eventTypeNames }}</p>
+  </div>
+
+  <div class="product-images">
+    <h2>Images</h2>
+    <img *ngFor="let url of product.imageURLs" [src]="url" alt="{{ product.name }}" />
+  </div>
+</div>

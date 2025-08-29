@@ -14,12 +14,13 @@
 
   <div class="event-details">
     <!-- Event Location and Max Participants -->
-    <p><strong>Location:</strong> {{ event.location.name }}</p>
     <p><strong>Max. participants:</strong> {{ event.participants }}</p>
+    <br>
+    <p><strong>Location:</strong> {{ event.location.address }}</p>
   </div>
 
-  <div class="event-map">
-    <!-- Event Map Image (assuming event has a map URL) -->
-    <img *ngIf="event.mapUrl" [src]="event.mapUrl" alt="Event Location">
+  <div class="event-map" *ngIf="event?.location">
+    
+    <div id="map" style="height: 300px; width: 100%;"></div>
   </div>
 </div>
