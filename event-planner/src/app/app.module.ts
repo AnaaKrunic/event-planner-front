@@ -24,6 +24,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 import { LoginComponent } from './login/login.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
 import { AllProductsComponent } from './all-products/all-products.component';
@@ -55,6 +56,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SPPRegistrationComponent,
     EORegistrationComponent,
     LoginComponent,
+    ChangePasswordComponent,
     EventTypeManagementComponent,
     EventCreateComponent,
     AllProductsComponent,
