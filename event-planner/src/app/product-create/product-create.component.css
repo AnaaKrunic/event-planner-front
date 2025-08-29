@@ -1,0 +1,144 @@
+.container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+form div {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #444;
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  background: #007bff;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s, transform 0.1s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button[type="button"] {
+  background: #28a745;
+}
+
+button[type="button"]:hover {
+  background: #1e7e34;
+}
+
+button[disabled] {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* specijalno za toggle dugmiće */
+.toggle-btn {
+  background: #6c757d;
+}
+
+.toggle-btn:hover {
+  background: #5a6268;
+}
+
+/* lista fajlova (slike) */
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* remove dugme kod fajlova */
+ul li button {
+  background: #dc3545;
+  padding: 4px 10px;
+  font-size: 12px;
+  margin-top: 0;
+}
+
+ul li button:hover {
+  background: #c82333;
+}
+
+/* event types checkboxes */
+.event-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.event-types label {
+  display: flex;
+  align-items: center;
+  background: #f1f3f5;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.event-types input {
+  margin-right: 8px;
+}

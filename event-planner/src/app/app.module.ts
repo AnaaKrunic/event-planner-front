@@ -26,10 +26,13 @@ import { EORegistrationComponent } from './eo-registration/eo-registration.compo
 import { LoginComponent } from './login/login.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
+import { AllProductsComponent } from './all-products/all-products.component';
+import { AboutProductComponent } from './about-product/about-product.component';
+import { ProductCreateComponent } from './product-create/product-create.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ACategoryComponent } from './a-category/a-category.component'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
 
 @NgModule({
   declarations: [
@@ -54,6 +57,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginComponent,
     EventTypeManagementComponent,
     EventCreateComponent,
+    AllProductsComponent,
+    AboutProductComponent,
+    ProductCreateComponent,
+    EditProductComponent,
     ACategoryComponent
   ],
   imports: [
@@ -61,6 +68,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule
   ],
   providers: [
