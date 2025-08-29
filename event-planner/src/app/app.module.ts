@@ -15,9 +15,9 @@ import { EditServiceComponent } from './edit-service/editService.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificationsComponent } from './notifications/notifications.component';
-import {AboutEventComponent} from './about-event/about-event.component';
-import {EventInvitationComponent} from './event-invitation/event-invitation.component';
-import {BookServiceComponent} from './book-service/book-service.component';
+import { AboutEventComponent} from './about-event/about-event.component';
+import { EventInvitationComponent} from './event-invitation/event-invitation.component';
+import { BookServiceComponent} from './book-service/book-service.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ProfileComponent } from './profile/profile.component';
@@ -31,6 +31,8 @@ import { AboutProductComponent } from './about-product/about-product.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ACategoryComponent } from './a-category/a-category.component'; 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -58,14 +60,16 @@ import { ReactiveFormsModule } from '@angular/forms';
     AllProductsComponent,
     AboutProductComponent,
     ProductCreateComponent,
-    EditProductComponent
+    EditProductComponent,
+    ACategoryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

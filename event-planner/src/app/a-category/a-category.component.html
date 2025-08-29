@@ -1,0 +1,59 @@
+<div class="category-management">
+  <h2>Manage Categories</h2>
+
+  <!-- add new -->
+  <div class="form-section" *ngIf="userRole === 'Admin'">
+    <h3 (click)="showAddForm = !showAddForm" class="toggle-add">
+      + Add Category
+    </h3>
+
+    <div class="add-form" *ngIf="showAddForm">
+      <input [(ngModel)]="newCategory.name" placeholder="Name" />
+      <input [(ngModel)]="newCategory.description" placeholder="Description" />
+
+      <button (click)="addCategory()">Add</button>
+    </div>
+  </div>
+
+  <!-- list approved categories -->
+  <div class="list-section">
+    <h3>Existing Categories</h3>
+    <div *ngFor="let cat of categories" class="category-item">
+      <div *ngIf="editingCategory?.id !== cat.id">
+        <strong>{{ cat.name }}</strong> - {{ cat.description }}
+        <br />
+        <button *ngIf="userRole === 'Admin'" (click)="startEditing(cat)">Edit</button>
+        <button *ngIf="userRole === 'Admin'" (click)="deleteCategory(cat.id)">Delete</button>
+      </div>
+
+      <!-- edit mode -->
+      <div *ngIf="editingCategory?.id === cat.id">
+        <input [(ngModel)]="editingCategory.name" placeholder="Name" />
+        <input [(ngModel)]="editingCategory.description" placeholder="Description" />
+        <button (click)="saveEdit()">Save</button>
+        <button (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- list suggestions (unapproved categories) -->
+  <div class="list-section" *ngIf="userRole === 'Admin'">
+    <h3>Suggested Categories - pending approval</h3>
+    <div *ngFor="let sug of suggestions" class="category-item">
+      <div *ngIf="editingCategory?.id !== sug.id">
+        <strong>{{ sug.name }}</strong> - {{ sug.description }}
+        <br />
+        <button *ngIf="userRole === 'Admin'" (click)="approveSuggestion(sug)">Approve</button>
+        <button *ngIf="userRole === 'Admin'" (click)="startEditing(sug)">Edit & Approve</button>
+        <button *ngIf="userRole === 'Admin'" (click)="deleteCategory(sug.id)">Deny</button>
+      </div>
+
+      <div *ngIf="editingCategory?.id === sug.id">
+        <input [(ngModel)]="editingCategory.name" placeholder="Name" />
+        <input [(ngModel)]="editingCategory.description" placeholder="Description" />
+        <button (click)="saveSuggestionEdit()">Save & Approve</button>
+        <button (click)="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
