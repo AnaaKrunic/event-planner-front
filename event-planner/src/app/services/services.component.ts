@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 export interface Service {
   name: string;
@@ -14,20 +15,25 @@ export interface Service {
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css'],
 })
-
 export class ServicesComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private fb: FormBuilder) {}
 
   selectedCategory: string = '';
   selectedEventType: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
-  searchTerm: string = ''
+  searchTerm: string = '';
   selectedAvailable: boolean = false;
   selectedNotAvailable: boolean = false;
+
+  // range slider vrednosti
   selectedMinPrice = 0;
   selectedMaxPrice = 15000;
+
+  // Angular Material slider group
+  // priceRangeGroup!: FormGroup;
+
   thumbsize = 14;
   
   allServices: Service[] = [
@@ -120,6 +126,19 @@ export class ServicesComponent implements OnInit {
   displayedServices: Service[] = [];
 
   ngOnInit(): void {
+    // // inicijalizuj formu za slider
+    // this.priceRangeGroup = this.fb.group({
+    //   startPrice: [this.selectedMinPrice],
+    //   endPrice: [this.selectedMaxPrice]
+    // });
+
+    // // slušaj promene slidera
+    // this.priceRangeGroup.valueChanges.subscribe(val => {
+    //   this.selectedMinPrice = val.startPrice;
+    //   this.selectedMaxPrice = val.endPrice;
+    //   this.filterAndSearch();
+    // });
+
     this.filterAndSearch();
   }
 
@@ -153,7 +172,7 @@ export class ServicesComponent implements OnInit {
     }
   
     filteredServices = filteredServices.filter(
-      (service) => service.price <= this.selectedMaxPrice
+      (service) => service.price >= this.selectedMinPrice && service.price <= this.selectedMaxPrice
     );
   
     filteredServices = filteredServices.filter(

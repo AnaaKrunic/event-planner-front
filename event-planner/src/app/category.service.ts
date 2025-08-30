@@ -35,6 +35,10 @@ export class CategoryService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
+  getAllApproved(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/approved`);
+  }
+
   create(category: CreateCategory): Observable<Category> {
     return this.http.post<Category>(this.apiUrl, category);
   }

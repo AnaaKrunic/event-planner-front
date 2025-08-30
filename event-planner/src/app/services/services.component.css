@@ -1,188 +1,217 @@
 .services-container {
-    width: 90%;
-    margin: auto;
-    font-family: Arial, sans-serif;
+  width: 90%;
+  margin: auto;
+  font-family: Arial, sans-serif;
 }
-  
+
 h1 {
-    text-align: left;
-    margin-bottom: 0;
+  text-align: left;
+  margin-bottom: 0;
 }
-  
+
 .filters {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 75px;
+
 }
 
 input[type=text] {
-    width: 255px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    /* background-image: url('searchicon.png'); */
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
+  width: 255px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  padding: 12px 20px 12px 10px;
+  transition: width 0.4s ease-in-out;
 }
 
 .filters select,
 .filters .availability,
 .filters .price-slider {
-    display: flex;
-    gap: 10px;
+  display: flex;
+}
+
+.filters select,
+.filters .availability,
+.filters {
+  gap: 10px;
 }
 
 .filters select {
-    font-size: 14px;
-    width: 255px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-
+  width: 255px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  padding: 12px 20px 12px 10px;
+  transition: width 0.4s ease-in-out;
 }
 
 .availability label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: gray; 
-    font-size: 16px;
-    cursor: pointer;
-    transition: color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: gray; 
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
 .availability label.active {
-    color: black; 
+  color: black; 
 }
 
 .available {
-    margin-left: 61%;
+  margin-left: 60%;
 }
 
 .price {
     margin-left: 30%;
 }
 
-.price-slider {
-    width: 300px;
-}
-
 .priceRange {
-    margin-left: 87.75%;
-    padding-bottom: 20px;
+    margin-left: 85%;
 }
 
-.price-slider input {
-    width: 100%;
+.price-slider {
+  position: relative;
+  width: 320px;
+  margin: 20px auto;
+  padding: 0 8px; 
+}
+
+::ng-deep .price-slider .mdc-slider__track--inactive {
+  height: 6px !important;
+  background-color: #ccc !important;
+  border-radius: 3px !important;
+}
+
+::ng-deep .price-slider .mdc-slider__track--active_fill {
+  height: 6px !important;
+  background-color: #000 !important;
+  border-radius: 3px !important;
+}
+
+::ng-deep .price-slider .mdc-slider__thumb {
+  width: 18px !important;
+  height: 18px !important;
+  background: #000 !important;
+  border-radius: 50% !important;
+  border: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3) !important;
+  top: 20px;
+  margin-top: -4px !important;
+  position: relative !important; 
+}
+
+::ng-deep .price-slider .mdc-slider__thumb:first-of-type {
+  left: 0px !important;
+}
+
+::ng-deep .price-slider .mdc-slider__thumb:hover {
+  background: #222 !important;
+}
+
+::ng-deep .price-slider .mdc-slider__value-indicator {
+  display: none !important;
 }
 
 .services-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
 }
 
 .service-card {
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    text-align: center;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  text-align: center;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .service-card img {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 10px;
 }
 
 .service-card h3 {
-    font-size: 16px;
-    margin-bottom: 5px;
+  font-size: 16px;
+  margin-bottom: 5px;
 }
 
 .service-card p {
-    font-size: 14px;
-    margin: 5px 0;
+  font-size: 14px;
+  margin: 5px 0;
 }
 
 .pagination {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    right: 0.000%;
-    left: 0%;
-    width: 100%; 
-    background-color: transparent; 
-    text-align: center;
-    padding: 10px 0;
-    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); 
-    z-index: 10; 
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    margin-top: 20px;
-    margin-right: 50px;
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%; 
+  background-color: transparent; 
+  text-align: center;
+  padding: 10px 0;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); 
+  z-index: 10; 
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 20px;
 }
 
 .pagination button {
-    padding: 5px 10px;
-    border: none;
-    background-color: grey;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  background-color: grey;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 .pagination button.active {
-    background-color:black;
+  background-color: black;
 }
 
 .pagination button[disabled] {
-    background-color: #ccc;
-    cursor: not-allowed;
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .details {
-    padding: 5px 10px;
-    border: none;
-    background-color: #d7d7d7;
-    color: black;
-    border-radius: 4px;
-    cursor: pointer;
+  padding: 5px 10px;
+  border: none;
+  background-color: #d7d7d7;
+  color: black;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 #add {
-    position: fixed;
-    bottom: 20px; 
-    right: 20px; 
-    background-color: black; 
-    color: white;
-    border: none;
-    border-radius: 50%; 
-    width: 50px;
-    height: 50px; 
-    font-size: 24px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    z-index: 1000; 
+  position: fixed;
+  bottom: 20px; 
+  right: 20px; 
+  background-color: black; 
+  color: white;
+  border: none;
+  border-radius: 50%; 
+  width: 50px;
+  height: 50px; 
+  font-size: 24px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 1000; 
 }
 
 #add:hover {
-    background-color: grey; 
+  background-color: grey; 
 }

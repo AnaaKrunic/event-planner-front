@@ -1,0 +1,47 @@
+<div class="edit-container" *ngIf="editForm">
+  <h2>Edit Product</h2>
+
+  <form [formGroup]="editForm" (ngSubmit)="saveChanges()">
+    <input type="text" placeholder="Name" formControlName="name" />
+    <textarea placeholder="Description" formControlName="description"></textarea>
+    <input type="number" placeholder="Price" formControlName="price" />
+    <input type="number" placeholder="Discount (%)" formControlName="discount" />
+
+    <label>
+      <input type="checkbox" formControlName="isAvailable" /> Available
+    </label>
+
+    <!-- Event types kao kod kreiranja -->
+    <div class="event-types">
+      <label>Event Types:</label>
+      <div *ngFor="let type of eventTypes">
+        <input
+          type="checkbox"
+          [checked]="selectedEventTypes.includes(type.id)"
+          (change)="toggleEventType(type.id)"
+        />
+        {{ type.name }}
+      </div>
+    </div>
+
+    <!-- Prikaz trenutnih slika -->
+    <div class="current-images" *ngIf="product?.imageURLs?.length">
+      <h3>Current Images</h3>
+      <div class="image-list">
+        <div *ngFor="let img of product.imageURLs; let i = index" class="image-item">
+          <img [src]="'http://localhost:8080/api' + img" alt="Product Image" />
+          <button type="button" (click)="removeExistingImage(i)">Remove</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload novih slika -->
+    <label for="files">Upload new images:</label>
+    <input id="files" type="file" multiple (change)="onFileChange($event)" />
+
+    <div class="form-buttons">
+      <button type="submit" [disabled]="editForm.invalid">Save Changes</button>
+      <button type="button" class="cancel" (click)="cancelEdit()">Cancel</button>
+    </div>
+  </form>
+</div>
