@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../authservice.service';
 import { environment } from '../../environments/environment';
+import { CategoryService } from '../category.service';
 
 @Component({
   selector: 'app-all-products',
@@ -35,7 +36,10 @@ export class AllProductsComponent implements OnInit {
   userRole: string | null = null;
   mode: 'all' | 'my' = 'all';
 
-  constructor(private authService: AuthService, private http: HttpClient, private route: ActivatedRoute) {}
+  constructor(private authService: AuthService, 
+    private http: HttpClient, 
+    private route: ActivatedRoute,
+    private categoryService: CategoryService) {}
 
   ngOnInit(): void {
     const currentUser = this.authService.getCurrentUser();
@@ -60,7 +64,7 @@ export class AllProductsComponent implements OnInit {
   }
 
   fetchCategories(): void {
-    this.http.get<any[]>('/api/categories').subscribe({
+    this.categoryService.getAllApproved().subscribe({
       next: (data) => (this.categories = data),
       error: (err) => console.error('Error fetching categories:', err),
     });
