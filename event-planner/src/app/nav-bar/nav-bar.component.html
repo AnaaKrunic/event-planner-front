@@ -6,6 +6,8 @@
       <li *ngIf="user?.role === 'EventOrganizer'">
         <a routerLink="/my-events">My Events</a>
       </li>
+      <li *ngIf="user?.role === 'SPProvider'">
+        <a routerLink="/services">My Services</a>
       <li><a routerLink="/event-types">Event Types</a></li>
       <li><a routerLink="/a-category">Categories</a></li>
       <li><a routerLink="/calendar">Calendar</a></li>

@@ -28,6 +28,8 @@ import { EventTypeManagementComponent } from './event-type-management/event-type
 import { EventCreateComponent } from './event-create/event-create.component';
 import { ACategoryComponent } from './a-category/a-category.component'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSliderModule } from '@angular/material/slider';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -61,7 +63,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatSliderModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
