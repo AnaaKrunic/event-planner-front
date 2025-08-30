@@ -26,6 +26,10 @@ import { EORegistrationComponent } from './eo-registration/eo-registration.compo
 import { LoginComponent } from './login/login.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
+// import { AllProductsComponent } from './all-products/all-products.component';
+// import { AboutProductComponent } from './about-product/about-product.component';
+// import { ProductCreateComponent } from './product-create/product-create.component';
+// import { EditProductComponent } from './edit-product/edit-product.component';
 import { ACategoryComponent } from './a-category/a-category.component'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 

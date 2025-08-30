@@ -43,7 +43,8 @@ export class ACategoryComponent implements OnInit {
     this.categoryService
       .create(this.newCategory).subscribe({
         next: () => {
-            this.loadCategories();
+          this.newCategory = { name: '', description: '', isApprovedByAdmin: true };
+          this.loadCategories();
         },
         error: (err) => {
           if (err.status === 400 && err.error) {
