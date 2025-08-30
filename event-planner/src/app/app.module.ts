@@ -24,14 +24,18 @@ import { ProfileComponent } from './profile/profile.component';
 import { SPPRegistrationComponent } from './spp-registration/spp-registration.component';
 import { EORegistrationComponent } from './eo-registration/eo-registration.component';
 import { LoginComponent } from './login/login.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 import { EventTypeManagementComponent } from './event-type-management/event-type-management.component';
 import { EventCreateComponent } from './event-create/event-create.component';
+import { AllProductsComponent } from './all-products/all-products.component';
+import { AboutProductComponent } from './about-product/about-product.component';
+import { ProductCreateComponent } from './product-create/product-create.component';
+import { EditProductComponent } from './edit-product/edit-product.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ACategoryComponent } from './a-category/a-category.component'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { ReactiveFormsModule } from '@angular/forms';
-
-
 
 @NgModule({
   declarations: [
@@ -54,8 +58,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     SPPRegistrationComponent,
     EORegistrationComponent,
     LoginComponent,
+    ChangePasswordComponent,
     EventTypeManagementComponent,
     EventCreateComponent,
+    AllProductsComponent,
+    AboutProductComponent,
+    ProductCreateComponent,
+    EditProductComponent,
     ACategoryComponent
   ],
   imports: [

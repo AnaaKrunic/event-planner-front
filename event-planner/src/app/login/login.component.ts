@@ -41,7 +41,8 @@ export class LoginComponent {
         },
         error: (err) => {
           console.error('Login error:', err);
-          alert(err.error?.message || 'Invalid credentials');
+          const message = err.error?.message || 'Invalid credentials';
+          alert(message);
         }
       });
   }
