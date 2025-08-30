@@ -42,7 +42,7 @@ export class ProductCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.categoryService.getAll().subscribe(data => {
+    this.categoryService.getAllApproved().subscribe(data => {
       this.categories = data;
     });
 

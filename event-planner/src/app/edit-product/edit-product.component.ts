@@ -86,7 +86,6 @@ export class EditProductComponent implements OnInit {
       imageURLs: this.product.imageURLs.filter((url: string) => !this.removedImages.includes(url))
     };
 
-    dtoValue['visible'] = dtoValue['isVisible'];
     dtoValue['available'] = dtoValue['isAvailable'];
     delete dtoValue['isVisible'];
     delete dtoValue['isAvailable'];
