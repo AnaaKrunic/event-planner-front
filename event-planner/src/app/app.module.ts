@@ -31,7 +31,6 @@ import { AllProductsComponent } from './all-products/all-products.component';
 import { AboutProductComponent } from './about-product/about-product.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { ACategoryComponent } from './a-category/a-category.component'; 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
