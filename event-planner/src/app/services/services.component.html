@@ -3,8 +3,6 @@
    <div>
       <div class="available">
          <label>Availability:</label>
-      <!-- </div>
-      <div> -->
          <label class="price">Price Range:</label>
       </div>
    </div>
@@ -12,17 +10,17 @@
       <input type="text" name="search" placeholder="Search.." [(ngModel)]="searchTerm"(input)="filterAndSearch()"/>
       <select [(ngModel)]="selectedCategory" (change)="filterAndSearch()">
          <option value="">Category</option>
-         <option value="Entertainment">Entertainment</option>
+         <!-- <option value="Entertainment">Entertainment</option>
          <option value="Catering">Catering</option>
          <option value="Decoration">Decoration</option>
-         <option value="Photography">Photography</option>
+         <option value="Photography">Photography</option> -->
       </select>
       <select [(ngModel)]="selectedEventType" (change)="filterAndSearch()">
          <option value="">Event Type</option>
-         <option value="Birthday">Birthday</option>
+         <!-- <option value="Birthday">Birthday</option>
          <option value="Wedding">Wedding</option>
          <option value="Engage">Engage</option>
-         <option value="Anniversary">Anniversary</option>
+         <option value="Anniversary">Anniversary</option> -->
       </select>
       <div class="availability">
          <label [ngClass]="{ 'active': selectedAvailable }">
@@ -43,7 +41,6 @@
       <div class="price-slider">
         <mat-slider class="price-slider"
             min="0"
-            max="15000"
             step="100"
             discrete>
             <input matSliderStartThumb [(ngModel)]="selectedMinPrice" aria-label="Minimum Price" />

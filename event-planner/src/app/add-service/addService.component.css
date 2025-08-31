@@ -164,7 +164,7 @@ h1 {
 }
 
 #hour {
-  margin-left: 120px;
+  margin-left: 50px;
 }
 
 #hours, #minutes {
@@ -210,8 +210,9 @@ label[for="reservationDue"], label[for="cancellationDue"] {
 }
 
 #due {
-  margin-left: 12.5%;
-}
+  /* margin-left: 30px; */
+  padding-left: 5%;
+ }
 
 .popup {
   position: fixed;

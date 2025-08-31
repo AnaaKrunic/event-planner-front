@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { ServiceService } from '../service.service';
 
 export interface Service {
   name: string;
@@ -17,7 +18,7 @@ export interface Service {
 })
 export class ServicesComponent implements OnInit {
 
-  constructor(private router: Router, private fb: FormBuilder) {}
+  constructor(private router: Router, private fb: FormBuilder, private serviceService: ServiceService) {}
 
   selectedCategory: string = '';
   selectedEventType: string = '';
@@ -26,120 +27,23 @@ export class ServicesComponent implements OnInit {
   searchTerm: string = '';
   selectedAvailable: boolean = false;
   selectedNotAvailable: boolean = false;
-
-  // range slider vrednosti
   selectedMinPrice = 0;
   selectedMaxPrice = 15000;
-
-  // Angular Material slider group
-  // priceRangeGroup!: FormGroup;
-
   thumbsize = 14;
-  
-  allServices: Service[] = [
-    {
-      name: 'Service 1',
-      price: 1250,
-      category: 'Entertainment',
-      serviceEventType: ['Wedding', 'Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 2',
-      price: 3200,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 3',
-      price: 500,
-      category: 'Entertainment',
-      serviceEventType: ['Birthday'],
-      availability: false,
-    },
-    {
-      name: 'Service 4',
-      price: 3000,
-      category: 'Catering',
-      serviceEventType: ['Wedding', 'Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 5',
-      price: 6000,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 6',
-      price: 8000,
-      category: 'Entertainment',
-      serviceEventType: ['Birthday'],
-      availability: false,
-    },
-    {
-      name: 'Service 7',
-      price: 2000,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 8',
-      price: 7500,
-      category: 'Catering',
-      serviceEventType: ['Wedding', 'Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 9',
-      price: 3000,
-      category: 'Entertainment',
-      serviceEventType: ['Birthday'],
-      availability: false,
-    },
-    {
-      name: 'Service 12',
-      price: 3000,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 10',
-      price: 1200,
-      category: 'Catering',
-      serviceEventType: ['Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 11',
-      price: 200,
-      category: 'Entertainment',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    }
-  ];
+  allServices: Service[] = [];
 
   displayedServices: Service[] = [];
 
   ngOnInit(): void {
-    // // inicijalizuj formu za slider
-    // this.priceRangeGroup = this.fb.group({
-    //   startPrice: [this.selectedMinPrice],
-    //   endPrice: [this.selectedMaxPrice]
-    // });
-
-    // // slušaj promene slidera
-    // this.priceRangeGroup.valueChanges.subscribe(val => {
-    //   this.selectedMinPrice = val.startPrice;
-    //   this.selectedMaxPrice = val.endPrice;
-    //   this.filterAndSearch();
-    // });
-
-    this.filterAndSearch();
+    this.serviceService.getAll().subscribe({
+      next: (data) => {
+        this.allServices = data;
+        this.filterAndSearch();
+      },
+      error: (err) => {
+        console.error("Error fetching services:", err);
+      }
+    });
   }
 
   filterAndSearch(): void {
