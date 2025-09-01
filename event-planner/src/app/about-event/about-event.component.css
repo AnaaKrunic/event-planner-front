@@ -96,3 +96,10 @@
     max-width: 100%;
   }
 }
+
+.fa-heart {
+  transition: transform 0.2s;
+}
+.fa-heart:hover {
+  transform: scale(1.2);
+}
