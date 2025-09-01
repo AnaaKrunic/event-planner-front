@@ -1,1 +1,22 @@
-<p>favorite-events works!</p>
+<div class="favorite-events">
+  <h1>My Favorite Events</h1>
+
+  <div *ngIf="isLoading" class="loader">
+    Loading favorite events...
+  </div>
+
+  <div class="event-grid" *ngIf="!isLoading && favoriteEvents.length > 0">
+    <div class="event-card" *ngFor="let event of favoriteEvents">
+      <h3>{{ event.name }}</h3>
+      <p>{{ event.description }}</p>
+      <p><strong>Date:</strong> {{ event.startDate | date: 'longDate' }}</p>
+      <button class="details-btn" [routerLink]="['/event', event.id]">
+        View Details
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && favoriteEvents.length === 0" class="no-events">
+    You have no favorite events yet.
+  </div>
+</div>

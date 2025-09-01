@@ -1,0 +1,74 @@
+.favorite-events {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.favorite-events h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.loader {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  margin: 20px 0;
+}
+
+.event-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.event-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.event-card h3 {
+  font-size: 1.2rem;
+  color: #222;
+  margin: 10px 0;
+}
+
+.event-card p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+.details-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 10px;
+}
+
+.details-btn:hover {
+  background-color: #0056b3;
+}
+
+.no-events {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #777;
+  margin-top: 20px;
+}
