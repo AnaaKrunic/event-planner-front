@@ -3,6 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { EventDTO } from '../models/event.dto';
 import * as L from 'leaflet';
+import { AuthService } from '../authservice.service';
+import { environment } from '../../environments/environment';
 //import { WebSocketService } from './web-socket.service'; // Komentarisano, ako ne koristite WebSocket
 
 @Component({
@@ -16,12 +18,17 @@ export class AboutEventComponent implements OnInit {
   message: string = '';
   messages: string[] = [];
 
+  userId: string | null = null;
+
+  isFavorite = false;
+
   private map!: L.Map;
   private marker!: L.Marker;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
+    private authService: AuthService
     //private webSocketService: WebSocketService // Komentarisano, ako ne koristite WebSocket
   ) {}
 
@@ -34,6 +41,9 @@ export class AboutEventComponent implements OnInit {
       this.isLoading = false;
     }
 
+    const currentUser = this.authService.getCurrentUser();
+    this.userId = currentUser?.id || null;
+
     // Komentarisano, ako ne koristite WebSocket
     // this.webSocketService.connect('ws://localhost:8080/chat'); // URL WebSocket-a
   }
@@ -44,6 +54,10 @@ export class AboutEventComponent implements OnInit {
       next: (data) => {
         this.event = data;
         this.isLoading = false;
+
+        if (this.userId) {
+          this.checkIfFavorite(this.userId, this.event.id);
+        }
 
         if (this.event.location) {
           setTimeout(() => {
@@ -75,6 +89,45 @@ export class AboutEventComponent implements OnInit {
     });
 
     this.marker = L.marker([lat, lng], { icon: redPinIcon }).addTo(this.map);
+  }
+
+  toggleFavorite() {
+    this.isFavorite = !this.isFavorite;
+
+    const url = `${environment.apiUrl}/favorites/events/${this.userId}/${this.event.id}`;
+
+    const request = this.isFavorite
+      ? this.http.post(url, null, {
+          headers: {
+            Authorization: `Bearer ${this.authService.getToken()}`
+          },
+        responseType: 'text'
+        })
+      : this.http.delete(url, {
+          headers: {
+            Authorization: `Bearer ${this.authService.getToken()}`
+          },
+        responseType: 'text'
+        });
+
+    request.subscribe({
+      next: () => {
+        console.log(this.isFavorite ? 'Dodato u omiljene' : 'Uklonjeno iz omiljenih');
+      },
+      error: (err) => {
+        console.error('Greška pri ažuriranju omiljenog eventa:', err);
+        this.isFavorite = !this.isFavorite;
+      }
+    });
+  }
+
+  checkIfFavorite(userId: string, eventId: number): void {
+    this.http.get<boolean>(`${environment.apiUrl}/favorites/events/events/${this.userId}/${this.event.id}`, {
+      headers: { Authorization: `Bearer ${this.authService.getToken()}` }
+    }).subscribe({
+      next: (res) => this.isFavorite = res,
+      error: (err) => console.error('Greška pri proveri omiljenog eventa:', err)
+    });
   }
 
   // Komentarisano, ako ne koristite WebSocket
