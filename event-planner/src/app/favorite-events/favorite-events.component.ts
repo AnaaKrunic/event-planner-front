@@ -43,7 +43,7 @@ export class FavoriteEventsComponent implements OnInit {
           this.isLoading = false;
         },
         error: (err) => {
-          console.error('Greška pri učitavanju omiljenih događaja:', err);
+          console.error('Error with fetching favorite events:', err);
           this.isLoading = false;
         },
       });

@@ -37,7 +37,6 @@
   <!-- Prikaz svih događaja -->
   <div class="event-grid" *ngIf="!isLoading && filteredEvents.length > 0">
     <div class="event-card" *ngFor="let event of filteredEvents">
-      <img [src]="event.imageUrl || 'assets/images/default-event.jpg'" alt="{{ event.name }} Image" />
       <h3>{{ event.name }}</h3>
       <p>{{ event.description }}</p>
       <p><strong>Date:</strong> {{ event.startDate | date: 'longDate' }}</p>

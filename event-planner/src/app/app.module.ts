@@ -36,6 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FavoriteEventsComponent } from './favorite-events/favorite-events.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { FavoriteEventsComponent } from './favorite-events/favorite-events.compo
     BrowserAnimationsModule,
     MatSliderModule,
     ReactiveFormsModule,
+    FullCalendarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
