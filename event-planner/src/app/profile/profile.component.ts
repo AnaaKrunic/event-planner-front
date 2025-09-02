@@ -228,7 +228,7 @@ export class ProfileComponent implements OnInit {
     this.http.get<any[]>(`${environment.apiUrl}/favorites/events/${userId}`, { headers })
       .subscribe({
         next: favorites => {
-          const favEvents = favorites.map(e => ({
+          const favEvents = (favorites || []).map(e => ({
             id: e.id,
             title: e.name,
             start: e.startDate ? new Date(e.startDate) : null,
@@ -239,7 +239,7 @@ export class ProfileComponent implements OnInit {
             this.http.get<any[]>(`${environment.apiUrl}/events/my-events?organizerId=${userId}`, { headers })
               .subscribe({
                 next: myEvents => {
-                  const ownEvents = myEvents.map(e => ({
+                  const ownEvents = (myEvents || []).map(e => ({
                     id: e.id,
                     title: e.name,
                     start: e.startDate ? new Date(e.startDate) : null,
@@ -251,7 +251,7 @@ export class ProfileComponent implements OnInit {
                 error: err => console.error('Error fetching my events:', err)
               });
           } else {
-            this.calendarOptions.events = favEvents;
+            this.calendarOptions.events = [...favEvents];
           }
         },
         error: err => console.error('Error fetching favorite events:', err)
