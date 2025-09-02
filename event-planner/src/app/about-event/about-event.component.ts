@@ -6,6 +6,8 @@ import * as L from 'leaflet';
 import { AuthService } from '../authservice.service';
 import { environment } from '../../environments/environment';
 //import { WebSocketService } from './web-socket.service'; // Komentarisano, ako ne koristite WebSocket
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-event-details',
@@ -47,6 +49,68 @@ export class AboutEventComponent implements OnInit {
     // Komentarisano, ako ne koristite WebSocket
     // this.webSocketService.connect('ws://localhost:8080/chat'); // URL WebSocket-a
   }
+
+
+  generatePDF(): void {
+    if (!this.event) return;
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Event: ${this.event.name}`, 14, 20);
+
+    doc.setFontSize(12);
+
+    const maxWidth = 180;
+
+    const descLines = doc.splitTextToSize(`Description: ${this.event.description}`, maxWidth);
+    const start = this.event.startDate ? new Date(this.event.startDate) : null;
+    const startStr = start ? start.toLocaleDateString('sr-RS', { dateStyle: 'medium' }) : 'N/A';
+
+    let currentY = 30;
+    doc.text(`Event type: ${this.event.eventTypeName}`, 14, currentY);
+    currentY += 6;
+
+    doc.text(descLines, 14, currentY);
+    currentY += descLines.length * 6;
+
+    doc.text(`Max. participants: ${this.event.participants}`, 14, currentY);
+    currentY += 6;
+
+    doc.text(`Privacy type: ${this.event.isPublic ? 'Public' : 'Private'}`, 14, currentY);
+    currentY += 6;
+
+    const locationText = this.event.location?.address || 'N/A';
+    const locLines = doc.splitTextToSize(`Location: ${locationText}`, maxWidth);
+    doc.text(locLines, 14, currentY);
+    currentY += locLines.length * 6;
+    
+    doc.text(`Date: ${startStr}`, 14, currentY);
+    currentY += 10;
+
+    const tableData = this.event.activities.map(act => [
+      act.startTime && act.endTime
+        ? `${new Date(act.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(act.endTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
+        : '',
+      act.name,
+      act.description,
+      act.location
+    ]);
+
+    autoTable(doc, {
+      startY: currentY,
+      head: [['Time', 'Activity name', 'Description', 'Location']],
+      body: tableData,
+      styles: { fontSize: 10, minCellHeight: 6 },
+      columnStyles: { 2: { cellWidth: 80, overflow: 'linebreak' } },
+      headStyles: { fillColor: [220, 220, 220], fontStyle: 'bold' }
+    });
+
+    doc.save(`${this.event.name}.pdf`);
+  }
+
+  
 
   fetchEventDetails(eventId: string): void {
     this.isLoading = true;
@@ -142,4 +206,5 @@ export class AboutEventComponent implements OnInit {
   /*onMessageReceived(message: string): void {
     this.messages.push(message);  // Dodaje novu poruku u chat
   }*/
+ 
 }
