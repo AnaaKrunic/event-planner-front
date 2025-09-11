@@ -2,9 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+export interface EventType {
+  id: number;
+  name: string;
+  description: string;
+  active: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class EventTypeService {
   private apiUrl = '/api/event-types';
 

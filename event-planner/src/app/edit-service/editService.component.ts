@@ -9,7 +9,7 @@ export interface Service {
   availability: boolean;
   description: string;
   discount: number;
-  images: string[];
+  imageURLs: string[];
   durationHour: number;
   durationMinute: number;
   minEngageHour: number;
