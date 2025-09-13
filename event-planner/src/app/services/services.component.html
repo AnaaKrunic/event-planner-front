@@ -24,21 +24,22 @@
       <div class="price-slider">
         <mat-slider class="price-slider"
             min="0"
-            step="100"
+            [max]="maxServicePrice"
+            step="1"
             discrete>
-            <input matSliderStartThumb [(ngModel)]="selectedMinPrice" aria-label="Minimum Price" />
-            <input matSliderEndThumb [(ngModel)]="selectedMaxPrice" aria-label="Maximum Price" />
+            <input matSliderStartThumb [(ngModel)]="selectedMinPrice" aria-label="Minimum Price" (ngModelChange)="filterAndSearch()" />
+            <input matSliderEndThumb [(ngModel)]="selectedMaxPrice" aria-label="Maximum Price" (ngModelChange)="filterAndSearch()" />
          </mat-slider>
       </div>
    </div>
    <div class ="priceRange">
-      <span>{{ selectedMinPrice }} - {{ selectedMaxPrice }} din.</span>
+      <span>{{ selectedMinPrice }} - {{ selectedMaxPrice }} RSD</span>
    </div>
    <div class="services-grid">
       <div class="service-card" *ngFor="let service of displayedServices" (click)="goToEditService()">
       <img [src]="getServiceImage(service)" alt="Service image" />
       <h3>{{ service.name }}</h3>
-      <p>Price: {{ service.price }} din.</p>
+      <p>Price: {{ service.price }} RSD</p>
       <p>Category: {{ getCategoryName(service) }} </p>
       <p>Event Type: {{ getEventTypeNames(service) }}</p>
 

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ServiceService } from '../service.service';
 import { AuthService } from '../authservice.service';
 import { Service } from '../service.service';
 import { Category, CategoryService } from '../category.service';
 import { EventType, EventTypeService } from '../event-type.service';
 import { environment } from '../../environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-services',
@@ -15,7 +16,15 @@ import { environment } from '../../environments/environment';
 })
 export class ServicesComponent implements OnInit {
 
-  constructor(private router: Router, private fb: FormBuilder, private serviceService: ServiceService, private authService: AuthService, private categoryService: CategoryService, private eventTypeService: EventTypeService) {}
+  constructor(
+    private router: Router, 
+    private fb: FormBuilder, 
+    private serviceService: ServiceService, 
+    private authService: AuthService, 
+    private categoryService: CategoryService, 
+    private eventTypeService: EventTypeService,
+    private snackBar: MatSnackBar,
+  ) {}
 
   selectedCategory: string = '';
   selectedEventType: string = '';
@@ -23,8 +32,9 @@ export class ServicesComponent implements OnInit {
   itemsPerPage: number = 10;
   searchTerm: string = '';
   selectedAvailable: boolean | string = 'all';
-  selectedMinPrice = 0;
-  selectedMaxPrice = 15000;
+  selectedMinPrice: number = 0;
+  selectedMaxPrice: number = 0;
+  maxServicePrice: number = 0;
   thumbsize = 14;
   allServices: Service[] = [];
   displayedServices: Service[] = [];
@@ -32,23 +42,33 @@ export class ServicesComponent implements OnInit {
   eventTypes: EventType[] = [];
 
   ngOnInit(): void {
+    this.serviceService.getByProvider().subscribe({
+      next: (data) => {
+        this.allServices = data;
+
+        this.maxServicePrice = this.allServices.length > 0 
+          ? Math.max(...this.allServices.map(s => s.price)) 
+          : 0;
+
+        this.selectedMaxPrice = this.maxServicePrice;
+        this.displayedServices = this.allServices;
+        this.filterAndSearch();
+      },
+      error: (err) => {
+        this.snackBar.open('Error fetching provider services', undefined, {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      }
+    });
+
     this.categoryService.getAllApproved().subscribe(cats => {
       this.categories = cats;
     });
 
     this.eventTypeService.getAll().subscribe(eventTypes => {
       this.eventTypes = eventTypes;
-    });
-
-    this.serviceService.getByProvider().subscribe({
-      next: (data) => {
-        this.allServices = data;
-        this.displayedServices = data;
-        this.filterAndSearch();
-      },
-      error: (err) => {
-        console.error("Error fetching provider services:", err);
-      }
     });
   }
 
@@ -75,6 +95,12 @@ export class ServicesComponent implements OnInit {
     filteredServices = filteredServices.filter(
       (service) => service.price >= this.selectedMinPrice && service.price <= this.selectedMaxPrice
     );
+    console.log(this.maxServicePrice);
+    console.log("Selected max price: " + this.selectedMaxPrice);
+
+    // this.maxServicePrice = this.allServices.length > 0 
+    //       ? Math.max(...this.allServices.map(s => s.price)) 
+    //       : 0;
   
     filteredServices = filteredServices.filter(
       (service) => service.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -90,14 +116,17 @@ export class ServicesComponent implements OnInit {
   }
 
   get totalPages(): number[] {
-    return Array.from({ length: Math.ceil(this.displayedServices.length / this.itemsPerPage) }, (_, i) => i + 1);
+    return Array.from(
+      { length: Math.ceil(this.displayedServices.length / this.itemsPerPage) }, 
+      (_, i) => i + 1
+    );
   }
 
   toggleAvailability(): void {
     this.filterAndSearch(); 
   } 
 
-   goToEditService() {
+  goToEditService() {
     this.router.navigate(['/edit-service']);
   }
 

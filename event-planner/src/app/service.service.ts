@@ -5,7 +5,6 @@ import { AuthService } from '../app/authservice.service';
 import { Category } from './category.service';
 import { EventType } from './event-type.service';
 
-
 export interface Service {
   name: string;
   price: number;
@@ -20,9 +19,29 @@ export interface Service {
   cancelationDue: number;
   reservationDue: number;
   reservationType: 'AUTOMATIC' | 'MANUAL';
-  isVisible: boolean;
+  visible: boolean;
+  deleted: boolean;
   providerId: number;
   category: Category;
+}
+
+export interface CreateService {
+  name: string;
+  description: string;
+  price: number;
+  discount: number;
+  imageURLs: string[];
+  available: boolean;
+  visible: boolean;
+  providerId: number;
+  categoryId: number;
+  eventTypes: number[];
+  duration: number | null;
+  minEngagement: number | null;
+  maxEngagement: number | null;
+  reservationDue: number;
+  cancelationDue: number;
+  reservationType: 'AUTOMATIC' | 'MANUAL';
 }
 
 @Injectable({

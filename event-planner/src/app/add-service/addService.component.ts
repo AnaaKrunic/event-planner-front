@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ServiceService } from '../service.service';
+import { ServiceService, CreateService } from '../service.service';
 import { EventTypeService } from '../event-type.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Category, CategoryService } from '../category.service';
 import { AuthService } from '../authservice.service';
-import { Service } from '../service.service';
 
 
 @Component({
@@ -23,7 +22,7 @@ export class AddServiceComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  categories: { id: number; name: string }[] = [];
+  categories: { id: number; name: string; isApprovedByAdmin: boolean }[] = [];
   selectedCategory: string = '';
   category: Category | null = null;
   categoryId: number | null = null;
@@ -81,17 +80,18 @@ export class AddServiceComponent implements OnInit {
 
   toggleEventType(type: any): void {
     type.selected = !type.selected;
-
+    
     if (type.selected && type.suggestedCategories) {
       type.suggestedCategories
-        .filter((c: any) => c.approvedByAdmin)
-        .forEach((c: any) => {
-          const id = c.id;
-          const name = c.name;
-
+      .filter((c: any) => c.approvedByAdmin)
+      .forEach((c: any) => {
+        const id = c.id;
+        const name = c.name;
+        const isApprovedByAdmin = c.isApprovedByAdmin;
+        
           if (!this.categoryCounter[name]) {
             this.categoryCounter[name] = 1;
-            this.categories.push({ id, name });
+            this.categories.push({ id, name, isApprovedByAdmin });
           } else {
             this.categoryCounter[name]++;
           }
@@ -106,6 +106,7 @@ export class AddServiceComponent implements OnInit {
             if (this.categoryCounter[name] === 0) {
               delete this.categoryCounter[name];
               this.categories = this.categories.filter((cat) => cat.name !== name);
+              console.log(this.categories);
             }
           }
         });
@@ -141,11 +142,9 @@ export class AddServiceComponent implements OnInit {
 
       this.categoryService.create(newCategory).subscribe({
         next: (createdCategory) => {
-          this.isVisible = false;
-          this.categories.push({ id: createdCategory.id, name: createdCategory.name });
+          this.categories.push({ id: createdCategory.id, name: createdCategory.name, isApprovedByAdmin: false });
           this.selectedCategory = newCategory.name;
           this.categoryId = createdCategory.id;
-          this.isVisible = false;
           this.closeCategoryPopup();
         },
         error: () => {
@@ -190,38 +189,39 @@ export class AddServiceComponent implements OnInit {
     });
     return;
   }
+  console.log(this.durations);
 
   this.categoryId = this.selectedCategory
-    ? this.categories.find((c) => c.name === this.selectedCategory)?.id || null
-    : null;
+    ? this.categories.find((c) => c.name === this.selectedCategory)?.id || -1
+    : -1;
 
   const selectedEventTypes = this.eventTypes.filter((t) => t.selected).map((t) => t.id);
   
-  const newService: any = {
+  this.isVisible = this.category?.isApprovedByAdmin || false;
+
+  const newService: CreateService = {
     name: this.serviceName,
-    price: this.price ?? 0,
-    categoryId: this.categoryId,
-    // category: this.category ? this.category : { id: this.categoryId || 0, name: this.selectedCategory, description: this.newCategoryDescription || '', isApprovedByAdmin: false },
-    eventTypes: selectedEventTypes,
-    isAvailable: this.isAvailable,
     description: this.serviceDescription,
+    price: this.price ?? 0,
     discount: this.discount ?? 0,
     imageURLs: [],
+    available: this.isAvailable,
+    visible: this.isVisible,
+    providerId: this.providerId,
+    categoryId: this.categoryId,
+    eventTypes: selectedEventTypes,
     duration: this.durationType === 'fixed' && this.durations.hours !== null && this.durations.minutes !== null
       ? this.durations.hours * 60 + this.durations.minutes
       : 0,
-    minEngagement: this.durationType === 'range' ? this.durations.minEngagement : 0,
-    maxEngagement: this.durationType === 'range' ? this.durations.maxEngagement : 0,
-    cancelationDue: this.cancellationDue ?? 0,
+    minEngagement: this.durationType === 'range' ? this.durations.minEngagement : null,
+    maxEngagement: this.durationType === 'range' ? this.durations.maxEngagement : null,
     reservationDue: this.reservationDue ?? 0,
+    cancelationDue: this.cancellationDue ?? 0,
     reservationType: this.reservationType,
-    isVisible: this.isVisible,
-    providerId: this.providerId,
   };
-
   if (this.categoryId !== -1) {
     const formData = new FormData();
-    formData.append('dto', new Blob([JSON.stringify(newService)], { type: 'application/json' }));
+    formData.append('dto', new Blob([JSON.stringify(newService)], { type: 'application/json' }), 'dto.json');
 
     if ((<HTMLInputElement>document.getElementById('fileInput')).files) {
       const fileInput = <HTMLInputElement>document.getElementById('fileInput');
@@ -232,21 +232,23 @@ export class AddServiceComponent implements OnInit {
       }
     }
 
-    console.log('FormData entries:', formData);
     this.serviceService.create(formData).subscribe({
       next: () => {
-        this.router.navigate(['/services/my-services']);
+        this.router.navigate(['/services']);
         this.snackBar.open('Service successfully created!', undefined, {
           duration: 5000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
         });
       },
-      error: (err) => this.snackBar.open('Error creating service: ' + err, undefined, {
-        duration: 5000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-      }),
+      error: (err) => {
+        console.error('Error creating service:', err, err.error);
+        this.snackBar.open('Error creating service: ' + err, undefined, {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      },
     });
   } else {
       this.snackBar.open('Please select a category', undefined, {
