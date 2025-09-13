@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../authservice.service';
 import { Router } from '@angular/router';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-profile',
@@ -11,6 +13,25 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   user: any;
+
+  calendarOptions: any = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin, interactionPlugin],
+    events: [],
+    headerToolbar: {
+      left: '',
+      center: 'title',
+      right: 'prev,next',
+    },
+    dayMaxEventRows: 3,
+    eventDisplay: 'block',
+    eventContent: (arg: any) => {
+      return { html: `<div class="fc-event-title">${arg.event.title}</div>` };
+    },
+    eventDidMount: (info: any) => {
+      info.el.setAttribute('title', info.event.title);
+    }
+  };
 
   constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
 
@@ -38,6 +59,16 @@ export class ProfileComponent implements OnInit {
           return url;
         });
       }
+
+      // DODAJEM RUTU ZA KAD SE KLIKNE NA NEKI EVENT
+      this.calendarOptions.eventClick = (clickInfo: any) => {
+        const eventId = clickInfo.event.id;
+        if (eventId) {
+          this.router.navigate(['/event', eventId]);
+        }
+      };
+
+      this.loadCalendarEvents();
     },
     error => {
       console.error('Error:', error);
@@ -184,4 +215,46 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  // ucitavanje Eventova za kalendar
+  loadCalendarEvents(): void {
+    const userId = this.authService.getUserId();
+    const userRole = this.authService.getRole();
+
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    this.http.get<any[]>(`${environment.apiUrl}/favorites/events/${userId}`, { headers })
+      .subscribe({
+        next: favorites => {
+          const favEvents = (favorites || []).map(e => ({
+            id: e.id,
+            title: e.name,
+            start: e.startDate ? new Date(e.startDate) : null,
+            color: 'red'
+          }));
+
+          if (userRole === 'EventOrganizer') {
+            this.http.get<any[]>(`${environment.apiUrl}/events/my-events?organizerId=${userId}`, { headers })
+              .subscribe({
+                next: myEvents => {
+                  const ownEvents = (myEvents || []).map(e => ({
+                    id: e.id,
+                    title: e.name,
+                    start: e.startDate ? new Date(e.startDate) : null,
+                    color: 'blue'
+                  }));
+
+                  this.calendarOptions.events = [...favEvents, ...ownEvents];
+                },
+                error: err => console.error('Error fetching my events:', err)
+              });
+          } else {
+            this.calendarOptions.events = [...favEvents];
+          }
+        },
+        error: err => console.error('Error fetching favorite events:', err)
+      });
+  }
 }

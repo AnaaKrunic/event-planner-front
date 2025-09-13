@@ -35,6 +35,8 @@ import { ACategoryComponent } from './a-category/a-category.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSliderModule } from '@angular/material/slider';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FavoriteEventsComponent } from './favorite-events/favorite-events.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     AboutProductComponent,
     ProductCreateComponent,
     EditProductComponent,
-    ACategoryComponent
+    ACategoryComponent,
+    FavoriteEventsComponent
   ],
   imports: [
     BrowserModule,
@@ -74,6 +77,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MatSliderModule,
     ReactiveFormsModule,
+    FullCalendarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
