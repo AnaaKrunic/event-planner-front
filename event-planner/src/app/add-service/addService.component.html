@@ -15,42 +15,53 @@
   <div class="form-container">
      <div class="form-row">
         <label for="serviceName">Name of Service</label>
-        <input id="serviceName" type="text" [(ngModel)]="serviceName" placeholder="Name of Service"/>
+        <input id="serviceName" type="text" [(ngModel)]="serviceName" placeholder="Enter name of Service"/>
         <label for="price">Price</label>
-        <input id="price" type="number" [(ngModel)]="price" />
+        <input id="price" type="number" placeholder="Enter price" [(ngModel)]="price" />
         <label for="discount">Discount (%)</label>
-        <input id="discount" type="number" [(ngModel)]="discount" />
+        <input id="discount" type="number" placeholder="Enter discount" [(ngModel)]="discount" />
      </div>
      <div class="form-row" id="description">
         <label for="serviceDescription">Description of Service</label>
-        <textarea id="serviceDescription" placeholder="Description of Service" [(ngModel)]="serviceDescription"></textarea>
+        <textarea id="serviceDescription" placeholder="Enter description of Service" [(ngModel)]="serviceDescription"></textarea>
      </div>
   </div>
   <div class="service-settings">
-     <label for="serviceDuration">Service Duration</label>
-     <div class="duration-inputs">
-        <div class="duration-group" id="hour">
-           <label for="hours">Hours</label>
-           <input type="number" id="hours" placeholder="00" [(ngModel)]="duration.hours" />
-        </div>
-        <span class="separator">:</span>
-        <div class="duration-group">
-           <label for="minutes">Minutes</label>
-           <input type="number" id="minutes" placeholder="00" [(ngModel)]="duration.minutes" />
-        </div>
-        <div class="duration-group">
-           <label for="minEngagement">Min Engagement (Hours)</label>
-           <input type="number" id="minEngagement" placeholder="00" [(ngModel)]="duration.minEngagement" />
-        </div>
-        <div class="duration-group">
-           <label for="maxEngagement">Max Engagement (Hours)</label>
-           <input type="number" id="maxEngagement" placeholder="00" [(ngModel)]="duration.maxEngagement" />
-        </div>
-     </div>
+      <label for="serviceDuration">Service Duration</label>
+      <div class="duration-settings">
+         <label>Choose Duration Type:</label>
+         <div>
+            <label>
+               <input type="radio" [(ngModel)]="durationType" value="fixed" />
+               Fixed Duration (Hours/Minutes)
+            </label>
+            <label>
+               <input type="radio" [(ngModel)]="durationType" value="range" />
+               Engagement Range (Min/Max Hours)
+            </label>
+         </div>
+      </div>
+
+      <div class="duration-inputs">
+         <div *ngIf="durationType === 'fixed'" class="duration-group" id="fixedDuration">
+            <label for="hours">Hours:</label>
+            <input type="number" id="hours" placeholder="0" [(ngModel)]="durations.hours" />
+            <label for="minutes">Minutes:</label>
+            <input type="number" id="minutes" placeholder="0" [(ngModel)]="durations.minutes" />
+         </div>
+
+         <div *ngIf="durationType === 'range'" class="duration-group" id="rangeDuration">
+            <label for="minEngagement">Min Engagement (Hours):</label>
+            <input type="number" id="minEngagement" placeholder="min 1 hour" [(ngModel)]="durations.minEngagement" />
+            <label for="maxEngagement">Max Engagement (Hours):</label>
+            <input type="number" id="maxEngagement" placeholder="max 5 hours" [(ngModel)]="durations.maxEngagement" />
+         </div>
+      </div>
+
      <div id="due">
-        <label for="reservationDue">Reservation Due (in Days)</label>
+        <label for="reservationDue">Reservation Due (in Days):</label>
         <input type="number" id="reservationDue" [(ngModel)]="reservationDue" />
-        <label for="cancellationDue">Cancellation Due (in Days)</label>
+        <label for="cancellationDue">Cancellation Due (in Days):</label>
         <input type="number" id="cancellationDue" [(ngModel)]="cancellationDue" />
      </div>
   </div>
@@ -65,15 +76,16 @@
         </div>
      </div>
      <div class="dropdown-section">
-        <label for="category">Choose Service Category</label>
-        <select id="category" [(ngModel)]="selectedCategory">
-        <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
-        </select>
-        <button class="add-category-button" (click)="toggleCategoryPopup()">+ Add Category</button>
+         <label for="category">Choose Service Category</label>
+         <select id="category" [(ngModel)]="selectedCategory" (change)="onCategoryChange($event)">
+            <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+         </select>
+
+         <button class="add-category-button" (click)="toggleCategoryPopup()">+ Add Category</button>
      </div>
      <div class="image-upload">
         <h4>Upload Images</h4>
-        <input type="file" (change)="onFileSelect($event)" multiple />
+        <input type="file" id="fileInput" (change)="onFileSelect($event)" multiple />
         <div class="image-previews">
            <div *ngFor="let image of uploadedImages; let i = index" class="image-preview">
               <img [src]="image" alt="Uploaded Image" />
@@ -81,22 +93,13 @@
            </div>
         </div>
      </div>
-     <div class="toggles">
         <div class="toggle-item">
            <span>Service Availability</span>
            <label class="switch">
-           <input type="checkbox" [(ngModel)]="isAvailable" />
+           <input type="checkbox" [(ngModel)]="isAvailable" name="isAvailable"/>
            <span class="slider round"></span>
            </label>
         </div>
-        <div class="toggle-item">
-           <span>Service Visibility</span>
-           <label class="switch">
-           <input type="checkbox" [(ngModel)]="isVisible" />
-           <span class="slider round"></span>
-           </label>
-        </div>
-     </div>
   </div>
   <div class="buttons">
      <button (click)="onCreate()">Create</button>

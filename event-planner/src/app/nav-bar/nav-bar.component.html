@@ -12,6 +12,9 @@
       <li><a routerLink="/event-types">Event Types</a></li>
       <li><a routerLink="/all-products">Products</a></li>
       <li *ngIf="user?.role === 'SPProvider'">
+        <a routerLink="/services">My Services</a>
+      </li>
+      <li *ngIf="user?.role === 'SPProvider'">
         <a routerLink="/my-products">My Products</a>
       </li>
       <li><a routerLink="/a-category">Categories</a></li>

@@ -73,7 +73,8 @@ input[type=text] {
 }
 
 .priceRange {
-    margin-left: 85%;
+    margin-left: 83%;
+    margin-bottom: 1%;
 }
 
 .price-slider {
