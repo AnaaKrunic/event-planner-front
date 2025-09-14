@@ -6,6 +6,7 @@ import { Category } from './category.service';
 import { EventType } from './event-type.service';
 
 export interface Service {
+  id?: number;
   name: string;
   price: number;
   eventTypes: EventType[];
@@ -23,6 +24,26 @@ export interface Service {
   deleted: boolean;
   providerId: number;
   category: Category;
+}
+
+export interface UpdateService {
+  id: number;
+  name: string;
+  price: number;
+  eventTypeIds: number[];
+  available: boolean;
+  visible: boolean;
+  description: string;
+  discount: number;
+  imageURLs: string[];
+  duration: number | null;
+  minEngagement: number | null;
+  maxEngagement: number | null;
+  cancelationDue: number;
+  reservationDue: number;
+  reservationType: 'AUTOMATIC' | 'MANUAL';
+  deleted: boolean;
+  providerId: number;
 }
 
 export interface CreateService {
@@ -56,16 +77,16 @@ export class ServiceService {
     return this.http.get<any[]>(this.apiUrl);
   }
 
- getByProvider(): Observable<Service[]> {
-  const currentUser = this.authService.getCurrentUser();
-  if (!currentUser) throw new Error('User not logged in');
+  getByProvider(): Observable<Service[]> {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) throw new Error('User not logged in');
 
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${currentUser.token}`
-  });
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${currentUser.token}`
+    });
 
-  return this.http.get<Service[]>(`${this.apiUrl}/my-services?providerId=${currentUser.id}`, { headers });
-}
+    return this.http.get<Service[]>(`${this.apiUrl}/my-services?providerId=${currentUser.id}`, { headers });
+  }
 
   getById(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
@@ -79,8 +100,11 @@ export class ServiceService {
     return this.http.post(this.apiUrl, formData, { headers });
   }
 
-  update(service: any): Observable<any> {
-    return this.http.put<any>(this.apiUrl, service);
+  update(id: number, formData: FormData): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${localStorage.getItem('jwt') || ''}`
+    });
+    return this.http.put<any>(`${this.apiUrl}/${id}`, formData, { headers });
   }
 
   delete(id: number): Observable<void> {
