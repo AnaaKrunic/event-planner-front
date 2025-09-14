@@ -106,7 +106,6 @@ export class AddServiceComponent implements OnInit {
             if (this.categoryCounter[name] === 0) {
               delete this.categoryCounter[name];
               this.categories = this.categories.filter((cat) => cat.name !== name);
-              console.log(this.categories);
             }
           }
         });
@@ -189,8 +188,6 @@ export class AddServiceComponent implements OnInit {
     });
     return;
   }
-  console.log(this.durations);
-
   this.categoryId = this.selectedCategory
     ? this.categories.find((c) => c.name === this.selectedCategory)?.id || -1
     : -1;
@@ -242,7 +239,7 @@ export class AddServiceComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.error('Error creating service:', err, err.error);
+        console.log('Error creating service:', err, err.error);
         this.snackBar.open('Error creating service: ' + err, undefined, {
           duration: 5000,
           horizontalPosition: 'center',

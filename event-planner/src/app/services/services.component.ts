@@ -17,11 +17,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ServicesComponent implements OnInit {
 
   constructor(
-    private router: Router, 
-    private fb: FormBuilder, 
-    private serviceService: ServiceService, 
-    private authService: AuthService, 
-    private categoryService: CategoryService, 
+    private router: Router,
+    private serviceService: ServiceService,
+    private categoryService: CategoryService,
     private eventTypeService: EventTypeService,
     private snackBar: MatSnackBar,
   ) {}
@@ -95,12 +93,6 @@ export class ServicesComponent implements OnInit {
     filteredServices = filteredServices.filter(
       (service) => service.price >= this.selectedMinPrice && service.price <= this.selectedMaxPrice
     );
-    console.log(this.maxServicePrice);
-    console.log("Selected max price: " + this.selectedMaxPrice);
-
-    // this.maxServicePrice = this.allServices.length > 0 
-    //       ? Math.max(...this.allServices.map(s => s.price)) 
-    //       : 0;
   
     filteredServices = filteredServices.filter(
       (service) => service.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -126,8 +118,8 @@ export class ServicesComponent implements OnInit {
     this.filterAndSearch(); 
   } 
 
-  goToEditService() {
-    this.router.navigate(['/edit-service']);
+  goToEditService(service: Service) {
+    this.router.navigate(['/edit-service', service.id]);
   }
 
   goToAddService() {

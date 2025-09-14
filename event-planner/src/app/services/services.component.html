@@ -36,7 +36,7 @@
       <span>{{ selectedMinPrice }} - {{ selectedMaxPrice }} RSD</span>
    </div>
    <div class="services-grid">
-      <div class="service-card" *ngFor="let service of displayedServices" (click)="goToEditService()">
+      <div class="service-card" *ngFor="let service of displayedServices" (click)="goToEditService(service)">
       <img [src]="getServiceImage(service)" alt="Service image" />
       <h3>{{ service.name }}</h3>
       <p>Price: {{ service.price }} RSD</p>
