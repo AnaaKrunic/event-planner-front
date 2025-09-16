@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../authservice.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 
@@ -13,7 +13,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 })
 export class ProfileComponent implements OnInit {
   user: any;
+  readonlyMode = true;
 
+  constructor(private http: HttpClient, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
   calendarOptions: any = {
     initialView: 'dayGridMonth',
     plugins: [dayGridPlugin, interactionPlugin],
@@ -33,10 +35,10 @@ export class ProfileComponent implements OnInit {
     }
   };
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
-
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
     const token = this.authService.getToken();
+
     if (!token) {
       console.error("Token doesn't exist - user not logged in.");
       return;
@@ -46,38 +48,32 @@ export class ProfileComponent implements OnInit {
       Authorization: `Bearer ${token}`
     });
 
-    this.http.get(`${environment.apiUrl}/profile`, { headers }).subscribe(
-    data => {
-      this.user = data;
-
-      const BASE_URL = environment.apiUrl;
-      if (this.user.imageURLs && Array.isArray(this.user.imageURLs)) {
-        this.user.imageURLs = this.user.imageURLs.map((url: string) => {
-          if (!url.startsWith('http')) {
-            return `${BASE_URL}${url}`;
-          }
-          return url;
-        });
-      }
-
-      // DODAJEM RUTU ZA KAD SE KLIKNE NA NEKI EVENT
-      this.calendarOptions.eventClick = (clickInfo: any) => {
-        const eventId = clickInfo.event.id;
-        if (eventId) {
-          this.router.navigate(['/event', eventId]);
+    if (id) {
+      this.readonlyMode = true;
+      this.http.get(`${environment.apiUrl}/profile/${id}`, { headers }).subscribe({
+        next: (data: any) => {
+          this.user = data;
+          this.processImageURLs();
+        },
+        error: err => {
+          console.error('Error fetching profile by ID:', err);
         }
-      };
-
-      this.loadCalendarEvents();
-    },
-    error => {
-      console.error('Error:', error);
+      });
+    } else {
+      this.readonlyMode = false;
+      this.http.get(`${environment.apiUrl}/profile`, { headers }).subscribe(
+        data => {
+          this.user = data;
+          this.processImageURLs();
+        },
+        error => {
+          console.error('Error:', error);
+        }
+      );
     }
-  );
   }
 
   isEditing = false;
-
 
   selectedFiles: File[] = [];
 
@@ -131,7 +127,6 @@ export class ProfileComponent implements OnInit {
       this.currentIndex = this.user.imageURLs.length - 1;
     }
   }
-
 
   toggleEdit() {
     if (this.isEditing) {
@@ -215,6 +210,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  private processImageURLs() {
+    const BASE_URL = environment.apiUrl;
+    if (this.user.imageURLs && Array.isArray(this.user.imageURLs)) {
+      this.user.imageURLs = this.user.imageURLs.map((url: string) => {
+        if (!url.startsWith('http')) {
+          return `${BASE_URL}${url}`;
+        }
+        return url;
+      });
+    }
+  }
+  
   // ucitavanje Eventova za kalendar
   loadCalendarEvents(): void {
     const userId = this.authService.getUserId();

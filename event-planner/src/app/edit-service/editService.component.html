@@ -1,99 +1,85 @@
-<div class="add-service-container">
-  <h1>Edit Service</h1>
-  <div class="choose"> Event Types</div>
-  <div class="event-types">
-     <div
-     *ngFor="let type of eventTypes"
-     class="event-card"
-     [class.selected]="type.selected"
-     >
-     {{ type.name }}
+<div class="edit-service-container">
+   <h1>{{ readonlyMode ? 'View Service' : 'Edit Service' }}</h1>
+   <div class="choose">Event Types</div>
+   <div class="event-types">
+      <ng-container *ngFor="let type of allEventTypes">
+  <div
+    *ngIf="type.selected || !readonlyMode"
+    class="event-card"
+    [class.selected]="type.selected"
+    (click)="readonlyMode ? null : toggleEventType(type)">
+    {{ type.name }}
   </div>
-</div>
-<div class="service-info">
-  <div class="form-container">
-     <div class="form-row">
-        <label for="serviceName">Name of Service</label>
-        <input id="serviceName" type="text" [(ngModel)]="serviceName" placeholder="Name of Service"/>
-        <label for="price">Price</label>
-        <input id="price" type="number" [(ngModel)]="price" hint="12000"/>
-        <label for="discount">Discount (%)</label>
-        <input id="discount" type="number" [(ngModel)]="discount" hint="20"/>
-     </div>
-     <div class="form-row" id="description">
-        <label for="serviceDescription">Description of Service</label>
-        <textarea id="serviceDescription" placeholder="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-        " [(ngModel)]="serviceDescription"></textarea>
-     </div>
-  </div>
-  <div class="service-settings">
-     <label for="serviceDuration">Service Duration</label>
-     <div class="duration-inputs">
-        <div class="duration-group" id="hour">
-           <label for="hours">Hours</label>
-           <input type="number" id="hours" placeholder="02" [(ngModel)]="duration.hours" />
-        </div>
-        <span class="separator">:</span>
-        <div class="duration-group">
-           <label for="minutes">Minutes</label>
-           <input type="number" id="minutes" placeholder="00" [(ngModel)]="duration.minutes" />
-        </div>
-        <div class="duration-group">
-           <label for="minEngagement">Min Engagement (Hours)</label>
-           <input type="number" id="minEngagement" placeholder="01" [(ngModel)]="duration.minEngagement" />
-        </div>
-        <div class="duration-group">
-           <label for="maxEngagement">Max Engagement (Hours)</label>
-           <input type="number" id="maxEngagement" placeholder="05" [(ngModel)]="duration.maxEngagement" />
-        </div>
-     </div>
-     <div id="due">
-        <label for="reservationDue">Reservation Due (in Days)</label>
-        <input type="number" id="reservationDue" [(ngModel)]="reservationDue" hint="5"/>
-        <label for="cancellationDue">Cancellation Due (in Days)</label>
-        <input type="number" id="cancellationDue" [(ngModel)]="cancellationDue" hint="5"/>
-     </div>
-  </div>
-  <div class="form-section">
-     <div class="dropdown-section">
-        <label for="category">Choose Service Category</label> 
-        <select id="category" [(ngModel)]="selectedCategory">
-        <option *ngFor="let category of categories" [value]="category" [selected]="category === 'Catering'">
-        {{ category }}
-        </option>
-        </select>
-     </div>
-     <div class="image-upload">
-        <h4>Upload Images</h4>
-        <input type="file" (change)="onFileSelect($event)" multiple />
-        <div class="image-previews">
-           <div *ngFor="let image of uploadedImages; let i = index" class="image-preview">
-              <img [src]="image" alt="Uploaded Image" />
-              <button (click)="removeImage(i)">Remove</button>
-           </div>
-        </div>
-     </div>
-     <div class="toggles">
-        <div class="toggle-item">
-           <span>Service Availability</span>
-           <label class="switch">
-           <input type="checkbox" [(ngModel)]="isAvailable" aria-selected="false"/>
-           <span class="slider round"></span>
-           </label>
-        </div>
-        <div class="toggle-item">
-           <span>Service Visibility</span>
-           <label class="switch">
-           <input type="checkbox" [(ngModel)]="isVisible" aria-selected="true
-           "/>
-           <span class="slider round"></span>
-           </label>
-        </div>
-     </div>
-  </div>
-  <div class="buttons">
-     <button (click)="onEdit()">Edit</button>
-     <button (click)="onDelete()">Delete</button>
-     <button (click)="onCancel()">Cancel</button>
-  </div>
+</ng-container>
+
+   </div>
+   <div class="service-info">
+      <div class="form-container">
+         <div class="form-row">
+            <label for="serviceName">Name of Service</label>
+            <input id="serviceName" type="text" [(ngModel)]="serviceName" placeholder="Name of Service" [readonly]="readonlyMode"/>
+            <label for="price">Price</label>
+            <input id="price" type="number" [(ngModel)]="price" hint="12000" [readonly]="readonlyMode"/>
+            <label for="discount">Discount (%)</label>
+            <input id="discount" type="number" [(ngModel)]="discount" hint="20" [readonly]="readonlyMode "/>
+         </div>
+         <div class="form-row" id="description">
+            <label for="serviceDescription">Description of Service</label>
+            <textarea id="serviceDescription" [(ngModel)]="serviceDescription" placeholder="Enter description here..." [readonly]="readonlyMode"></textarea>
+         </div>
+      </div>
+      <div class="service-settings">
+         <label for="serviceDuration">Service Duration</label>
+         <div class="duration-inputs">
+            <div *ngIf="durationType === 'fixed'" class="duration-group" id="fixedDuration">
+               <label for="hours">Hours</label>
+               <input type="number" id="hours" placeholder="0" [(ngModel)]="durations.hours" [readonly]="readonlyMode"/>
+               <label for="minutes">Minutes</label>
+               <input type="number" id="minutes" placeholder="0" [(ngModel)]="durations.minutes" [readonly]="readonlyMode"/>
+            </div>
+            <div *ngIf="durationType === 'range'" class="duration-group" id="rangeDuration">
+               <label for="minEngagement">Min Engagement (Hours)</label>
+               <input type="number" id="minEngagement" placeholder="min 1" [(ngModel)]="durations.minEngagement" [readonly]="readonlyMode"/>
+               <label for="maxEngagement">Max Engagement (Hours)</label>
+               <input type="number" id="maxEngagement" placeholder="max 5" [(ngModel)]="durations.maxEngagement" [readonly]="readonlyMode"/>
+            </div>
+         </div>
+         <div id="due">
+            <label for="reservationDue">Reservation Due (in Days)</label>
+            <input type="number" id="reservationDue" [(ngModel)]="reservationDue" [readonly]="readonlyMode"/>
+            <label for="cancelationDue">Cancelation Due (in Days)</label>
+            <input type="number" id="cancelationDue" [(ngModel)]="cancelationDue" [readonly]="readonlyMode"/>
+         </div>
+      </div>
+      <div class="form-section">
+         <div class="dropdown-section">
+            <label for="category">Service Category: {{ selectedCategory }}</label>
+            <div class="toggles">
+               <div class="toggle-item">
+                  <span>Service Availability</span>
+                  <label class="switch">
+                     <input type="checkbox" [(ngModel)]="isAvailable" [disabled]="readonlyMode" aria-selected="false"/>
+                     <span class="slider round"></span>
+                  </label>
+               </div>
+            </div>
+         </div>
+         <div class="image-upload">
+            <h4>Upload Images</h4>
+            <input type="file" *ngIf="!readonlyMode" (change)="onFileSelect($event)" multiple />
+            <div class="image-previews">
+               <div *ngFor="let imgUrl of service.imageURLs" class="image-preview">
+                  <img *ngIf="service" [src]="getServiceImage(service)" alt="Uploaded Image" />
+                  <button *ngIf="!readonlyMode" (click)="removeImage(imgUrl, service)">Remove</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="buttons">
+         <button *ngIf="!readonlyMode" (click)="onEdit()">Edit</button>
+         <button *ngIf="!readonlyMode" (click)="onDelete()">Delete</button>
+         <button *ngIf="readonlyMode" (click)="onSPP()">View Service Provider Profile</button>
+         <button (click)="onCancel()">Cancel</button>
+      </div>
+   </div>
 </div>

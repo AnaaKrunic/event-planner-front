@@ -1,14 +1,14 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
-
-export interface Service {
-  name: string;
-  price: number;
-  category: string;
-  serviceEventType: string[];
-  availability: boolean;
-}
+import { FormBuilder } from '@angular/forms';
+import { ServiceService } from '../service.service';
+import { AuthService } from '../authservice.service';
+import { Service } from '../service.service';
+import { Category, CategoryService } from '../category.service';
+import { EventType, EventTypeService } from '../event-type.service';
+import { environment } from '../../environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-services',
@@ -17,158 +17,125 @@ export interface Service {
 })
 export class ServicesComponent implements OnInit {
 
-  constructor(private router: Router, private fb: FormBuilder) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private serviceService: ServiceService,
+    private categoryService: CategoryService,
+    private eventTypeService: EventTypeService,
+    private snackBar: MatSnackBar,
+    private authService: AuthService
+  ) {}
 
   selectedCategory: string = '';
   selectedEventType: string = '';
   currentPage: number = 1;
   itemsPerPage: number = 10;
   searchTerm: string = '';
-  selectedAvailable: boolean = false;
-  selectedNotAvailable: boolean = false;
-
-  // range slider vrednosti
-  selectedMinPrice = 0;
-  selectedMaxPrice = 15000;
-
-  // Angular Material slider group
-  // priceRangeGroup!: FormGroup;
-
+  selectedAvailable: boolean | string = 'all';
+  selectedMinPrice: number = 0;
+  selectedMaxPrice: number = 0;
+  maxServicePrice: number = 0;
   thumbsize = 14;
-  
-  allServices: Service[] = [
-    {
-      name: 'Service 1',
-      price: 1250,
-      category: 'Entertainment',
-      serviceEventType: ['Wedding', 'Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 2',
-      price: 3200,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 3',
-      price: 500,
-      category: 'Entertainment',
-      serviceEventType: ['Birthday'],
-      availability: false,
-    },
-    {
-      name: 'Service 4',
-      price: 3000,
-      category: 'Catering',
-      serviceEventType: ['Wedding', 'Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 5',
-      price: 6000,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 6',
-      price: 8000,
-      category: 'Entertainment',
-      serviceEventType: ['Birthday'],
-      availability: false,
-    },
-    {
-      name: 'Service 7',
-      price: 2000,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 8',
-      price: 7500,
-      category: 'Catering',
-      serviceEventType: ['Wedding', 'Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 9',
-      price: 3000,
-      category: 'Entertainment',
-      serviceEventType: ['Birthday'],
-      availability: false,
-    },
-    {
-      name: 'Service 12',
-      price: 3000,
-      category: 'Catering',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    },
-    {
-      name: 'Service 10',
-      price: 1200,
-      category: 'Catering',
-      serviceEventType: ['Birthday'],
-      availability: true,
-    },
-    {
-      name: 'Service 11',
-      price: 200,
-      category: 'Entertainment',
-      serviceEventType: ['Wedding'],
-      availability: false,
-    }
-  ];
-
+  allServices: Service[] = [];
   displayedServices: Service[] = [];
+  categories: Category[] = [];
+  eventTypes: EventType[] = [];
+
+  userRole: string | null = null;
+  mode: '' | 'my' = '';
 
   ngOnInit(): void {
-    // // inicijalizuj formu za slider
-    // this.priceRangeGroup = this.fb.group({
-    //   startPrice: [this.selectedMinPrice],
-    //   endPrice: [this.selectedMaxPrice]
-    // });
+    const currentUser = this.authService.getCurrentUser();
+    this.userRole = currentUser?.role || null;
 
-    // // slušaj promene slidera
-    // this.priceRangeGroup.valueChanges.subscribe(val => {
-    //   this.selectedMinPrice = val.startPrice;
-    //   this.selectedMaxPrice = val.endPrice;
-    //   this.filterAndSearch();
-    // });
+    this.route.url.subscribe((segments) => {
+      const path = segments.map((s) => s.path).join('/');
+      this.mode = path === 'services' ? 'my' : '';
+      this.loadProducts();
+    });
 
-    this.filterAndSearch();
+    this.categoryService.getAllApproved().subscribe(cats => {
+      this.categories = cats;
+    });
+
+    this.eventTypeService.getAll().subscribe(eventTypes => {
+      this.eventTypes = eventTypes;
+    });
+  }
+
+  loadProducts(): void {
+    if (this.mode === 'my') {
+      this.fetchMyProducts();
+    } else {
+      this.fetchAllProducts();
+    }
+  }
+
+  fetchMyProducts(): void {
+    this.serviceService.getByProvider().subscribe({
+      next: (data) => {
+        this.allServices = data;
+
+        this.maxServicePrice = this.allServices.length > 0 
+          ? Math.max(...this.allServices.map(s => s.price)) 
+          : 0;
+
+        this.selectedMaxPrice = this.maxServicePrice;
+        this.displayedServices = this.allServices;
+        this.filterAndSearch();
+      },
+      error: (err) => {
+        this.snackBar.open('Error fetching provider services', undefined, {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      }
+    });
+  }
+
+  fetchAllProducts(): void {
+    this.serviceService.getAll().subscribe({
+      next: (data) => {
+        this.allServices = data;
+
+        this.maxServicePrice = this.allServices.length > 0 
+          ? Math.max(...this.allServices.map(s => s.price)) 
+          : 0;
+
+        this.selectedMaxPrice = this.maxServicePrice;
+        this.displayedServices = this.allServices;
+        this.filterAndSearch();
+      },
+      error: (err) => {
+        this.snackBar.open('Error fetching provider services', undefined, {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      }
+    });
   }
 
   filterAndSearch(): void {
-    let filteredServices = this.allServices;
-  
+    let filteredServices = [...this.allServices];
     if (this.selectedCategory) {
       filteredServices = filteredServices.filter(
-        (service) => service.category === this.selectedCategory
+        (service) => service.category.id === Number(this.selectedCategory)
       );
     }
   
     if (this.selectedEventType) {
-      filteredServices = filteredServices.filter((service) =>
-        service.serviceEventType.includes(this.selectedEventType)
+      filteredServices = filteredServices.filter((service) => 
+        service.eventTypes.some((et: EventType) => et.id === Number(this.selectedEventType))
       );
     }
-  
-    if (this.selectedAvailable && !this.selectedNotAvailable) {
-      filteredServices = filteredServices.filter((service) => service.availability === true);
-    }
-  
-    if (this.selectedNotAvailable && !this.selectedAvailable) {
-      filteredServices = filteredServices.filter((service) => service.availability === false);
-    }
-  
-    if (this.selectedAvailable && this.selectedNotAvailable) {
-      filteredServices = filteredServices.filter(
-        (service) => service.availability === true || service.availability === false
-      );
+    
+    if (this.selectedAvailable === true) {
+      filteredServices = filteredServices.filter(service => service.available === true);
+    } else if (this.selectedAvailable === false) {
+      filteredServices = filteredServices.filter(service => service.available === false);
     }
   
     filteredServices = filteredServices.filter(
@@ -189,18 +156,41 @@ export class ServicesComponent implements OnInit {
   }
 
   get totalPages(): number[] {
-    return Array.from({ length: Math.ceil(this.allServices.length / this.itemsPerPage) }, (_, i) => i + 1);
+    return Array.from(
+      { length: Math.ceil(this.displayedServices.length / this.itemsPerPage) }, 
+      (_, i) => i + 1
+    );
   }
 
   toggleAvailability(): void {
     this.filterAndSearch(); 
   } 
-  
-  goToEditService() {
-    this.router.navigate(['/edit-service']);
+
+  goToEditService(service: Service) {
+    if (this.mode === 'my') {
+      this.router.navigate(['/edit-service', service.id], { queryParams: { viewOnly: false } });
+    } else {
+      this.router.navigate(['/edit-service', service.id], { queryParams: { viewOnly: true } });
+    }
   }
 
   goToAddService() {
     this.router.navigate(['/add-service']);    
+  }
+
+  getCategoryName(service: Service): string {
+    const found = this.categories.find(cat => cat.id === service.category.id);
+    return found ? found.name : 'Unknown';
+  }
+
+  getEventTypeNames(service: Service): string {
+    if (!service.eventTypes || service.eventTypes.length === 0) {
+      return 'Unknown';
+    }
+    return service.eventTypes.map((et: any) => et.name).join(', ');
+  }
+
+  getServiceImage(service: Service): string {
+    return environment.apiUrl + service.imageURLs[0];
   }
 }
