@@ -96,3 +96,32 @@
     max-width: 100%;
   }
 }
+
+.fa-heart {
+  transition: transform 0.2s;
+}
+.fa-heart:hover {
+  transform: scale(1.2);
+}
+
+.pdf-btn {
+  position: fixed;
+  bottom: 40px; /* od dna */
+  right: 40px;  /* od desno */
+  background-color: green; 
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background-color 0.2s, transform 0.2s;
+  z-index: 1000; 
+}
+
+.pdf-btn:hover {
+  background-color: rgb(00, 135, 00);
+  transform: scale(1.05);
+}
+

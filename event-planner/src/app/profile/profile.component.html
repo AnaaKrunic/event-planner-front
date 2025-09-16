@@ -84,7 +84,7 @@
   <div class="profile-right" *ngIf="!readonlyMode">
     <div class="calendar">
       <p><strong>Your upcoming events</strong></p>
-      <p>[Kalendar ovde]</p>
+      <full-calendar [options]="calendarOptions"></full-calendar>
     </div>
     <button (click)="deactivateProfile()">Deactivate profile</button>
   </div>

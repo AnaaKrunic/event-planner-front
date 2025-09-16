@@ -4,7 +4,17 @@
     <h1>{{ event.name }}</h1>
     <!-- Event Date -->
     <p class="event-date">Date: {{ event.startDate | date:'longDate' }}</p>
+
+    <i 
+      class="fa-heart" 
+      [class.far]="!isFavorite" 
+      [class.fas]="isFavorite" 
+      (click)="toggleFavorite()" 
+      style="cursor: pointer; font-size: 24px; color: red;">
+    </i>
   </div>
+
+  <button class="pdf-btn" (click)="generatePDF()">Download PDF</button>
 
   <div class="event-description">
     <h2>About Event</h2>

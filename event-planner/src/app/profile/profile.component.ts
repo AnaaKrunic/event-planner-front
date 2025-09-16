@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../authservice.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
 
 @Component({
   selector: 'app-profile',
@@ -14,51 +16,64 @@ export class ProfileComponent implements OnInit {
   readonlyMode = true;
 
   constructor(private http: HttpClient, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
+  calendarOptions: any = {
+    initialView: 'dayGridMonth',
+    plugins: [dayGridPlugin, interactionPlugin],
+    events: [],
+    headerToolbar: {
+      left: '',
+      center: 'title',
+      right: 'prev,next',
+    },
+    dayMaxEventRows: 3,
+    eventDisplay: 'block',
+    eventContent: (arg: any) => {
+      return { html: `<div class="fc-event-title">${arg.event.title}</div>` };
+    },
+    eventDidMount: (info: any) => {
+      info.el.setAttribute('title', info.event.title);
+    }
+  };
 
   ngOnInit(): void {
-  const id = this.route.snapshot.paramMap.get('id');
-  const token = this.authService.getToken();
+    const id = this.route.snapshot.paramMap.get('id');
+    const token = this.authService.getToken();
 
-  if (!token) {
-    console.error("Token doesn't exist - user not logged in.");
-    return;
-  }
+    if (!token) {
+      console.error("Token doesn't exist - user not logged in.");
+      return;
+    }
 
-  const headers = new HttpHeaders({
-    Authorization: `Bearer ${token}`
-  });
-
-  if (id) {
-    // gledaš tuđi profil
-    this.readonlyMode = true;
-
-    this.http.get(`${environment.apiUrl}/profile/${id}`, { headers }).subscribe({
-      next: (data: any) => {
-        this.user = data;
-        this.processImageURLs();
-      },
-      error: err => {
-        console.error('Error fetching profile by ID:', err);
-      }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
     });
-  } else {
-    // gledaš svoj profil
-    this.readonlyMode = false;
 
-    this.http.get(`${environment.apiUrl}/profile`, { headers }).subscribe(
-      data => {
-        this.user = data;
-        this.processImageURLs();
-      },
-      error => {
-        console.error('Error:', error);
-      }
-    );
+    if (id) {
+      this.readonlyMode = true;
+      this.http.get(`${environment.apiUrl}/profile/${id}`, { headers }).subscribe({
+        next: (data: any) => {
+          this.user = data;
+          this.processImageURLs();
+        },
+        error: err => {
+          console.error('Error fetching profile by ID:', err);
+        }
+      });
+    } else {
+      this.readonlyMode = false;
+      this.http.get(`${environment.apiUrl}/profile`, { headers }).subscribe(
+        data => {
+          this.user = data;
+          this.processImageURLs();
+        },
+        error => {
+          console.error('Error:', error);
+        }
+      );
+    }
   }
-}
 
   isEditing = false;
-
 
   selectedFiles: File[] = [];
 
@@ -205,5 +220,48 @@ export class ProfileComponent implements OnInit {
         return url;
       });
     }
+  }
+  
+  // ucitavanje Eventova za kalendar
+  loadCalendarEvents(): void {
+    const userId = this.authService.getUserId();
+    const userRole = this.authService.getRole();
+
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    this.http.get<any[]>(`${environment.apiUrl}/favorites/events/${userId}`, { headers })
+      .subscribe({
+        next: favorites => {
+          const favEvents = (favorites || []).map(e => ({
+            id: e.id,
+            title: e.name,
+            start: e.startDate ? new Date(e.startDate) : null,
+            color: 'red'
+          }));
+
+          if (userRole === 'EventOrganizer') {
+            this.http.get<any[]>(`${environment.apiUrl}/events/my-events?organizerId=${userId}`, { headers })
+              .subscribe({
+                next: myEvents => {
+                  const ownEvents = (myEvents || []).map(e => ({
+                    id: e.id,
+                    title: e.name,
+                    start: e.startDate ? new Date(e.startDate) : null,
+                    color: 'blue'
+                  }));
+
+                  this.calendarOptions.events = [...favEvents, ...ownEvents];
+                },
+                error: err => console.error('Error fetching my events:', err)
+              });
+          } else {
+            this.calendarOptions.events = [...favEvents];
+          }
+        },
+        error: err => console.error('Error fetching favorite events:', err)
+      });
   }
 }

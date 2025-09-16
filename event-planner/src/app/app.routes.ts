@@ -23,6 +23,7 @@ import { AboutProductComponent } from './about-product/about-product.component';
 import { ProductCreateComponent } from './product-create/product-create.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { ACategoryComponent } from './a-category/a-category.component';
+import { FavoriteEventsComponent } from './favorite-events/favorite-events.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -34,7 +35,6 @@ export const routes: Routes = [
   { path: 'eo-registration', component: EORegistrationComponent },
   { path: 'spp-registration', component: SPPRegistrationComponent },
   { path: 'add-service', component: AddServiceComponent },
-  { path: 'services', component: ServicesComponent },
   { path: 'event/:id', component: AboutEventComponent },
   { path: 'solution/:id', component: AboutSolutionComponent },
   { path: 'event-invitation', component: EventInvitationComponent },
@@ -52,7 +52,8 @@ export const routes: Routes = [
   { path: 'a-category', component: ACategoryComponent },
   { path: 'edit-service/:id', component: EditServiceComponent },
   { path: 'all-services', component: ServicesComponent },
-  { path: 'profile/:id', component: ProfileComponent }
+  { path: 'profile/:id', component: ProfileComponent },
+  { path: 'favorites', component: FavoriteEventsComponent }
 ];
 
 @NgModule({
