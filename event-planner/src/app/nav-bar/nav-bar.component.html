@@ -7,13 +7,13 @@
         <a routerLink="/my-events">My Events</a>
       </li>
       <li><a routerLink="/favorites">Favorite Events</a></li>
-      <li *ngIf="user?.role === 'SPProvider'">
-        <a routerLink="/services">My Services</a>
       <li><a routerLink="/event-types">Event Types</a></li>
       <li><a routerLink="/all-products">Products</a></li>
       <li *ngIf="user?.role === 'SPProvider'">
         <a routerLink="/my-products">My Products</a>
       </li>
+      <li *ngIf="user?.role === 'SPProvider'">
+        <a routerLink="/services">My Services</a>
       <li><a routerLink="/a-category">Categories</a></li>
       <li><a routerLink="/profile">Profile</a></li>
       <li><a (click)="logout()">Log Out</a></li>

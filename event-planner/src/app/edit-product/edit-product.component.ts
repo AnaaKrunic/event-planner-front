@@ -87,6 +87,7 @@ export class EditProductComponent implements OnInit {
     };
 
     dtoValue['available'] = dtoValue['isAvailable'];
+    dtoValue['visible'] = true;
     delete dtoValue['isVisible'];
     delete dtoValue['isAvailable'];
 

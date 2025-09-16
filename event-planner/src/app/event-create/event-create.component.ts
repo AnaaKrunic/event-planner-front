@@ -32,6 +32,8 @@ export class EventCreateComponent implements OnInit {
   private map!: L.Map;
   private marker!: L.Marker;
 
+  today: string = new Date().toISOString().split('T')[0];
+
   constructor(
   private eventService: EventService,
   private eventTypeService: EventTypeService,
@@ -76,6 +78,15 @@ export class EventCreateComponent implements OnInit {
   onSubmit() {
     if (!this.event.location) {
       console.error('No location selected!');
+      return;
+    }
+
+    const today = new Date();
+    today.setHours(0,0,0,0);
+    const selectedDate = new Date(this.event.date);
+
+    if (selectedDate.getTime() < today.getTime()) {
+      alert('Event date cannot be in the past!');
       return;
     }
 
