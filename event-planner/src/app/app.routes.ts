@@ -24,6 +24,7 @@ import { ProductCreateComponent } from './product-create/product-create.componen
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { ACategoryComponent } from './a-category/a-category.component';
 import { FavoriteEventsComponent } from './favorite-events/favorite-events.component';
+import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-solutions.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -53,7 +54,8 @@ export const routes: Routes = [
   { path: 'edit-service/:id', component: EditServiceComponent },
   { path: 'all-services', component: ServicesComponent },
   { path: 'profile/:id', component: ProfileComponent },
-  { path: 'favorites', component: FavoriteEventsComponent }
+  { path: 'favorites', component: FavoriteEventsComponent },
+  { path: 'favorite-solutions', component: FavoriteSolutionsComponent }
 ];
 
 @NgModule({
