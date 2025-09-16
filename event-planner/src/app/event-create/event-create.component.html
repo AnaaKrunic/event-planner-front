@@ -57,7 +57,7 @@
     <!-- date -->
     <div>
       <label for="date">Event date:</label>
-      <input type="date" id="date" [(ngModel)]="event.date" name="date" required />
+      <input type="date" id="date" [(ngModel)]="event.date" name="date" [min]="today" required />
     </div>
 
     <hr />
