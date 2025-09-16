@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../authservice.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -11,39 +11,51 @@ import { Router } from '@angular/router';
 })
 export class ProfileComponent implements OnInit {
   user: any;
+  readonlyMode = true;
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
+  constructor(private http: HttpClient, private authService: AuthService, private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit(): void {
-    const token = this.authService.getToken();
-    if (!token) {
-      console.error("Token doesn't exist - user not logged in.");
-      return;
-    }
+  const id = this.route.snapshot.paramMap.get('id');
+  const token = this.authService.getToken();
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
+  if (!token) {
+    console.error("Token doesn't exist - user not logged in.");
+    return;
+  }
+
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${token}`
+  });
+
+  if (id) {
+    // gledaš tuđi profil
+    this.readonlyMode = true;
+
+    this.http.get(`${environment.apiUrl}/profile/${id}`, { headers }).subscribe({
+      next: (data: any) => {
+        this.user = data;
+        this.processImageURLs();
+      },
+      error: err => {
+        console.error('Error fetching profile by ID:', err);
+      }
     });
+  } else {
+    // gledaš svoj profil
+    this.readonlyMode = false;
 
     this.http.get(`${environment.apiUrl}/profile`, { headers }).subscribe(
-    data => {
-      this.user = data;
-
-      const BASE_URL = environment.apiUrl;
-      if (this.user.imageURLs && Array.isArray(this.user.imageURLs)) {
-        this.user.imageURLs = this.user.imageURLs.map((url: string) => {
-          if (!url.startsWith('http')) {
-            return `${BASE_URL}${url}`;
-          }
-          return url;
-        });
+      data => {
+        this.user = data;
+        this.processImageURLs();
+      },
+      error => {
+        console.error('Error:', error);
       }
-    },
-    error => {
-      console.error('Error:', error);
-    }
-  );
+    );
   }
+}
 
   isEditing = false;
 
@@ -100,7 +112,6 @@ export class ProfileComponent implements OnInit {
       this.currentIndex = this.user.imageURLs.length - 1;
     }
   }
-
 
   toggleEdit() {
     if (this.isEditing) {
@@ -184,4 +195,15 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  private processImageURLs() {
+    const BASE_URL = environment.apiUrl;
+    if (this.user.imageURLs && Array.isArray(this.user.imageURLs)) {
+      this.user.imageURLs = this.user.imageURLs.map((url: string) => {
+        if (!url.startsWith('http')) {
+          return `${BASE_URL}${url}`;
+        }
+        return url;
+      });
+    }
+  }
 }

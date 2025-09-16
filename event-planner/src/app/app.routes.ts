@@ -50,7 +50,9 @@ export const routes: Routes = [
   { path: 'products/create', component: ProductCreateComponent},
   { path: 'products/edit/:id', component: EditProductComponent },
   { path: 'a-category', component: ACategoryComponent },
-  { path: 'edit-service/:id', component: EditServiceComponent }
+  { path: 'edit-service/:id', component: EditServiceComponent },
+  { path: 'all-services', component: ServicesComponent },
+  { path: 'profile/:id', component: ProfileComponent }
 ];
 
 @NgModule({

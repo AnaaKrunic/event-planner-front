@@ -1,7 +1,7 @@
 <div class="profile-layout" *ngIf="user">
 
   <div class="profile-left">
-    <h2>My Profile</h2>
+    <h2>{{ readonlyMode ? 'Profile' : 'My Profile' }}</h2>
 
     <p>
       <strong>Email:</strong>
@@ -39,10 +39,11 @@
       <input type="text" [(ngModel)]="user.phoneNumber" [readonly]="!isEditing">
     </p>
 
-    <a class="link-btn" (click)="toggleEdit()">
+    <a class="link-btn" *ngIf="!readonlyMode" (click)="toggleEdit()">
       {{ isEditing ? 'Save changes' : 'Edit profile' }}
     </a>
-    <a class="link-btn" routerLink="/change-password">Change password</a>
+    <a class="link-btn" *ngIf="!readonlyMode" routerLink="/change-password">Change password</a>
+    <a class="link-btn" *ngIf="readonlyMode"> Report SPP</a>
   </div>
 
   <div class="profile-center">
@@ -80,7 +81,7 @@
     </div>
   </div>
 
-  <div class="profile-right">
+  <div class="profile-right" *ngIf="!readonlyMode">
     <div class="calendar">
       <p><strong>Your upcoming events</strong></p>
       <p>[Kalendar ovde]</p>

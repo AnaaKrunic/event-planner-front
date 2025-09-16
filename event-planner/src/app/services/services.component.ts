@@ -8,6 +8,7 @@ import { Category, CategoryService } from '../category.service';
 import { EventType, EventTypeService } from '../event-type.service';
 import { environment } from '../../environments/environment';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-services',
@@ -18,10 +19,12 @@ export class ServicesComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private serviceService: ServiceService,
     private categoryService: CategoryService,
     private eventTypeService: EventTypeService,
     private snackBar: MatSnackBar,
+    private authService: AuthService
   ) {}
 
   selectedCategory: string = '';
@@ -39,7 +42,37 @@ export class ServicesComponent implements OnInit {
   categories: Category[] = [];
   eventTypes: EventType[] = [];
 
+  userRole: string | null = null;
+  mode: '' | 'my' = '';
+
   ngOnInit(): void {
+    const currentUser = this.authService.getCurrentUser();
+    this.userRole = currentUser?.role || null;
+
+    this.route.url.subscribe((segments) => {
+      const path = segments.map((s) => s.path).join('/');
+      this.mode = path === 'services' ? 'my' : '';
+      this.loadProducts();
+    });
+
+    this.categoryService.getAllApproved().subscribe(cats => {
+      this.categories = cats;
+    });
+
+    this.eventTypeService.getAll().subscribe(eventTypes => {
+      this.eventTypes = eventTypes;
+    });
+  }
+
+  loadProducts(): void {
+    if (this.mode === 'my') {
+      this.fetchMyProducts();
+    } else {
+      this.fetchAllProducts();
+    }
+  }
+
+  fetchMyProducts(): void {
     this.serviceService.getByProvider().subscribe({
       next: (data) => {
         this.allServices = data;
@@ -60,13 +93,28 @@ export class ServicesComponent implements OnInit {
         });
       }
     });
+  }
 
-    this.categoryService.getAllApproved().subscribe(cats => {
-      this.categories = cats;
-    });
+  fetchAllProducts(): void {
+    this.serviceService.getAll().subscribe({
+      next: (data) => {
+        this.allServices = data;
 
-    this.eventTypeService.getAll().subscribe(eventTypes => {
-      this.eventTypes = eventTypes;
+        this.maxServicePrice = this.allServices.length > 0 
+          ? Math.max(...this.allServices.map(s => s.price)) 
+          : 0;
+
+        this.selectedMaxPrice = this.maxServicePrice;
+        this.displayedServices = this.allServices;
+        this.filterAndSearch();
+      },
+      error: (err) => {
+        this.snackBar.open('Error fetching provider services', undefined, {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+        });
+      }
     });
   }
 
@@ -119,7 +167,11 @@ export class ServicesComponent implements OnInit {
   } 
 
   goToEditService(service: Service) {
-    this.router.navigate(['/edit-service', service.id]);
+    if (this.mode === 'my') {
+      this.router.navigate(['/edit-service', service.id], { queryParams: { viewOnly: false } });
+    } else {
+      this.router.navigate(['/edit-service', service.id], { queryParams: { viewOnly: true } });
+    }
   }
 
   goToAddService() {

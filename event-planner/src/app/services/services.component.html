@@ -42,9 +42,13 @@
       <p>Price: {{ service.price }} RSD</p>
       <p>Category: {{ getCategoryName(service) }} </p>
       <p>Event Type: {{ getEventTypeNames(service) }}</p>
-
    </div>
-   <button id="add" (click)="goToAddService()">+</button>
+   <button 
+   id="add" 
+   *ngIf="mode !== ''" 
+   (click)="goToAddService()">
+   +
+   </button>
    <div class="pagination">
       <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
       <button *ngFor="let page of totalPages" [class.active]="page === currentPage" (click)="changePage(page)">
