@@ -1,5 +1,13 @@
 <div class="edit-service-container">
-   <h1>{{ readonlyMode ? 'View Service' : 'Edit Service' }}</h1>
+   <h1>{{ readonlyMode ? 'View Service' : 'Edit Service' }}
+      <i 
+      class="fa-heart" 
+      [class.far]="!isFavorite" 
+      [class.fas]="isFavorite" 
+      (click)="toggleFavorite()" 
+      style="cursor: pointer; font-size: 24px; color: red;">
+    </i>
+   </h1>
    <div class="choose">Event Types</div>
    <div class="event-types">
       <ng-container *ngFor="let type of allEventTypes">
@@ -79,7 +87,7 @@
          <button *ngIf="!readonlyMode" (click)="onEdit()">Edit</button>
          <button *ngIf="!readonlyMode" (click)="onDelete()">Delete</button>
          <button *ngIf="readonlyMode" (click)="onSPP()">View Service Provider Profile</button>
-         <button (click)="onCancel()">Cancel</button>
+         <button *ngIf="!readonlyMode" (click)="onCancel()">Cancel</button>
       </div>
    </div>
 </div>

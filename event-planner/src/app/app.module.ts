@@ -37,6 +37,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FavoriteEventsComponent } from './favorite-events/favorite-events.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { CommonModule } from '@angular/common';
+import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-solutions.component';
+
 
 @NgModule({
   declarations: [
@@ -67,7 +70,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     ProductCreateComponent,
     EditProductComponent,
     ACategoryComponent,
-    FavoriteEventsComponent
+    FavoriteEventsComponent,
+    FavoriteSolutionsComponent
   ],
   imports: [
     BrowserModule,
@@ -77,7 +81,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     BrowserAnimationsModule,
     MatSliderModule,
     ReactiveFormsModule,
-    FullCalendarModule
+    FullCalendarModule,
+    CommonModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

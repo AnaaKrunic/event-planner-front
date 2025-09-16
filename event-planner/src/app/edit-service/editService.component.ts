@@ -4,6 +4,8 @@ import { ServiceService, Service, UpdateService } from '../service.service';
 import { EventTypeService } from '../event-type.service'; 
 import { forkJoin } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../authservice.service';
 
 @Component({
   selector: 'app-edit-service',
@@ -36,16 +38,18 @@ export class EditServiceComponent implements OnInit {
   durationType: 'fixed' | 'range' = 'fixed';
   readonlyMode = false;
   SPPId!: number;
+  isFavorite = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private serviceService: ServiceService,
-    private eventTypeService: EventTypeService
+    private eventTypeService: EventTypeService,
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-
     this.route.queryParams.subscribe(params => {
       this.readonlyMode = params['viewOnly'] === 'true';
     });
@@ -57,6 +61,19 @@ export class EditServiceComponent implements OnInit {
         this.SPPId = data.provider.id;
         this.fillForm(data);
         this.loadEventTypesForCategory(this.selectedCategory);
+
+        const currentUser = this.authService.getCurrentUser();
+        if (currentUser) {
+          const userId = currentUser.id;
+          this.http.get<any[]>(`${environment.apiUrl}/favorites/solutions/${userId}`, {
+            headers: { Authorization: `Bearer ${this.authService.getToken()}` }
+          }).subscribe({
+            next: (favorites) => {
+              this.isFavorite = favorites.some(fav => fav.solution.id === this.serviceId);
+            },
+            error: (err) => console.error('Greška pri proveri favorita:', err)
+          });
+        }
       }
     });
   }
@@ -213,5 +230,44 @@ export class EditServiceComponent implements OnInit {
 
   onSPP() {
     this.router.navigate(['/profile', this.SPPId]);
+  }
+
+  toggleFavorite() {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+
+    const userId = currentUser.id;
+    const url = `${environment.apiUrl}/favorites/solutions/${userId}/${this.service.id}`;
+
+    this.isFavorite = !this.isFavorite;
+
+    const request = this.isFavorite
+      ? this.http.post(url, null, {
+          headers: { Authorization: `Bearer ${this.authService.getToken()}` },
+          responseType: 'text'
+        })
+      : this.http.delete(url, {
+          headers: { Authorization: `Bearer ${this.authService.getToken()}` },
+          responseType: 'text'
+        });
+
+    request.subscribe({
+      next: () => {},
+      error: (err) => {
+        console.error('Greška pri ažuriranju omiljenog eventa:', err, this.isFavorite);
+        this.isFavorite = !this.isFavorite;
+      }
+    });
+  }
+
+  checkIfFavorite(userId: string, serviceId: number): void {
+    this.http.get<boolean>(`${environment.apiUrl}/favorite-solutions/${userId}/${serviceId}`, {
+      headers: { Authorization: `Bearer ${this.authService.getToken()}` }
+    }).subscribe({
+      next: (res) => {
+        this.isFavorite = res;
+      },
+      error: (err) => console.error('Greška pri proveri omiljenog servisa:', err)
+    });
   }
 }

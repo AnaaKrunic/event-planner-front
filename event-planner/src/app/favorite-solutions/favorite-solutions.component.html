@@ -1,0 +1,21 @@
+<div class="favorite-solutions">
+  <h1>My Favorite Solutions</h1>
+
+  <div *ngIf="isLoading" class="loader">
+    Loading favorite solutions...
+  </div>
+
+  <div class="solution-grid" *ngIf="!isLoading && favoriteSolutions.length > 0">
+    <div class="solution-card" *ngFor="let solution of favoriteSolutions">
+      <h3>{{ getSolutionName(solution) }}</h3>
+      <p>{{ getSolutionDescription(solution) }}</p>
+      <img [src]="getServiceImage(solution)" alt="Service image" />
+      <button class="details-btn" (click)="viewDetails(solution)">
+        View Details
+      </button>
+    </div>
+
+  <div *ngIf="!isLoading && favoriteSolutions.length === 0" class="no-solutions">
+    You have no favorite solutions yet.
+  </div>
+</div>
