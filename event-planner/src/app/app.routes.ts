@@ -35,7 +35,6 @@ export const routes: Routes = [
   { path: 'eo-registration', component: EORegistrationComponent },
   { path: 'spp-registration', component: SPPRegistrationComponent },
   { path: 'add-service', component: AddServiceComponent },
-  { path: 'services', component: ServicesComponent },
   { path: 'event/:id', component: AboutEventComponent },
   { path: 'solution/:id', component: AboutSolutionComponent },
   { path: 'event-invitation', component: EventInvitationComponent },
@@ -52,6 +51,8 @@ export const routes: Routes = [
   { path: 'products/edit/:id', component: EditProductComponent },
   { path: 'a-category', component: ACategoryComponent },
   { path: 'edit-service/:id', component: EditServiceComponent },
+  { path: 'all-services', component: ServicesComponent },
+  { path: 'profile/:id', component: ProfileComponent },
   { path: 'favorites', component: FavoriteEventsComponent }
 ];
 

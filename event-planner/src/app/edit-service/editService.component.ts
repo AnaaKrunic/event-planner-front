@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 export class EditServiceComponent implements OnInit {
 
   serviceId!: number;
-  service!: Service;
+  service!: any;
 
   serviceName = '';
   price = 0;
@@ -34,6 +34,8 @@ export class EditServiceComponent implements OnInit {
   isVisible = false;
   allEventTypes: { id: number, name: string, selected: boolean }[] = [];
   durationType: 'fixed' | 'range' = 'fixed';
+  readonlyMode = false;
+  SPPId!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,10 +45,16 @@ export class EditServiceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
+    this.route.queryParams.subscribe(params => {
+      this.readonlyMode = params['viewOnly'] === 'true';
+    });
+
     this.serviceId = Number(this.route.snapshot.paramMap.get('id'));
     this.serviceService.getById(this.serviceId).subscribe({
       next: (data) => {
         this.service = data;
+        this.SPPId = data.provider.id;
         this.fillForm(data);
         this.loadEventTypesForCategory(this.selectedCategory);
       }
@@ -97,10 +105,12 @@ export class EditServiceComponent implements OnInit {
   }
 
   toggleEventType(eventType: any) {
+    if (this.readonlyMode) return;
     eventType.selected = !eventType.selected;
   }
 
   onEdit() {
+    if (this.readonlyMode) return;
     const selectedEventTypes = this.allEventTypes
       .filter((t) => t.selected)
       .map((t) => t.id);
@@ -170,6 +180,7 @@ export class EditServiceComponent implements OnInit {
   }
 
   onFileSelect(event: any): void {
+    if (this.readonlyMode) return;
     const files: FileList = event.target.files;
     if (files && files.length > 0) {
       for (let i = 0; i < files.length; i++) {
@@ -193,9 +204,14 @@ export class EditServiceComponent implements OnInit {
 
 
   removeImage(imgUrl: string, service: Service) {
+    if (this.readonlyMode) return;
     const index = service.imageURLs.indexOf(imgUrl);
     if (index > -1) {
       service.imageURLs.splice(index, 1);
     }
+  }
+
+  onSPP() {
+    this.router.navigate(['/profile', this.SPPId]);
   }
 }
