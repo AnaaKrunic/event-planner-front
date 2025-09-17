@@ -113,6 +113,9 @@
         </ng-template>
 
         <li><a routerLink="/favorite-solutions" routerLinkActive="active">Favorite Solutions</a></li>
+        <li *ngIf="user?.role === 'SPProvider'">
+          <a routerLink="/price-list">Price List</a>
+        </li>
         <li><a routerLink="/a-category" routerLinkActive="active">Categories</a></li>
         <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
         <li><a (click)="logout()">Log Out</a></li>

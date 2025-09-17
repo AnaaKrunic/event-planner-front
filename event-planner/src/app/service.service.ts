@@ -110,4 +110,20 @@ export class ServiceService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  updatePriceAndDiscount(serviceId: number, newPrice: number, newDiscount: number): Observable<Service> {
+    const currentUser = this.authService.getCurrentUser();
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${currentUser?.token || ''}`,
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.put<Service>(
+      `${this.apiUrl}/${serviceId}/price-discount`,
+      { price: newPrice, discount: newDiscount },
+      { headers }
+    );
+  }
+
+
 }
