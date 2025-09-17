@@ -39,6 +39,7 @@ import { FavoriteEventsComponent } from './favorite-events/favorite-events.compo
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CommonModule } from '@angular/common';
 import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-solutions.component';
+import { PriceListComponent } from './price-list/price-list.component';
 
 
 @NgModule({
@@ -71,7 +72,8 @@ import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-soluti
     EditProductComponent,
     ACategoryComponent,
     FavoriteEventsComponent,
-    FavoriteSolutionsComponent
+    FavoriteSolutionsComponent,
+    PriceListComponent
   ],
   imports: [
     BrowserModule,
