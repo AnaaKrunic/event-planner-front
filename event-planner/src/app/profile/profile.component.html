@@ -42,6 +42,7 @@
     <a class="link-btn" *ngIf="!readonlyMode" (click)="toggleEdit()">
       {{ isEditing ? 'Save changes' : 'Edit profile' }}
     </a>
+    <br>
     <a class="link-btn" *ngIf="!readonlyMode" routerLink="/change-password">Change password</a>
     <a class="link-btn" *ngIf="readonlyMode"> Report SPP</a>
   </div>

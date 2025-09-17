@@ -6,34 +6,119 @@
   height: 80px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   top: 0;
+  z-index: 1000;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
 .navbar-logo img {
-  height: 70px;
+  height: 48px;
 }
 
-.navbar ul {
+.nav-list {
   list-style: none;
   display: flex;
-  gap: 50px;
+  gap: 30px;
   margin: 0;
   padding: 0;
   align-items: center;
 }
 
-.navbar ul li a {
+.nav-list li a,
+.nav-list li .dropbtn {
   text-decoration: none;
   color: #000;
-  font-weight: normal;
-  transition: font-weight 0.2s ease-in-out;
+  font-weight: 500;
+  transition: all 0.15s ease-in-out;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 10px;
+  font: inherit;
+  border-radius: 4px;
 }
 
-.navbar ul li a.active {
-  font-weight: bold;
+.nav-list li a.active,
+.nav-list li a:hover,
+.nav-list li .dropbtn:hover {
+  font-weight: 700;
 }
 
-.navbar ul li a:hover {
-  font-weight: bold;
+.nav-list li.dropdown {
+  position: relative;
+}
+
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+.nav-list li .submenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  display: none;
+  flex-direction: column;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+  padding: 6px 0;
+  border-radius: 8px;
+  margin: 0;
+  z-index: 2000;
+  pointer-events: auto;
+}
+
+.nav-list li .submenu li {
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list li .submenu li .submenu-link,
+.nav-list li .submenu li a {
+  display: block;
+  padding: 10px 14px;
+  white-space: nowrap;
+  text-align: left;
+  width: 100%;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.nav-list li.dropdown:hover > .submenu,
+.nav-list li.dropdown.open > .submenu,
+.nav-list li.dropdown:focus-within > .submenu {
+  display: flex;
+}
+
+.nav-list li.dropdown.force-close > .submenu,
+.nav-list li.dropdown.force-close:hover > .submenu {
+  display: none !important;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.nav-list li .submenu li .submenu-link:hover,
+.nav-list li .submenu li a:hover {
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .nav-list {
+    gap: 10px;
+  }
+  .navbar {
+    padding: 0 12px;
+  }
 }

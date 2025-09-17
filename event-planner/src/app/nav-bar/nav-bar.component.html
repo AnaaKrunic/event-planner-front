@@ -1,32 +1,130 @@
 <nav class="navbar">
-  <ul>
-    <li><a routerLink="/" routerLinkActive="active">Home</a></li>
-    <ng-container *ngIf="isLoggedIn; else guestLinks">
-      <li><a routerLink="/all-events">Events</a></li>
-      <li *ngIf="user?.role === 'EventOrganizer'">
-        <a routerLink="/my-events">My Events</a>
-      </li>
-      <li><a routerLink="/favorites">Favorite Events</a></li>
-      <li><a routerLink="/event-types">Event Types</a></li>
-      <li><a routerLink="/all-products">Products</a></li>
-      <li *ngIf="user?.role === 'SPProvider'">
-        <a routerLink="/my-products">My Products</a>
-      </li>
-      <li><a routerLink="/all-services">Services</a></li>
-      <li *ngIf="user?.role === 'SPProvider'">
-        <a routerLink="/services">My Services</a>
-      </li>
-      <li><a routerLink="/favorite-solutions">Favorite Solutions</a></li>
-      <li *ngIf="user?.role === 'SPProvider'">
-        <a routerLink="/price-list">Price List</a>
-      </li>
-      <li><a routerLink="/a-category">Categories</a></li>
-      <li><a routerLink="/profile">Profile</a></li>
-      <li><a (click)="logout()">Log Out</a></li>
-    </ng-container>
-    <ng-template #guestLinks>
-      <li><a routerLink="/login">Login</a></li>
-      <li><a routerLink="/registration">Register</a></li>
-    </ng-template>
-  </ul>
+  <div class="navbar-inner">
+
+    <ul class="nav-list">
+      <li><a routerLink="/" routerLinkActive="active">Home</a></li>
+
+      <ng-container *ngIf="isLoggedIn; else guestLinks">
+
+        <!-- Events -->
+        <li class="dropdown"
+            [class.open]="eventsOpen"
+            [class.force-close]="hoverSuppressed">
+          <button
+            class="dropbtn"
+            (click)="toggleEvents($event)"
+            aria-haspopup="true"
+            [attr.aria-expanded]="eventsOpen">
+            Events
+          </button>
+
+          <ul class="submenu" role="menu" aria-label="Events menu">
+            <li role="none">
+              <button role="menuitem" class="submenu-link" (click)="navigateAndClose('/all-events')">
+                All Events
+              </button>
+            </li>
+            <li role="none" *ngIf="user?.role === 'EventOrganizer'">
+              <button role="menuitem" class="submenu-link" (click)="navigateAndClose('/my-events')">
+                My Events
+              </button>
+            </li>
+            <li role="none">
+              <button role="menuitem" class="submenu-link" (click)="navigateAndClose('/favorites')">
+                Favorite Events
+              </button>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Event types -->
+        <li><a routerLink="/event-types" routerLinkActive="active">Event Types</a></li>
+
+        <!-- Products (ako je 1 stavka nema dropdown) -->
+        <ng-container *ngIf="productsSingleItem; else productsDropdown">
+          <li>
+            <button class="dropbtn" (click)="navigateAndClose(productsSingleItem.path)">
+              Products
+            </button>
+          </li>
+        </ng-container>
+
+        <ng-template #productsDropdown>
+          <li class="dropdown"
+              [class.open]="productsOpen"
+              [class.force-close]="hoverSuppressed">
+            <button
+              class="dropbtn"
+              (click)="toggleProducts($event)"
+              aria-haspopup="true"
+              [attr.aria-expanded]="productsOpen">
+              Products
+            </button>
+
+            <ul class="submenu" role="menu" aria-label="Products menu">
+              <li role="none">
+                <button role="menuitem" class="submenu-link" (click)="navigateAndClose('/all-products')">
+                  All Products
+                </button>
+              </li>
+              <li role="none" *ngIf="user?.role === 'SPProvider'">
+                <button role="menuitem" class="submenu-link" (click)="navigateAndClose('/my-products')">
+                  My Products
+                </button>
+              </li>
+            </ul>
+          </li>
+        </ng-template>
+
+        <!-- Services -->
+        <ng-container *ngIf="servicesSingleItem; else servicesDropdown">
+          <li>
+            <button class="dropbtn" (click)="navigateAndClose(servicesSingleItem.path)">
+              Services
+            </button>
+          </li>
+        </ng-container>
+
+        <ng-template #servicesDropdown>
+          <li class="dropdown"
+              [class.open]="servicesOpen"
+              [class.force-close]="hoverSuppressed">
+            <button
+              class="dropbtn"
+              (click)="toggleServices($event)"
+              aria-haspopup="true"
+              [attr.aria-expanded]="servicesOpen">
+              Services
+            </button>
+
+            <ul class="submenu" role="menu" aria-label="Services menu">
+              <li role="none">
+                <button role="menuitem" class="submenu-link" (click)="navigateAndClose('/all-services')">
+                  All Services
+                </button>
+              </li>
+              <li role="none" *ngIf="user?.role === 'SPProvider'">
+                <button role="menuitem" class="submenu-link" (click)="navigateAndClose('/services')">
+                  My Services
+                </button>
+              </li>
+            </ul>
+          </li>
+        </ng-template>
+
+        <li><a routerLink="/favorite-solutions" routerLinkActive="active">Favorite Solutions</a></li>
+        <li *ngIf="user?.role === 'SPProvider'">
+          <a routerLink="/price-list">Price List</a>
+        </li>
+        <li><a routerLink="/a-category" routerLinkActive="active">Categories</a></li>
+        <li><a routerLink="/profile" routerLinkActive="active">Profile</a></li>
+        <li><a (click)="logout()">Log Out</a></li>
+      </ng-container>
+
+      <ng-template #guestLinks>
+        <li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+        <li><a routerLink="/registration" routerLinkActive="active">Register</a></li>
+      </ng-template>
+    </ul>
+  </div>
 </nav>
