@@ -93,4 +93,19 @@
     <!-- Submit -->
     <button type="submit">Create Event</button>
   </form>
+
+  <!-- BUDGET POPUP VAN FORME -->
+  <div *ngIf="showBudgetPopup" class="popup">
+    <div class="popup-content">
+      <h3>Do you want to create a budget for this event?</h3>
+      <button (click)="return()">No</button>
+      <button (click)="startBudget()">Yes</button>
+
+      <app-budget 
+        *ngIf="budgetStarted" 
+        [eventId]="createdEventId" 
+        [suggestedCategories]="suggestedCategories">
+      </app-budget>
+    </div>
+  </div>
 </div>

@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 //import { WebSocketService } from './web-socket.service'; // Komentarisano, ako ne koristite WebSocket
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { Router } from '@angular/router'; 
+import { BudgetService } from '../budget.service'
 
 @Component({
   selector: 'app-event-details',
@@ -30,7 +32,10 @@ export class AboutEventComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private budgetService: BudgetService
+    
     //private webSocketService: WebSocketService // Komentarisano, ako ne koristite WebSocket
   ) {}
 
@@ -192,6 +197,12 @@ export class AboutEventComponent implements OnInit {
       next: (res) => this.isFavorite = res,
       error: (err) => console.error('Greška pri proveri omiljenog eventa:', err)
     });
+  }
+
+  goToBudget(eventId: any){
+    // const budgetPlanDTO = this.budgetService.getBudgetByEventId(eventId);
+    // console.log(budgetPlanDTO)
+    this.router.navigate(['/budget/', eventId]);
   }
 
   // Komentarisano, ako ne koristite WebSocket
