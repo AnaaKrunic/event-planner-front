@@ -40,6 +40,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CommonModule } from '@angular/common';
 import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-solutions.component';
 import { PriceListComponent } from './price-list/price-list.component';
+import { BudgetComponent } from './budget/budget.component';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { PriceListComponent } from './price-list/price-list.component';
     ACategoryComponent,
     FavoriteEventsComponent,
     FavoriteSolutionsComponent,
-    PriceListComponent
+    PriceListComponent,
+    BudgetComponent
   ],
   imports: [
     BrowserModule,

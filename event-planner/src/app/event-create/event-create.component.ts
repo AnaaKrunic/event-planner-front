@@ -29,18 +29,22 @@ export class EventCreateComponent implements OnInit {
 
   agenda: any[] = [];
 
+  showBudgetPopup: boolean = false;
+  budgetStarted: boolean = false;
+  createdEventId!: number;
+
   private map!: L.Map;
   private marker!: L.Marker;
 
   today: string = new Date().toISOString().split('T')[0];
 
   constructor(
-  private eventService: EventService,
-  private eventTypeService: EventTypeService,
-  private locationService: LocationService,
-  private router: Router,
-  private authService: AuthService
-) {}
+    private eventService: EventService,
+    private eventTypeService: EventTypeService,
+    private locationService: LocationService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
 
   ngOnInit(): void {
@@ -130,7 +134,8 @@ export class EventCreateComponent implements OnInit {
         this.eventService.create(payload).subscribe({
           next: (res) => {
             console.log('Event successfully created:', res);
-            this.router.navigate(['/all-events']); // preusmeravam na listu dogadjaja
+            this.createdEventId = res.id; 
+            this.showBudgetPopup = true; // tek sada otvaramo popup
           },
           error: (err) => {
             console.error('Error with creating event', err);
@@ -139,6 +144,10 @@ export class EventCreateComponent implements OnInit {
       },
       error: (err) => console.error('Error creating location', err)
     }); 
+  }
+
+  startBudget() {
+    this.budgetStarted = true;
   }
 
   private initMap() {
@@ -170,5 +179,9 @@ export class EventCreateComponent implements OnInit {
         error: (err) => console.error('Error fetching address', err)
       })
     });
+  }
+
+  return () {
+    this.router.navigate(['/all-events']); // preusmeravam na listu dogadjaja
   }
 }
