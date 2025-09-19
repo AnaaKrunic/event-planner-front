@@ -48,6 +48,7 @@ export class BudgetService {
 
   updateBudgetPlan(id: number, dto: any): Observable<any> {
     console.log('uso')
+    console.log(id, dto)
     return this.http.put<any>(`${this.apiUrl}/${id}`, dto);
   }
 

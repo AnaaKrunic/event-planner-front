@@ -23,21 +23,23 @@ export class BudgetComponent implements OnInit {
   @Input() eventId!: number;
   @Input() suggestedCategories: { id: number; name: string }[] = [];
 
+  newEventNewBudget?: number;
+
   budget: any | null = null;
   budgetData: BudgetPlanDTO = { eventId: 0, items: [], total: 0 };
   event :any;
 
   ngOnInit() {
+    if (this.eventId) {
+      this.newEventNewBudget = this.eventId;
+    }
+
     this.route.paramMap.subscribe(params => {
       this.eventId = Number(params.get('eventId'));
       this.budgetData.eventId = this.eventId;
-
-      // Dobavljamo event
       this.eventService.getById(this.eventId).subscribe({
         next: (event) => {
           this.event = event;
-
-          // Dobavljamo sve tipove događaja da pronađemo odgovarajući po imenu
           this.eventTypeService.getAll().subscribe({
             next: (types) => {
               const selectedType = types.find(t => t.name === this.event.eventTypeName);
@@ -50,22 +52,14 @@ export class BudgetComponent implements OnInit {
           console.error('Greška pri učitavanju eventa', err);
         }
       });
-
-      console.log(this.eventId);
-      // Dobavljamo budžet
       this.budgetService.getBudgetByEventId(this.eventId).subscribe({
-        
         next: (res) => {
           this.budget = res;
-
-          // backend vraća items sa categoryId i amount
           this.budgetData = {
             eventId: this.eventId,
             items: res.items ?? [],
             total: 0
           };
-
-          console.log(this.budgetData);
           this.updateTotalBudget();
         },
         error: () => {
@@ -87,53 +81,42 @@ export class BudgetComponent implements OnInit {
   }
 
   confirmBudget() {
-  const validItems = this.budgetData.items
-    .filter(item => item.categoryId != null && item.amount != null && item.amount >= 0);
-
-  if (this.budget && this.budget.id) {
-    // Update
-    const payloadUpdated = {
-      id: this.budget.id,
-      maxAmount: this.budgetData.total,
-      eventId: this.eventId, // samo ID eventa
-      itemsDTO: validItems.map(item => ({
-        id: item.id,
-        categoryId: item.categoryId,
-        amount: item.amount,
-        purchaseId: item.purchaseId ?? null,
-        reservationId: item.reservationId ?? null,
-        budgetPlanId: this.budget.id  // obavezno setovati budgetPlanId
-      }))
-    };
-
-    console.log('Payload for update:', payloadUpdated);
-
-    this.budgetService.updateBudgetPlan(this.budget.id, payloadUpdated).subscribe({
-      next: (res) => this.router.navigate(['/all-events']),
-      error: (err) => console.error("Error updating budget:", err)
-    });
-  } else {
-    // Create
-    const payloadCreate = {
-      eventId: this.eventId,
-      itemsDTO: validItems.map(item => ({
-        categoryId: item.categoryId,
-        amount: item.amount,
-        purchaseId: item.purchaseId ?? null,
-        reservationId: item.reservationId ?? null
-      }))
-    };
-
-    console.log('Payload for create:', payloadCreate);
-
-    this.budgetService.createBudgetPlan(payloadCreate).subscribe({
-      next: (res) => this.router.navigate(['/all-events']),
-      error: (err) => console.error("Error creating budget:", err)
-    });
+    const validItems = this.budgetData.items
+      .filter(item => item.categoryId != null && item.amount != null && item.amount >= 0);
+    if (this.budget && this.budget.id) {
+      const payloadUpdated = {
+        id: this.budget.id,
+        itemsDTO: validItems.map(item => ({
+          categoryId: item.categoryId,
+          amount: item.amount,
+          purchaseId: item.purchaseId ?? null,
+          reservationId: item.reservationId ?? null,
+          budgetPlanId: this.budget.id
+        }))
+      };
+      this.budgetService.updateBudgetPlan(this.budget.id, payloadUpdated).subscribe({
+        next: (res) => this.router.navigate(['/event/' + this.event.id]),
+        error: (err) => console.error("Error updating budget:", err)
+      });
+    } else {
+      console.log(this.newEventNewBudget)
+      console.log(this.eventId)
+      const payloadCreate = {
+        eventId: this.newEventNewBudget ?? this.eventId,
+        itemsDTO: validItems.map(item => ({
+          categoryId: item.categoryId,
+          amount: item.amount,
+          purchaseId: item.purchaseId ?? null,
+          reservationId: item.reservationId ?? null
+        }))
+      };
+      console.log(payloadCreate)
+      this.budgetService.createBudgetPlan(payloadCreate).subscribe({
+        next: (res) => this.router.navigate(['/all-events']),
+        error: (err) => console.error("Error creating budget:", err)
+      });
+    }
   }
-}
-
-
 
   resetBudget() {
     this.budget = null;
@@ -165,14 +148,11 @@ export class BudgetComponent implements OnInit {
 
   getAvailableCategories(currentItem: BudgetItemDTO) {
     if (!this.suggestedCategories) return [];
-
     const selectedIds = this.budgetData.items
       .filter(item => item !== currentItem)
       .map(item => item.categoryId)
       .filter(id => id != null)
       .map(id => Number(id));
-
-    // mora da ostane opcija koja je već selektovana u itemu
     return this.suggestedCategories.filter(
       cat => cat.id === currentItem.categoryId || !selectedIds.includes(cat.id)
     );
