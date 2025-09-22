@@ -200,8 +200,6 @@ export class AboutEventComponent implements OnInit {
   }
 
   goToBudget(eventId: any){
-    // const budgetPlanDTO = this.budgetService.getBudgetByEventId(eventId);
-    // console.log(budgetPlanDTO)
     this.router.navigate(['/budget/', eventId]);
   }
 

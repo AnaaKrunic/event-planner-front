@@ -41,6 +41,7 @@ import { CommonModule } from '@angular/common';
 import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-solutions.component';
 import { PriceListComponent } from './price-list/price-list.component';
 import { BudgetComponent } from './budget/budget.component';
+import { PurchaseComponent } from './purchase/purchase.component';
 
 
 @NgModule({
@@ -75,7 +76,8 @@ import { BudgetComponent } from './budget/budget.component';
     FavoriteEventsComponent,
     FavoriteSolutionsComponent,
     PriceListComponent,
-    BudgetComponent
+    BudgetComponent,
+    PurchaseComponent
   ],
   imports: [
     BrowserModule,
