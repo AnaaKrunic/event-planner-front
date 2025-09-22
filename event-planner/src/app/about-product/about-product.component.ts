@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../authservice.service';
@@ -15,7 +15,7 @@ export class AboutProductComponent implements OnInit {
   isFavorite = false;
   userId: string | null = null;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private authService: AuthService) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -104,5 +104,9 @@ export class AboutProductComponent implements OnInit {
       },
       error: (err) => console.error('Greška pri proveri omiljenog servisa:', err)
     });
+  }
+
+  goToPurchase(productId: number) {
+    this.router.navigate(['/purchase/', productId]);
   }
 }

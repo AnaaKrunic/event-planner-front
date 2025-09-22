@@ -9,12 +9,6 @@ export interface BudgetItemDTO {
   reservationId?: number | null;
 }
 
-// export interface BudgetPlanDTO {
-//   eventId: number;
-//   itemsDTO: BudgetItemDTO[];
-//   total?: number;
-// }
-
 export interface BudgetPlanDTO {
   eventId: number;
   items: BudgetItemDTO[];
@@ -55,10 +49,6 @@ export class BudgetService {
   getBudgetPlansByOrganizer(organizerId: number): Observable<BudgetPlanDTO[]> {
     return this.http.get<BudgetPlanDTO[]>(`${this.apiUrl}/organizer/${organizerId}`);
   }
-
-//   getBudgetPlanById(id: number): Observable<BudgetPlanDTO> {
-//     return this.http.get<BudgetPlanDTO>(`${this.apiUrl}/${id}`);
-//   }
 
   getBudgetByEventId(eventId: number): Observable<BudgetPlanDTO> {
     return this.http.get<BudgetPlanDTO>(`/api/budget/${eventId}`)

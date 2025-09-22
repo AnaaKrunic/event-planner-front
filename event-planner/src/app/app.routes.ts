@@ -27,6 +27,7 @@ import { FavoriteEventsComponent } from './favorite-events/favorite-events.compo
 import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-solutions.component';
 import { PriceListComponent } from './price-list/price-list.component';
 import { BudgetComponent } from './budget/budget.component';
+import { PurchaseComponent } from './purchase/purchase.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -60,6 +61,7 @@ export const routes: Routes = [
   { path: 'favorite-solutions', component: FavoriteSolutionsComponent },
   { path: 'price-list', component: PriceListComponent},
   { path: 'budget/:eventId', component: BudgetComponent },
+  { path: 'purchase/:productId', component: PurchaseComponent}
 ];
 
 @NgModule({

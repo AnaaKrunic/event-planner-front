@@ -1,0 +1,16 @@
+<div *ngIf="eventsWithBudget.length > 0; else noEvents">
+  <h3>Select Event for Purchase</h3>
+  <select [(ngModel)]="selectedEventId">
+    <option *ngFor="let ev of eventsWithBudget" [value]="ev.id">
+      {{ ev.name }}
+    </option>
+  </select>
+
+  <button (click)="createPurchase()" [disabled]="!selectedEventId">
+    Buy Product
+  </button>
+</div>
+
+<ng-template #noEvents>
+  <p>No events available with budget for this product category.</p>
+</ng-template>

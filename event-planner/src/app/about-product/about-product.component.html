@@ -30,4 +30,6 @@
     <h2>Images</h2>
     <img *ngFor="let url of product.imageURLs" [src]="url" alt="{{ product.name }}" />
   </div>
+  <button class="purchase-btn" (click)="goToPurchase(product.id)"> Purchase </button>
+
 </div>
