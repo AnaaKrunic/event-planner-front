@@ -42,6 +42,13 @@ import { FavoriteSolutionsComponent } from './favorite-solutions/favorite-soluti
 import { PriceListComponent } from './price-list/price-list.component';
 import { BudgetComponent } from './budget/budget.component';
 import { PurchaseComponent } from './purchase/purchase.component';
+import { ChatComponent } from './chat/chat.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+
 
 
 @NgModule({
@@ -77,7 +84,8 @@ import { PurchaseComponent } from './purchase/purchase.component';
     FavoriteSolutionsComponent,
     PriceListComponent,
     BudgetComponent,
-    PurchaseComponent
+    PurchaseComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +96,12 @@ import { PurchaseComponent } from './purchase/purchase.component';
     MatSliderModule,
     ReactiveFormsModule,
     FullCalendarModule,
-    CommonModule
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

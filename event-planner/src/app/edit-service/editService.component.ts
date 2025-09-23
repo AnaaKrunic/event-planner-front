@@ -39,6 +39,7 @@ export class EditServiceComponent implements OnInit {
   readonlyMode = false;
   SPPId!: number;
   isFavorite = false;
+  userId!: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -269,5 +270,15 @@ export class EditServiceComponent implements OnInit {
       },
       error: (err) => console.error('Greška pri proveri omiljenog servisa:', err)
     });
+  }
+
+  chatVisible: boolean = false;
+
+  openChat() {
+    this.chatVisible = true;
+  }
+
+  closeChat() {
+    this.chatVisible = false;
   }
 }

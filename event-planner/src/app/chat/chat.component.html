@@ -1,0 +1,27 @@
+<div id="chat-page">
+  <div class="chat-container">
+    <div *ngIf="!connected" class="connecting">Connecting...</div>
+
+    <ul id="messageArea">
+      <li *ngFor="let msg of messages">
+        <b>{{ msg.sender }}:</b> {{ msg.content }}
+      </li>
+    </ul>
+
+    <form (submit)="sendMessage(); $event.preventDefault()" id="messageForm">
+      <div class="form-group">
+        <div class="input-group clearfix">
+          <input
+            type="text"
+            [(ngModel)]="message"
+            name="message"
+            placeholder="Type a message..."
+            autocomplete="off"
+            class="form-control"
+          />
+          <button type="submit" class="primary">Send</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

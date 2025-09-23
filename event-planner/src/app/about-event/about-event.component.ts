@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { EventDTO } from '../models/event.dto';
 import * as L from 'leaflet';
 import { AuthService } from '../authservice.service';
 import { environment } from '../../environments/environment';
-//import { WebSocketService } from './web-socket.service'; // Komentarisano, ako ne koristite WebSocket
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { Router } from '@angular/router'; 
-import { BudgetService } from '../budget.service'
+import { BudgetService } from '../budget.service';
 
 @Component({
   selector: 'app-event-details',
@@ -23,11 +21,14 @@ export class AboutEventComponent implements OnInit {
   messages: string[] = [];
 
   userId: string | null = null;
-
   isFavorite = false;
 
   private map!: L.Map;
   private marker!: L.Marker;
+  loggedInUserId!: number;
+
+  organizerName: string = '';
+  organizerId: number = 0 ;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,8 +36,6 @@ export class AboutEventComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private budgetService: BudgetService
-    
-    //private webSocketService: WebSocketService // Komentarisano, ako ne koristite WebSocket
   ) {}
 
   ngOnInit(): void {
@@ -50,11 +49,10 @@ export class AboutEventComponent implements OnInit {
 
     const currentUser = this.authService.getCurrentUser();
     this.userId = currentUser?.id || null;
-
-    // Komentarisano, ako ne koristite WebSocket
-    // this.webSocketService.connect('ws://localhost:8080/chat'); // URL WebSocket-a
+    if (currentUser) {
+      this.loggedInUserId = Number(currentUser.id);
+    }
   }
-
 
   generatePDF(): void {
     if (!this.event) return;
@@ -68,7 +66,6 @@ export class AboutEventComponent implements OnInit {
     doc.setFontSize(12);
 
     const maxWidth = 180;
-
     const descLines = doc.splitTextToSize(`Description: ${this.event.description}`, maxWidth);
     const start = this.event.startDate ? new Date(this.event.startDate) : null;
     const startStr = start ? start.toLocaleDateString('sr-RS', { dateStyle: 'medium' }) : 'N/A';
@@ -90,7 +87,7 @@ export class AboutEventComponent implements OnInit {
     const locLines = doc.splitTextToSize(`Location: ${locationText}`, maxWidth);
     doc.text(locLines, 14, currentY);
     currentY += locLines.length * 6;
-    
+
     doc.text(`Date: ${startStr}`, 14, currentY);
     currentY += 10;
 
@@ -115,14 +112,18 @@ export class AboutEventComponent implements OnInit {
     doc.save(`${this.event.name}.pdf`);
   }
 
-  
-
   fetchEventDetails(eventId: string): void {
     this.isLoading = true;
     this.http.get<EventDTO>(`/api/events/${eventId}`).subscribe({
       next: (data) => {
         this.event = data;
         this.isLoading = false;
+
+        const anyEvent: any = data;
+        console.log(anyEvent)
+        this.organizerName = anyEvent.organizer?.name || 'organizer';
+        this.organizerId = anyEvent.organizerId || 'unknown organizer';
+        console.log(this.loggedInUserId, this.organizerId)
 
         if (this.userId) {
           this.checkIfFavorite(this.userId, this.event.id);
@@ -170,13 +171,13 @@ export class AboutEventComponent implements OnInit {
           headers: {
             Authorization: `Bearer ${this.authService.getToken()}`
           },
-        responseType: 'text'
+          responseType: 'text'
         })
       : this.http.delete(url, {
           headers: {
             Authorization: `Bearer ${this.authService.getToken()}`
           },
-        responseType: 'text'
+          responseType: 'text'
         });
 
     request.subscribe({
@@ -199,21 +200,17 @@ export class AboutEventComponent implements OnInit {
     });
   }
 
-  goToBudget(eventId: any){
+  goToBudget(eventId: any) {
     this.router.navigate(['/budget/', eventId]);
   }
 
-  // Komentarisano, ako ne koristite WebSocket
-  /*sendMessage(): void {
-    if (this.message.trim()) {
-      this.webSocketService.sendMessage(this.message); // Slanje poruke putem WebSocket-a
-      this.message = '';  // Resetuje polje za unos poruke
-    }
-  }*/
+  chatVisible: boolean = false;
 
-  // Komentarisano, ako ne koristite WebSocket
-  /*onMessageReceived(message: string): void {
-    this.messages.push(message);  // Dodaje novu poruku u chat
-  }*/
- 
+  openChat() {
+    this.chatVisible = true;
+  }
+
+  closeChat() {
+    this.chatVisible = false;
+  }
 }
