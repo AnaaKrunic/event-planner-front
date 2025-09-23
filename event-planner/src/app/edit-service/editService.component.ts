@@ -273,9 +273,18 @@ export class EditServiceComponent implements OnInit {
   }
 
   chatVisible: boolean = false;
+  currentUser: string = '';
+  otherUser: string = '';
 
   openChat() {
-    this.chatVisible = true;
+    this.currentUser = this.authService.getCurrentUser()?.name || '';
+    
+    this.serviceService.getById(this.serviceId).subscribe(s => {
+      this.otherUser = s.provider.name;
+      console.log(this.currentUser, this.otherUser)
+
+      this.chatVisible = true;
+    });
   }
 
   closeChat() {

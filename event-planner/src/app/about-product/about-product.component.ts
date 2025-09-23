@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../authservice.service';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-about-product',
@@ -18,7 +19,11 @@ export class AboutProductComponent implements OnInit {
   providerName: string = '';
   providerId: number = 0;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, private router: Router) {}
+  constructor(private route: ActivatedRoute, 
+              private http: HttpClient, 
+              private authService: AuthService, 
+              private router: Router,
+              private productService: ProductService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -123,10 +128,18 @@ export class AboutProductComponent implements OnInit {
     this.router.navigate(['/purchase/', productId]);
   }
 
-  chatVisible: boolean = false;
+chatVisible: boolean = false;
+  currentUser: string = '';
+  otherUser: string = '';
 
   openChat() {
-    this.chatVisible = true;
+    this.currentUser = this.authService.getCurrentUser()?.name || '';
+    
+    this.productService.getById(this.product.id).subscribe(p => {
+      this.otherUser = p.provider.name;
+      console.log(this.currentUser, this.otherUser)
+      this.chatVisible = true;
+    });
   }
 
   closeChat() {

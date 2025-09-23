@@ -32,16 +32,17 @@
   </div>
   <button class="purchase-btn" (click)="goToPurchase(product.id)"> Purchase </button>
 
+  <button class="primary" (click)="openChat()">Open Chat</button>
+  
+  <div class="chat-popup" [class.show]="chatVisible">
+    <div class="chat-header">
+      <h2>Chat</h2>
+      <button class="default" (click)="closeChat()">X</button>
+    </div>
+    <app-chat [username]="currentUser" [recipient]="otherUser"></app-chat>
+  </div>
   
 </div>
-<button class="primary" (click)="openChat()">Open Chat</button>
 
-<div class="chat-popup" [class.show]="chatVisible">
-  <div class="chat-header">
-    <h2>Chat</h2>
-    <button class="default" (click)="closeChat()">X</button>
-  </div>
-  <app-chat></app-chat>
-</div>
 
 

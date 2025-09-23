@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { BudgetService } from '../budget.service';
+import { EventService } from '../event.service';
 
 @Component({
   selector: 'app-event-details',
@@ -25,15 +26,12 @@ export class AboutEventComponent implements OnInit {
 
   private map!: L.Map;
   private marker!: L.Marker;
-  loggedInUserId!: number;
-
-  organizerName: string = '';
-  organizerId: number = 0 ;
 
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
     private authService: AuthService,
+    private eventService: EventService,
     private router: Router,
     private budgetService: BudgetService
   ) {}
@@ -49,9 +47,6 @@ export class AboutEventComponent implements OnInit {
 
     const currentUser = this.authService.getCurrentUser();
     this.userId = currentUser?.id || null;
-    if (currentUser) {
-      this.loggedInUserId = Number(currentUser.id);
-    }
   }
 
   generatePDF(): void {
@@ -120,10 +115,6 @@ export class AboutEventComponent implements OnInit {
         this.isLoading = false;
 
         const anyEvent: any = data;
-        console.log(anyEvent)
-        this.organizerName = anyEvent.organizer?.name || 'organizer';
-        this.organizerId = anyEvent.organizerId || 'unknown organizer';
-        console.log(this.loggedInUserId, this.organizerId)
 
         if (this.userId) {
           this.checkIfFavorite(this.userId, this.event.id);
@@ -205,9 +196,17 @@ export class AboutEventComponent implements OnInit {
   }
 
   chatVisible: boolean = false;
+  currentUser: string = '';
+  otherUser: string = '';
 
   openChat() {
-    this.chatVisible = true;
+    this.currentUser = this.authService.getCurrentUser()?.name || '';
+    
+    this.eventService.getById(this.event.id).subscribe(e => {
+      this.otherUser = e.name;
+      console.log(this.currentUser, this.otherUser)
+      this.chatVisible = true;
+    });
   }
 
   closeChat() {

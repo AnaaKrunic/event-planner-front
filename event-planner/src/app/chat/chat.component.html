@@ -4,7 +4,9 @@
 
     <ul id="messageArea">
       <li *ngFor="let msg of messages">
-        <b>{{ msg.sender }}:</b> {{ msg.content }}
+        <ng-container *ngIf="msg.content && msg.content.trim() !== ''">
+          <b>{{ msg.sender }}:</b> {{ msg.content }}
+        </ng-container>
       </li>
     </ul>
 
