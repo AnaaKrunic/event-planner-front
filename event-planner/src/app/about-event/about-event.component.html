@@ -34,4 +34,14 @@
     
     <div id="map" style="height: 300px; width: 100%;"></div>
   </div>
+
+  <button class="primary" (click)="openChat()">Open Chat</button>
+
+  <div class="chat-popup" [class.show]="chatVisible">
+    <div class="chat-header">
+      <h2>Chat</h2>
+      <button class="default" (click)="closeChat()">X</button>
+    </div>
+    <app-chat [username]="currentUser" [recipient]="otherUser"></app-chat>
+  </div>
 </div>

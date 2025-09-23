@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { AuthService } from '../authservice.service';
+import { ProductService } from '../product.service';
 
 @Component({
   selector: 'app-about-product',
@@ -14,8 +15,15 @@ export class AboutProductComponent implements OnInit {
   isLoading = true;
   isFavorite = false;
   userId: string | null = null;
+  loggedInUserId!: number;
+  providerName: string = '';
+  providerId: number = 0;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient, private authService: AuthService, private router: Router) {}
+  constructor(private route: ActivatedRoute, 
+              private http: HttpClient, 
+              private authService: AuthService, 
+              private router: Router,
+              private productService: ProductService) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -27,17 +35,21 @@ export class AboutProductComponent implements OnInit {
     }
 
     const currentUser = this.authService.getCurrentUser();
-        if (currentUser) {
-          const userId = currentUser.id;
-          this.http.get<any[]>(`${environment.apiUrl}/favorites/solutions/${userId}`, {
-            headers: { Authorization: `Bearer ${this.authService.getToken()}` }
-          }).subscribe({
-            next: (favorites) => {
-              this.isFavorite = favorites.some(fav => fav.solution.id === this.product?.id);
-            },
-            error: (err) => console.error('Greška pri proveri favorita:', err)
-          });
-        }
+    if (currentUser) {
+      const userId = currentUser.id;
+      
+      this.loggedInUserId = Number(currentUser.id);
+      console.log(this.loggedInUserId)
+
+      this.http.get<any[]>(`${environment.apiUrl}/favorites/solutions/${userId}`, {
+        headers: { Authorization: `Bearer ${this.authService.getToken()}` }
+      }).subscribe({
+        next: (favorites) => {
+          this.isFavorite = favorites.some(fav => fav.solution.id === this.product?.id);
+        },
+        error: (err) => console.error('Greška pri proveri favorita:', err)
+      });
+    }
   }
 
   fetchProductDetails(id: string): void {
@@ -54,6 +66,12 @@ export class AboutProductComponent implements OnInit {
         }
 
         this.product = data;
+
+        console.log(this.product)
+        this.providerId = this.product.providerId;
+        this.providerName = 'provider';
+        console.log(this.providerId, this.providerName, this.product)
+        
         this.isLoading = false;
       },
       error: (err) => {
@@ -108,5 +126,23 @@ export class AboutProductComponent implements OnInit {
 
   goToPurchase(productId: number) {
     this.router.navigate(['/purchase/', productId]);
+  }
+
+chatVisible: boolean = false;
+  currentUser: string = '';
+  otherUser: string = '';
+
+  openChat() {
+    this.currentUser = this.authService.getCurrentUser()?.name || '';
+    
+    this.productService.getById(this.product.id).subscribe(p => {
+      this.otherUser = p.provider.name;
+      console.log(this.currentUser, this.otherUser)
+      this.chatVisible = true;
+    });
+  }
+
+  closeChat() {
+    this.chatVisible = false;
   }
 }
