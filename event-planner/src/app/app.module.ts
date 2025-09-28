@@ -48,6 +48,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { ReviewComponent } from './review/review.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -85,7 +87,8 @@ import { MatButtonModule } from '@angular/material/button';
     PriceListComponent,
     BudgetComponent,
     PurchaseComponent,
-    ChatComponent
+    ChatComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,
@@ -101,7 +104,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
