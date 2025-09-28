@@ -1,0 +1,39 @@
+/* Stil za form field da bude malo širi i pregledniji */
+mat-form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Input i textarea da izgledaju čistije */
+input[matInput], textarea[matInput] {
+  font-size: 14px;
+  padding: 6px 10px;
+}
+
+/* Sklanjanje strelica na number input-u (Chrome, Edge, Safari) */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none;
+  margin: 0; 
+}
+
+/* Sklanjanje strelica u Firefox-u */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Dugmad na dnu */
+mat-dialog-actions {
+  margin-top: 12px;
+}
+
+button[mat-button] {
+  font-size: 14px;
+}
+
+button[mat-raised-button] {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 16px;
+  border-radius: 8px;
+}

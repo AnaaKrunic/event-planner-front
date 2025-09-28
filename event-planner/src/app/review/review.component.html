@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Leave a Review</h2>
+<mat-dialog-content>
+  <form #reviewForm="ngForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Rating (0-10)</mat-label>
+      <input matInput type="number" [(ngModel)]="review.rating" name="rating" min="0" max="10" required [value]="0">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Comment</mat-label>
+      <textarea 
+        matInput 
+        [(ngModel)]="review.comment" 
+        name="comment" 
+        required 
+        placeholder="Write your comment">
+      </textarea>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="onSubmit()" 
+    [disabled]="!review.rating || !review.comment">
+    Submit
+  </button>
+</mat-dialog-actions>
