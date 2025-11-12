@@ -1,46 +1,128 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-all-products-and-services',
   templateUrl: './all-products-and-services.component.html',
   styleUrls: ['./all-products-and-services.component.css'],
 })
-export class AllProductsAndServicesComponent {
-  productsAndServices = [
-    { image: 'assets/images/product.jpg', name: 'Live Band', description: 'Professional music band for your events.', category: 'Entertainment', city: 'New York', price: 1000 },
-    { image: 'assets/images/product.jpg', name: 'Wedding Cake', description: 'Custom-made wedding cakes.', category: 'Catering', city: 'Los Angeles', price: 500 },
-    { image: 'assets/images/product.jpg', name: 'Event Flags', description: 'Custom flags for your events.', category: 'Decoration', city: 'Chicago', price: 200 },
-    { image: 'assets/images/product.jpg', name: 'Event Decoration', description: 'Elegant decorations for any event.', category: 'Decoration', city: 'Paris', price: 700 },
-    { image: 'assets/images/product.jpg', name: 'Photography Service', description: 'Professional photography for events.', category: 'Photography', city: 'Berlin', price: 800 },
-    { image: 'assets/images/product.jpg', name: 'DJ Service', description: 'Top DJ to make your event unforgettable.', category: 'Entertainment', city: 'Amsterdam', price: 1200 },
-  ];
+export class AllProductsAndServicesComponent implements OnInit {
+  solutions: any[] = [];
+  filteredSolutions: any[] = [];
+  isLoading: boolean = true;
 
   searchTerm: string = '';
   selectedCategory: string = '';
   selectedCity: string = '';
   sortOption: string = 'name';
-  filteredProductsAndServices = [...this.productsAndServices];
+  pageSize: number = 10; // Adjust as needed
+  currentPage: number = 0;
+  totalPages: number = 0;
+  totalSolutions: number = 0;
+  categories: string[] = [];
 
-  filterAndSearch() {
-    this.filteredProductsAndServices = this.productsAndServices
-      .filter((item) =>
-        item.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-      )
-      .filter((item) =>
-        this.selectedCategory ? item.category === this.selectedCategory : true
-      )
-      .filter((item) =>
-        this.selectedCity ? item.city === this.selectedCity : true
-      );
 
-    this.sortProductsAndServices();
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.fetchAllSolutions(); // Fetch all solutions when the component loads
+    this.fetchCategories();
   }
 
-  sortProductsAndServices() {
-    if (this.sortOption === 'name') {
-      this.filteredProductsAndServices.sort((a, b) => a.name.localeCompare(b.name));
-    } else if (this.sortOption === 'price') {
-      this.filteredProductsAndServices.sort((a, b) => a.price - b.price);
+  fetchCategories(): void {
+    this.http.get<string[]>('/api/categories').subscribe(
+      (data) => {
+        this.categories = data; // Spremite kategorije za filtriranje
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    );
+  }
+
+  // Fetch all solutions from the backend
+  fetchAllSolutions(): void {
+    this.isLoading = true;
+
+    this.http.get<any[]>('/api/solutions').subscribe(
+      (data) => {
+        this.solutions = data;
+        this.filteredSolutions = [...this.solutions]; // Initialize filtered list
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching solutions:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Fetch search results with pagination, sorting, and filtering
+  fetchSearchResults(page: number = 0): void {
+    this.isLoading = true;
+
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', this.pageSize.toString())
+      .set('sort', this.sortOption);
+
+    // Add search term if provided
+    if (this.searchTerm) {
+      params = params.set('name', this.searchTerm);
     }
+
+    // Add category filter if selected
+    if (this.selectedCategory) {
+      params = params.set('category', this.selectedCategory);
+    }
+
+    // Add city filter if selected
+    if (this.selectedCity) {
+      params = params.set('city', this.selectedCity);
+    }
+
+    console.log('Search params:', params.toString()); // Log for debugging
+
+    this.http.get<any>('/api/solutions/search', { params }).subscribe(
+      (response) => {
+        console.log('Search results:', response); // Log for debugging
+        this.solutions = response.content || [];
+        this.filteredSolutions = [...this.solutions];
+        this.totalPages = response.totalPages;
+        this.totalSolutions = response.totalElements;
+        this.currentPage = response.number;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching search results:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Navigate to a specific page
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.currentPage = page;
+      this.fetchSearchResults(page);
+    }
+  }
+
+  // Trigger for search when input changes
+  onSearchTermChange(): void {
+    if (this.searchTerm.trim() === '') {
+      // If search input is empty, reload all solutions
+      this.fetchAllSolutions();
+    } else {
+      // Otherwise, perform the search
+      this.currentPage = 0; // Reset to first page
+      this.fetchSearchResults();
+    }
+  }
+
+  // Trigger for sorting and filtering change
+  onFilterOrSortChange(): void {
+    this.currentPage = 0; // Reset to first page when filter or sort changes
+    this.fetchSearchResults();
   }
 }

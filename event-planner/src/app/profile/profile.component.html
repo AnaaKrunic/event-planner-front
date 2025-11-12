@@ -1,0 +1,93 @@
+<div class="profile-layout" *ngIf="user">
+
+  <div class="profile-left">
+    <h2>{{ readonlyMode ? 'Profile' : 'My Profile' }}</h2>
+
+    <p>
+      <strong>Email:</strong>
+      <input type="email" [value]="user.email" readonly>
+    </p>
+
+    <ng-container *ngIf="user.role === 'EVENT_ORGANIZER'">
+      <p>
+        <strong>First name:</strong>
+        <input type="text" [(ngModel)]="user.name" [readonly]="!isEditing">
+      </p>
+      <p>
+        <strong>Last name:</strong>
+        <input type="text" [(ngModel)]="user.lastName" [readonly]="!isEditing">
+      </p>
+    </ng-container>
+
+    <ng-container *ngIf="user.role === 'SERVICE_PROVIDER'">
+      <p>
+        <strong>Company name:</strong>
+        <input type="text" [(ngModel)]="user.name" [readonly]="!isEditing">
+      </p>
+      <p>
+        <strong>Description:</strong>
+        <textarea [(ngModel)]="user.description" [readonly]="!isEditing"></textarea>
+      </p>
+    </ng-container>
+
+    <p>
+      <strong>Address:</strong>
+      <input type="text" [(ngModel)]="user.address" [readonly]="!isEditing">
+    </p>
+    <p>
+      <strong>Phone number:</strong>
+      <input type="text" [(ngModel)]="user.phoneNumber" [readonly]="!isEditing">
+    </p>
+
+    <a class="link-btn" *ngIf="!readonlyMode" (click)="toggleEdit()">
+      {{ isEditing ? 'Save changes' : 'Edit profile' }}
+    </a>
+    <br>
+    <a class="link-btn" *ngIf="!readonlyMode" routerLink="/change-password">Change password</a>
+    <a class="link-btn" *ngIf="readonlyMode"> Report SPP</a>
+  </div>
+
+  <div class="profile-center">
+    <!-- EO -->
+    <div *ngIf="user.role === 'EVENT_ORGANIZER'">
+      <img [src]="user.imageURLs[0] || '/assets/images/default-profile.png'" class="profile-img">
+      <div *ngIf="isEditing">
+        <input type="file" (change)="onEOFileSelected($event)">
+        <button *ngIf="user.imageURLs[0] && !user.imageURLs[0].includes('default-profile.png')"
+                (click)="removeEOImage()">Remove</button>
+      </div>
+    </div>
+
+    <!-- SPP -->
+    <div *ngIf="user.role === 'SERVICE_PROVIDER'" class="image-carousel">
+
+      <img 
+        [src]="user.imageURLs.length ? user.imageURLs[currentIndex] : '/assets/images/default-profile.png'" 
+        class="profile-img"
+      >
+
+      <div class="carousel-controls" *ngIf="user.imageURLs.length > 1">
+        <button id="prev" (click)="prevImage()">‹</button>
+        <button id="next" (click)="nextImage()">›</button>
+      </div>
+
+      <div *ngIf="isEditing && user.imageURLs.length > 0" class="carousel-actions">
+        <button (click)="removeSPPImage(currentIndex)">Remove this photo</button>
+      </div>
+
+      <div *ngIf="isEditing" class="add-photo">
+        <input type="file" multiple (change)="onSPPFilesSelected($event)">
+      </div>
+
+    </div>
+  </div>
+
+  <div class="profile-right" *ngIf="!readonlyMode">
+    <div class="calendar">
+      <p><strong>Your upcoming events</strong></p>
+      <full-calendar [options]="calendarOptions"></full-calendar>
+    </div>
+    <button (click)="deactivateProfile()">Deactivate profile</button>
+  </div>
+
+</div>

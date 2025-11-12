@@ -1,0 +1,56 @@
+<div class="container">
+  <h2>Price List</h2>
+  <button class="pdf-btn" (click)="generatePDF()">Download PDF</button>
+
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Discount</th>
+        <th>Discounted Price</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let solution of solutions; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ solution.name }}</td>
+        <td>{{ solution.price }} RSD</td>
+        <td>{{ solution.discount }}%</td>
+        <td>{{ calcDiscountedPrice(solution) }} RSD</td>
+        <td><button (click)="openEditModal(solution)">Change Price List</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="modal-backdrop" *ngIf="editing" (click)="closeEditModal()"></div>
+
+<div class="modal" *ngIf="editing" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+  <h3 id="editModalTitle">Edit price & discount — {{ editingSolution?.name }}</h3>
+
+  <form (ngSubmit)="submitEdit()" #editForm="ngForm" novalidate>
+    <label>
+      Price (RSD)
+      <input name="price" type="number" [(ngModel)]="editModel.price" required min="0" #priceCtrl="ngModel" />
+    </label>
+    <div class="error" *ngIf="priceCtrl.invalid && (priceCtrl.touched || priceCtrl.dirty)">
+      Price is required and must be ≥ 0.
+    </div>
+
+    <label>
+      Discount (%)
+      <input name="discount" type="number" [(ngModel)]="editModel.discount" required min="0" max="100" #discountCtrl="ngModel" />
+    </label>
+    <div class="error" *ngIf="discountCtrl.invalid && (discountCtrl.touched || discountCtrl.dirty)">
+      Discount is required and must be between 0 and 100.
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" (click)="closeEditModal()">Cancel</button>
+      <button type="submit" [disabled]="editForm.invalid || saving">Save</button>
+    </div>
+  </form>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+</div>

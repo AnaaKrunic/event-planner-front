@@ -1,48 +1,189 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { AuthService } from '../authservice.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-all-events',
   templateUrl: './all-events.component.html',
   styleUrls: ['./all-events.component.css'],
 })
-export class AllEventsComponent {
-  events = [
-    { image: 'assets/images/event.jpg', title: 'Music Festival', description: 'Join us for an unforgettable night of music.', date: new Date('2024-11-20'), category: 'Music' },
-    { image: 'assets/images/event.jpg', title: 'Art Exhibition', description: 'Explore stunning artworks from local artists.', date: new Date('2024-12-05'), category: 'Art' },
-    { image: 'assets/images/event.jpg', title: 'Tech Conference', description: 'Learn about the latest advancements in technology.', date: new Date('2024-11-25'), category: 'Technology' },
-    { image: 'assets/images/event.jpg', title: 'Charity Run', description: 'Run for a cause and make a difference.', date: new Date('2024-11-30'), category: 'Fitness' },
-    { image: 'assets/images/event.jpg', title: 'Cooking Workshop', description: 'Master the art of Italian cooking.', date: new Date('2024-12-10'), category: 'Cooking' },
-    { image: 'assets/images/event.jpg', title: 'Book Fair', description: 'Discover new books and meet your favorite authors.', date: new Date('2024-12-15'), category: 'Books' },
-    { image: 'assets/images/event.jpg', title: 'Photography Contest', description: 'Showcase your photography skills.', date: new Date('2024-12-20'), category: 'Photography' },
-    { image: 'assets/images/event.jpg', title: 'Dance Marathon', description: 'Dance the night away.', date: new Date('2024-11-28'), category: 'Dance' },
-    { image: 'assets/images/event.jpg', title: 'Film Screening', description: 'Enjoy a special indie movie screening.', date: new Date('2024-12-18'), category: 'Film' },
-    { image: 'assets/images/event.jpg', title: 'Fitness Bootcamp', description: 'Start your fitness journey.', date: new Date('2024-11-22'), category: 'Fitness' },
-  ];
+export class AllEventsComponent implements OnInit {
+  events: any[] = []; // Lista događaja
+  filteredEvents: any[] = []; // Filtrirani događaji
+  isLoading: boolean = true; // Stanje učitavanja
 
+  // Pretraga, filtriranje i sortiranje
   searchTerm: string = '';
   sortOption: string = 'name';
-  filterCategory: string = 'all';
+  filterEventTypes: string = 'all';
+  eventTypes: any[] = [];
 
-  filteredEvents = [...this.events];
 
-  filterAndSortEvents() {
-    // Pretraga
-    let tempEvents = this.events.filter(event =>
-      event.title.toLowerCase().includes(this.searchTerm.toLowerCase())
+  // Paginacija
+  currentPage: number = 0; // Trenutna stranica
+  pageSize: number = 10; // Broj stavki po stranici
+  totalPages: number = 0; // Ukupan broj stranica
+  totalEvents: number = 0; // Ukupan broj događaja
+
+  userRole: string | null = null;
+  mode: 'all' | 'my' = 'all';
+
+  constructor(private authService: AuthService, private http: HttpClient, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    const currentUser = this.authService.getCurrentUser();
+    this.userRole = currentUser?.role || null;
+
+    this.route.url.subscribe((segments) => {
+      const path = segments.map(s => s.path).join('/');
+      this.mode = path === 'my-events' ? 'my' : 'all';
+      this.loadEvents();
+    });
+
+    this.fetchEventTypes();
+  }
+
+  loadEvents(): void {
+    if (this.mode === 'my') {
+      this.fetchMyEvents();
+    } else {
+      this.fetchAllEvents();
+    }
+  }
+
+  fetchEventTypes(): void {
+    this.http.get<string[]>('/api/event-types').subscribe(
+      (data) => {
+        this.eventTypes = data; // Spremite kategorije za filtriranje
+      },
+      (error) => {
+        console.error('Error fetching event types:', error);
+      }
     );
+  }
+  // Metoda za dohvat svih događaja
+  fetchAllEvents(): void {
+    this.isLoading = true;
+    this.http.get<any[]>('/api/events').subscribe(
+      (data) => {
+        this.events = Array.isArray(data) ? data : [];
+        this.filteredEvents = [...this.events];
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching events:', error);
+        this.events = [];
+        this.filteredEvents = [];
+        this.isLoading = false;
+      }
+    );
+  }
 
-    // Filtriranje po kategoriji
-    if (this.filterCategory !== 'all') {
-      tempEvents = tempEvents.filter(event => event.category === this.filterCategory);
+  fetchMyEvents(): void {
+    const currentUser = this.authService.getCurrentUser();
+    if (!currentUser) return;
+
+    this.isLoading = true;
+    this.http.get<any[]>(`/api/events/my-events?organizerId=${currentUser.id}`).subscribe(
+      (data) => {
+        this.events = Array.isArray(data) ? data : [];
+        this.filteredEvents = [...this.events];
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching my events:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Search events
+  fetchSearchResults(page: number = 0): void {
+    this.isLoading = true;
+
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', this.pageSize.toString())
+      .set('sort', this.sortOption);
+
+    if (this.searchTerm) {
+      params = params.set('name', this.searchTerm);
     }
 
-    // Sortiranje
-    if (this.sortOption === 'name') {
-      tempEvents.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (this.sortOption === 'date') {
-      tempEvents.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    }
 
-    this.filteredEvents = tempEvents;
+    console.log('Search params:', params.toString()); // Log za proveru
+
+    this.http.get<any>('/api/events/search', { params }).subscribe(
+      (response) => {
+        console.log('Search results:', response); // Log za proveru odgovora
+        this.events = response.content || [];
+        this.filteredEvents = [...this.events];
+        this.totalPages = response.totalPages;
+        this.totalEvents = response.totalElements;
+        this.currentPage = response.number;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching search results:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Navigacija na određenu stranicu
+  goToPage(page: number): void {
+    if (page >= 0 && page < this.totalPages) {
+      this.currentPage = page;
+      this.fetchSearchResults(page);
+    }
+  }
+
+  // Trigger za pretragu pri promeni unosa
+  onSearchTermChange(): void {
+    if (this.searchTerm.trim() === '') {
+      // Ako je polje za pretragu prazno, ponovo učitajte sve događaje
+      this.fetchAllEvents();
+    } else {
+      // Inače izvršite pretragu
+      this.currentPage = 0; // Resetuje na prvu stranicu
+      this.fetchSearchResults();
+    }
+  }
+
+  filterEvents(page: number = 0): void {
+    this.isLoading = true;
+
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('size', this.pageSize.toString())
+      .set('sort', this.sortOption);
+
+
+
+
+    console.log('Filter params:', params.toString());
+
+    this.http.get<any>('/api/events/filter', { params }).subscribe(
+      (response) => {
+        console.log('Filter results:', response);
+        this.events = response.content || [];
+        this.filteredEvents = [...this.events];
+        this.totalPages = response.totalPages;
+        this.totalEvents = response.totalElements;
+        this.currentPage = response.number;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error fetching filter results:', error);
+        this.isLoading = false;
+      }
+    );
+  }
+
+  // Trigger za filtriranje ili sortiranje
+  onFilterOrSortChange(): void {
+    this.currentPage = 0; // Resetujte na prvu stranicu
+    this.filterEvents(); // Pozovite filtriranje
   }
 }

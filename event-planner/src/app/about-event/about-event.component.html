@@ -1,0 +1,47 @@
+<div class="event-container">
+  <div class="event-header">
+    <!-- Event Name -->
+    <h1>{{ event.name }}</h1>
+    <!-- Event Date -->
+    <p class="event-date">Date: {{ event.startDate | date:'longDate' }}</p>
+
+    <i 
+      class="fa-heart" 
+      [class.far]="!isFavorite" 
+      [class.fas]="isFavorite" 
+      (click)="toggleFavorite()" 
+      style="cursor: pointer; font-size: 24px; color: red;">
+    </i>
+  </div>
+
+  <button class="pdf-btn" (click)="generatePDF()">Download PDF</button>
+  <button class="budget-btn" (click)="goToBudget(event.id)"> Budget </button>
+
+  <div class="event-description">
+    <h2>About Event</h2>
+    <!-- Event Description -->
+    <p>{{ event.description }}</p>
+  </div>
+
+  <div class="event-details">
+    <!-- Event Location and Max Participants -->
+    <p><strong>Max. participants:</strong> {{ event.participants }}</p>
+    <br>
+    <p><strong>Location:</strong> {{ event.location.address }}</p>
+  </div>
+
+  <div class="event-map" *ngIf="event?.location">
+    
+    <div id="map" style="height: 300px; width: 100%;"></div>
+  </div>
+
+  <button class="primary" (click)="openChat()">Open Chat</button>
+
+  <div class="chat-popup" [class.show]="chatVisible">
+    <div class="chat-header">
+      <h2>Chat</h2>
+      <button class="default" (click)="closeChat()">X</button>
+    </div>
+    <app-chat [username]="currentUser" [recipient]="otherUser"></app-chat>
+  </div>
+</div>

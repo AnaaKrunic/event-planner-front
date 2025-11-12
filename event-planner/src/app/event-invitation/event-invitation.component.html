@@ -1,0 +1,31 @@
+<div class="invitation-container">
+  <h2>Send Event Invitations</h2>
+
+  <!-- Unos e-mail adrese -->
+  <div class="email-input-container">
+    <input
+      type="email"
+      [(ngModel)]="emailInput"
+      placeholder="Enter email address"
+      class="email-input"
+    />
+    <button (click)="addEmail()" class="add-email-btn">Add Email</button>
+  </div>
+
+  <!-- Lista e-mail adresa -->
+  <div *ngIf="emailList.length > 0" class="email-list">
+    <ul>
+      <li *ngFor="let email of emailList; let i = index">
+        {{ email }}
+        <button (click)="removeEmail(i)" class="remove-email-btn">Remove</button>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Dugme za slanje pozivnica -->
+  <div class="send-invitation-container">
+    <button (click)="sendInvitations()" class="send-invitations-btn">
+      Send Invitations
+    </button>
+  </div>
+</div>

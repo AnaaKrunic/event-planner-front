@@ -1,4 +1,4 @@
-.add-service-container {
+.edit-service-container {
   width: 80%;
   margin: auto;
   font-family: Arial, sans-serif;
@@ -17,27 +17,24 @@ h1 {
 }
 
 .choose {
-  margin-top: 20px;
-  margin-bottom: 5px;
+  margin: 20px 0 5px;
 }
 
 .event-card {
   flex: 0 0 auto;
   display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   width: 175px;
   height: 50px;
-  background-color: #fff;
-  margin-right: 10px;
-  margin-top: 10px;
-  margin-bottom: 15px;
-  justify-content: center;
-  align-items: center;
+  margin: 10px 10px 15px 0;
+  padding: 5px;
   font-weight: bold;
   border-radius: 8px;
-  padding: 5px;
-  border: 1px solid #ccc;
   text-align: center;
+  background-color: #fff;
+  border: 1px solid #ccc;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -46,45 +43,30 @@ h1 {
   color: black;
 }
 
-#serviceName, #serviceDescription, #reservationDue, #cancellationDue {
-  width: 100%;
-  background-color: #fff;
-  margin-top: 10px;
-  margin-bottom: 20px;
+#serviceName,
+#serviceDescription,
+#reservationDue,
+#cancelationDue,
+#price,
+#discount {
+  width: 85%;
+  margin: 10px 0 20px;
   padding: 10px;
   font-weight: bold;
   border-radius: 8px;
   border: 1px solid #ccc;
+  background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#serviceName {
+  width: 85%;
 }
 
 #serviceDescription {
   height: 175px;
   resize: vertical;
   text-align: left;
-}
-
-.form-container {
-  display: grid;
-  grid-template-columns: 1fr 2fr; 
-  gap: 20px;
-}
-
-.form-row {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-row label {
-  margin-bottom: 8px;
-}
-
-.form-row input, .form-row textarea {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  width: 100%;
 }
 
 .price-discount-container {
@@ -97,24 +79,37 @@ h1 {
   flex: 1;
 }
 
-#price, #discount {
-  width: 85%;
-  background-color: #fff;
-  margin-bottom: 15px;
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row label {
+  margin-bottom: 8px;
+}
+
+.form-row input,
+.form-row textarea {
+  width: 100%;
   padding: 10px;
-  font-weight: bold;
-  border-radius: 8px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 }
 
 .service-settings {
   background-color: #f9f9f9;
   padding: 20px;
+  margin-bottom: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-bottom: 20px;
 }
 
 .service-settings label {
@@ -123,34 +118,44 @@ h1 {
   color: #555;
 }
 
-.duration-inputs {
+.duration-inputs,
+#due {
   display: grid;
-  grid-template-columns: 1fr 10px 1fr 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 200px 1fr 200px 1fr;
+  gap: 20px 40px;
   align-items: center;
+  padding: 0 5%;
   margin-bottom: 20px;
 }
 
 .duration-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 150px;
+  display: contents;
 }
 
-.duration-group input {
-  padding: 12px;
+.duration-group label,
+#due label {
+  font-size: 14px;
+  text-align: right;
+  font-weight: 500;
+}
+
+.duration-group input,
+#reservationDue,
+#cancelationDue {
+  width: 120px;
+  padding: 10px;
   font-size: 16px;
+  font-weight: bold;
   text-align: center;
   border-radius: 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #ccc;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.3s;
-  width: 100%;
 }
 
-.duration-group input:focus {
+.duration-group input:focus,
+#reservationDue:focus,
+#cancelationDue:focus {
   border-color: #4CAF50;
   outline: none;
 }
@@ -163,14 +168,6 @@ h1 {
   margin-top: 40px;
 }
 
-#hour {
-  margin-left: 120px;
-}
-
-#hours, #minutes {
-  margin-top: 17px;
-}
-
 .total-duration {
   grid-column: span 2;
   display: flex;
@@ -180,12 +177,11 @@ h1 {
 .total-duration input {
   padding: 12px;
   font-size: 16px;
+  font-weight: bold;
+  text-align: center;
   border-radius: 8px;
   border: 1px solid #ddd;
   background-color: #e0f7fa;
-  box-shadow: none;
-  text-align: center;
-  font-weight: bold;
   color: #00796b;
 }
 
@@ -193,64 +189,6 @@ input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
-
-input[type="number"]:focus {
-  border-color: #4CAF50;
-}
-
-label[for="reservationDue"], label[for="cancellationDue"] {
-  font-size: 14px;
-}
-
-#reservationDue, #cancellationDue {
-  width: 20%;
-  margin-left: 30px;
-  margin-right: 30px;
-}
-
-#due {
-  margin-left: 12.5%;
-}
-
-.popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1000;
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.popup-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.popup-buttons button {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.popup-buttons button:last-child {
-  background-color: black;
-  color: #fff;
-}
-
-.popup-buttons button:first-child {
-  background-color: white;
-  color: black;
-}
-
-#newCategory, #newDescription {
-  margin-bottom: 20px;
-  width: 98%;
 }
 
 .form-section {
@@ -261,7 +199,6 @@ label[for="reservationDue"], label[for="cancellationDue"] {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .dropdown-section,
@@ -298,32 +235,30 @@ button {
 .image-preview img {
   width: 100px;
   height: 100px;
+  object-fit: cover;
   border-radius: 5px;
   border: 1px solid #ccc;
-  object-fit: cover;
 }
 
 .image-preview button {
-  position: absolute;
+  top: 0;
+  right: 0;
   background-color: grey;
   color: white;
   border: none;
   cursor: pointer;
-  margin-left: 5px;
   font-size: 12px;
+}
+
+.image-preview button:hover {
+  background-color: #444;
 }
 
 .image-upload h4 {
   margin-bottom: 10px;
 }
 
-.image-preview button:hover {
-  background-color: grey;
-}
-
 .toggles {
-  display: flex;
-  flex-direction: column;
   gap: 10px;
 }
 
@@ -349,96 +284,30 @@ button {
 .slider {
   position: absolute;
   cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
   background-color: #ccc;
-  transition: 0.4s;
   border-radius: 34px;
+  transition: 0.4s;
 }
 
 .slider:before {
-  position: absolute;
   content: "";
-  height: 19px;
+  position: absolute;
+  left: 3px;
+  bottom: 3px;
   width: 19px;
+  height: 19px;
   border-radius: 50%;
   background-color: white;
   transition: 0.4s;
 }
 
-h4 {
-  margin-top: 0;
-}
-
-img {
-  width: 100%;
-}
-
-#description {
-  margin-left: 25px;
-  margin-right: 25px;
-}
-
-.toggles {
-  display: flex;
-  gap: 20px;
-}
-
-.toggle-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px; 
-  height: 25px; 
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc; 
-  transition: 0.4s;
-  border-radius: 34px; 
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 19px;
-  width: 19px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white; 
-  transition: 0.4s;
-  border-radius: 50%; 
-}
-
 input:checked + .slider {
-  background-color: black; 
+  background-color: black;
 }
 
 input:checked + .slider:before {
   transform: translateX(24px);
-}
-
-.switch input:focus + .slider {
-  box-shadow: 0 0 1px black;
 }
 
 .buttons {
@@ -450,24 +319,24 @@ input:checked + .slider:before {
 
 button {
   padding: 12px 20px;
+  width: 150px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 16px;
-  cursor: pointer;
-  font-weight: bold;
-  width: 150px;
-  text-align: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
 
 .cancel-button {
-  background-color: black; 
+  background-color: black;
   color: white;
 }
 
 .cancel-button:hover {
-  background-color: black;
+  background-color: #222;
 }
 
 .cancel-button:focus {
@@ -481,16 +350,44 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.add-category-button {
-  margin-top: 10px;
-  background-color: #333;
-  color: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  width: auto;
+.chat-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 350px;
+  max-height: 500px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  transform: scale(0);
+  transform-origin: bottom right;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
 }
 
-.add-category-button:hover {
-  background-color: grey;
+.chat-popup.show {
+  transform: scale(1);
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #6db33f;
+  color: #fff;
+}
+
+.chat-header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.chat-header button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
 }

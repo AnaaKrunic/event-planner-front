@@ -1,0 +1,48 @@
+<div class="product-container">
+  <div class="product-header">
+    <h1>{{ product?.name }}
+      <i 
+      class="fa-heart" 
+      [class.far]="!isFavorite" 
+      [class.fas]="isFavorite" 
+      (click)="toggleFavorite()" 
+      style="cursor: pointer; font-size: 24px; color: red;">
+    </i>
+    </h1>
+    <p class="product-price">Price: {{ product.price }} RSD</p>
+    <p *ngIf="product.discount > 0" class="product-discount">
+      Discount: {{ product.discount }} %
+    </p>
+  </div>
+
+  <div class="product-description">
+    <h2>About Product</h2>
+    <p>{{ product.description }}</p>
+  </div>
+
+  <div class="product-details">
+    <p><strong>Available:</strong> {{ product.available ? 'Yes' : 'No' }}</p>
+    <p><strong>Category:</strong> {{ product.category?.name || 'Pending approval' }}</p>
+    <p><strong>Event types:</strong> {{ eventTypeNames }}</p>
+  </div>
+
+  <div class="product-images">
+    <h2>Images</h2>
+    <img *ngFor="let url of product.imageURLs" [src]="url" alt="{{ product.name }}" />
+  </div>
+  <button class="purchase-btn" (click)="goToPurchase(product.id)"> Purchase </button>
+
+  <button class="primary" (click)="openChat()">Open Chat</button>
+  
+  <div class="chat-popup" [class.show]="chatVisible">
+    <div class="chat-header">
+      <h2>Chat</h2>
+      <button class="default" (click)="closeChat()">X</button>
+    </div>
+    <app-chat [username]="currentUser" [recipient]="otherUser"></app-chat>
+  </div>
+  
+</div>
+
+
+

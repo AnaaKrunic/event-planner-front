@@ -5,20 +5,14 @@
 
 .controls {
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
   gap: 15px;
+  margin-bottom: 20px;
 }
 
-.controls input[type="text"] {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
+.controls input[type="text"],
 .controls select {
+  flex: 1;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
@@ -36,8 +30,13 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  background-color: #E6E8E6;
+  background-color: #e6e8e6;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .event-card img {
@@ -49,7 +48,7 @@
 
 .event-card h3 {
   font-size: 18px;
-  margin-bottom: 5px;
+  margin: 10px 0;
 }
 
 .event-card p {
@@ -63,14 +62,58 @@
   padding: 10px 20px;
   font-size: 14px;
   color: #fff;
-  background-color: #000000;
+  background-color: #000;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   text-transform: uppercase;
+  transition: background-color 0.2s;
 }
 
 .event-card .details-btn:hover {
   background-color: #858181;
 }
 
+.loader,
+.no-events {
+  font-size: 18px;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.loader {
+  color: #007bff;
+}
+
+.no-events {
+  color: #777;
+}
+
+.add-event-btn {
+  text-align: right; /* gura dugme desno, možeš promeniti u center ili left */
+  margin-bottom: 20px;
+}
+
+.add-event-btn button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+}
+
+.add-event-btn button:hover {
+  background: linear-gradient(135deg, #0056b3, #003f7f);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.add-event-btn button:active {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}

@@ -1,7 +1,7 @@
 <div class="all-events">
-  <h1>All Events</h1>
+  <h1 *ngIf="mode === 'all'">All Events</h1>
+  <h1 *ngIf="mode === 'my'">My Events</h1>
 
-  <!-- Kontrole za pretragu, filtriranje i sortiranje -->
   <div class="controls">
     <!-- Polje za pretragu -->
     <input
@@ -9,37 +9,72 @@
       class="search-input"
       placeholder="Search events..."
       [(ngModel)]="searchTerm"
-      (input)="filterAndSortEvents()" />
+      (input)="onSearchTermChange()"
+    />
 
-    <!-- Padajuća lista za filtriranje po kategorijama -->
-    <select class="filter-select" [(ngModel)]="filterCategory" (change)="filterAndSortEvents()">
-      <option value="all">All Categories</option>
-      <option value="Music">Music</option>
-      <option value="Art">Art</option>
-      <option value="Technology">Technology</option>
-      <option value="Fitness">Fitness</option>
-      <option value="Cooking">Cooking</option>
-      <option value="Books">Books</option>
-      <option value="Photography">Photography</option>
-      <option value="Dance">Dance</option>
-      <option value="Film">Film</option>
+    <!-- Filter by category -->
+    <select class="filter-select" [(ngModel)]="events" (change)="onFilterOrSortChange()">
+      <option value="all">All Event Types</option>
+      <option *ngFor="let eventType of eventTypes" [value]="eventType.id">{{ eventType.name }}</option>
     </select>
 
-    <!-- Padajuća lista za sortiranje -->
-    <select class="sort-select" [(ngModel)]="sortOption" (change)="filterAndSortEvents()">
+    <!-- Sortiranje po imenu ili datumu -->
+    <select class="sort-select" [(ngModel)]="sortOption" (change)="onFilterOrSortChange()">
       <option value="name">Sort by Name</option>
       <option value="date">Sort by Date</option>
     </select>
+
+    <div *ngIf="userRole === 'EventOrganizer'" class="add-event-btn"> 
+      <button [routerLink]="['/events/create']">Add Event</button> 
+    </div>
   </div>
 
-  <!-- Lista događaja -->
-  <div class="event-grid">
+  <!-- Prikaz loadera dok se podaci učitavaju -->
+  <div *ngIf="isLoading" class="loader">
+    Loading events...
+  </div>
+
+  <!-- Prikaz svih događaja -->
+  <div class="event-grid" *ngIf="!isLoading && filteredEvents.length > 0">
     <div class="event-card" *ngFor="let event of filteredEvents">
-      <img [src]="event.image" alt="{{ event.title }} Image" />
-      <h3>{{ event.title }}</h3>
+      <h3>{{ event.name }}</h3>
       <p>{{ event.description }}</p>
-      <p><strong>Date:</strong> {{ event.date | date: 'longDate' }}</p>
-      <button class="details-btn">View Details</button>
+      <p><strong>Date:</strong> {{ event.startDate | date: 'longDate' }}</p>
+      <button class="details-btn" [routerLink]="['/event', event.id]">View Details</button>
     </div>
+  </div>
+
+  <!-- Poruka kada nema događaja -->
+  <div *ngIf="!isLoading && filteredEvents.length === 0" class="no-events">
+    No events available.
+  </div>
+
+  <!-- Navigacija za paginaciju -->
+  <div class="pagination" *ngIf="!isLoading && totalPages > 1">
+    <button
+      class="pagination-btn"
+      [disabled]="currentPage === 0"
+      (click)="goToPage(currentPage - 1)"
+    >
+      Previous
+    </button>
+
+    <span *ngFor="let page of [].constructor(totalPages); let i = index">
+      <button
+        class="pagination-btn"
+        [class.active]="i === currentPage"
+        (click)="goToPage(i)"
+      >
+        {{ i + 1 }}
+      </button>
+    </span>
+
+    <button
+      class="pagination-btn"
+      [disabled]="currentPage === totalPages - 1"
+      (click)="goToPage(currentPage + 1)"
+    >
+      Next
+    </button>
   </div>
 </div>
